@@ -278,7 +278,8 @@ function parseCSV(text){
     }
   }
 
-  document.getElementById('sync-status').textContent=`✓ Synced from Smartsheet CSV — ${updated} tasks updated · ${new Date().toLocaleTimeString()}`;
+  const timestamp=new Date().toLocaleString();
+  document.getElementById('sync-status').textContent=`✓ Synced from Smartsheet CSV — ${updated} tasks updated · ${timestamp}`;
   render();
 }
 
@@ -288,6 +289,27 @@ function handleFileSelect(e){
   reader.onload=ev=>{parseCSV(ev.target.result);};
   reader.readAsText(file);
   e.target.value='';
+}
+
+// Auto-fetch data.csv from the same GitHub repo on load
+function fetchCSVFromRepo(){
+  // Fetch from same origin — works when hosted on GitHub Pages
+  fetch('data.csv?nocache='+Date.now())
+    .then(r=>{
+      if(!r.ok)throw new Error('No data.csv found');
+      return r.text();
+    })
+    .then(text=>{
+      parseCSV(text);
+      // Override the status to show it was auto-loaded from repo
+      const ts=new Date().toLocaleString();
+      document.getElementById('sync-status').textContent=`✓ Auto-loaded from repo data.csv · ${ts} · Upload new CSV to update`;
+    })
+    .catch(()=>{
+      // No data.csv in repo yet — show default
+      document.getElementById('sync-status').textContent='No data.csv in repo — showing default dates · Upload CSV to sync';
+      render();
+    });
 }
 
 
@@ -494,7 +516,8 @@ function closePanel(){
 }
 document.getElementById('pi-dur').addEventListener('keydown',e=>{if(e.key==='Enter')applyEdit();if(e.key==='Escape')closePanel();});
 
-render();
+// On load: auto-fetch data.csv from repo, fall back to defaults
+fetchCSVFromRepo();
 </script>
 </body>
 </html>
