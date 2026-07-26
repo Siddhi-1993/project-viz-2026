@@ -32,13 +32,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-s{flex:1;padding:8px;background:transparent;color:#1a1a18;border:1px solid #d3d1c7;border-radius:4px;font-size:12px;cursor:pointer}
 .btn-reset{width:100%;padding:6px;background:transparent;color:#aaa;border:none;font-size:10px;cursor:pointer;text-decoration:underline}
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:199}
-#drop-zone{display:none;position:fixed;inset:0;background:rgba(26,26,24,.85);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#fff}
-#drop-zone.active{display:flex}
-#drop-zone .dz-box{border:2px dashed rgba(255,255,255,.5);border-radius:12px;padding:48px 64px;text-align:center}
-#drop-zone h2{font-size:18px;font-weight:600;margin-bottom:8px}
-#drop-zone p{font-size:12px;color:rgba(255,255,255,.6)}
 #file-input{display:none}
-.csv-note{font-size:9px;color:rgba(255,255,255,.5);margin-top:8px}
 </style>
 </head>
 <body>
@@ -47,7 +41,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <h1>🍁 Amazon Canada Launch — AON Diagram</h1>
   <div class="topbar-right">
     <span class="sync-status" id="sync-status">No CSV loaded — showing default dates</span>
-    <button class="sync-btn" onclick="openDropZone()">
+    <button class="sync-btn" onclick="document.getElementById('file-input').click()">
       ↑ Load Smartsheet CSV
     </button>
     <div class="launch" id="ldate">Launch: calculating…</div>
@@ -65,17 +59,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="wrap"><svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg></div>
 
-<!-- Drop zone overlay -->
-<div id="drop-zone">
-  <div class="dz-box" id="dz-inner">
-    <h2>Load Smartsheet CSV</h2>
-    <p>Export from Smartsheet: File → Export → Export to CSV<br>Then drop the file here or click to browse</p>
-    <br>
-    <button class="btn-p" style="width:160px" onclick="document.getElementById('file-input').click()">Browse for CSV</button>
-    <div class="csv-note">One-way sync: Smartsheet → AON diagram only</div>
-  </div>
-  <button class="btn-s" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="closeDropZone()">Cancel</button>
-</div>
+
 <input type="file" id="file-input" accept=".csv" onchange="handleFileSelect(event)">
 
 <div id="overlay" onclick="closePanel()"></div>
@@ -301,24 +285,12 @@ function parseCSV(text){
 function handleFileSelect(e){
   const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=ev=>{parseCSV(ev.target.result);closeDropZone();};
+  reader.onload=ev=>{parseCSV(ev.target.result);};
   reader.readAsText(file);
   e.target.value='';
 }
 
-function openDropZone(){
-  const dz=document.getElementById('drop-zone');
-  dz.classList.add('active');
-  dz.ondragover=e=>{e.preventDefault();document.getElementById('dz-inner').style.borderColor='#d4a017';};
-  dz.ondragleave=()=>{document.getElementById('dz-inner').style.borderColor='rgba(255,255,255,.5)';};
-  dz.ondrop=e=>{
-    e.preventDefault();
-    document.getElementById('dz-inner').style.borderColor='rgba(255,255,255,.5)';
-    const file=e.dataTransfer.files[0];
-    if(file){const r=new FileReader();r.onload=ev=>{parseCSV(ev.target.result);closeDropZone();};r.readAsText(file);}
-  };
-}
-function closeDropZone(){document.getElementById('drop-zone').classList.remove('active');}
+
 
 // ── Schedule ──────────────────────────────────────────────────────────────────
 function calcSchedule(){
