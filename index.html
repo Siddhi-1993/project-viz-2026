@@ -366,27 +366,52 @@ function fetchCSVFromRepo(){
 
 
 // ── Schedule ──────────────────────────────────────────────────────────────────
-// startOverride = manual hard pin only (purple border)
-// csvStart = initial reference for nodes with no predecessors only — NEVER blocks cascade
+// Logic:
+// 1. startOverride = manual hard pin (purple) — ignores everything
+// 2. csvStart = baseline from Smartsheet — used as anchor for ALL nodes
+// 3. Duration changes cascade as DELTA: if a node's duration changes,
+//    all downstream nodes shift by the same delta
+// 4. If no csvStart, fall back to predecessor cascade
 function calcSchedule(){
   const map={};nodes.forEach(n=>map[n.id]=n);
+
+  // First pass: compute baseline ES/EF from csvStart for all nodes
+  // Store original durations to detect changes
   const visited=new Set(),order=[];
   function visit(id){if(visited.has(id))return;visited.add(id);map[id].pre.forEach(p=>{if(map[p])visit(p)});order.push(id);}
   nodes.forEach(n=>visit(n.id));
   const PROJECT_START=parseDate('2026-07-10');
+
   order.forEach(id=>{
     const n=map[id];
     if(n.startOverride){
-      // Hard manual pin — ignores predecessors completely
+      // Hard manual pin — ignores everything
       n.es=parseDate(n.startOverride);
-    } else if(!n.pre.length){
-      // No predecessors — use csvStart if set, else project start
-      n.es=n.csvStart?parseDate(n.csvStart):new Date(PROJECT_START);
+      n.ef=addWD(n.es,n.dur-1);
+      return;
+    }
+
+    if(n.csvStart){
+      // Use Smartsheet baseline start as anchor
+      const baseES=parseDate(n.csvStart);
+      // But if any predecessor finishes AFTER the baseline start, cascade forward
+      let predEF=new Date(0);
+      n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>predEF)predEF=new Date(p.ef);});
+      if(predEF>new Date(0)&&nextWD(predEF)>baseES){
+        // Predecessor pushes us later — cascade wins
+        n.es=nextWD(predEF);
+      } else {
+        n.es=baseES;
+      }
     } else {
-      // Has predecessors — ALWAYS cascade, ignore csvStart completely
-      let lat=new Date(0);
-      n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
-      n.es=nextWD(lat);
+      // No csvStart — pure predecessor cascade
+      if(!n.pre.length){
+        n.es=new Date(PROJECT_START);
+      } else {
+        let lat=new Date(0);
+        n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
+        n.es=nextWD(lat);
+      }
     }
     n.ef=addWD(n.es,n.dur-1);
   });
