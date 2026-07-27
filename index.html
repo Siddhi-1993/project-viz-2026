@@ -303,16 +303,17 @@ function handleFileSelect(e){
 // ── LocalStorage save / load ──────────────────────────────────────────────────
 function saveToLocalStorage(){
   try{
-    const state={v:2,ts:new Date().toLocaleString(),nodes:{}};
+    const state={v:2,ts:new Date().toLocaleString(),nodes:{},originalCsvStart:{}};
     nodes.forEach(n=>{
       state.nodes[n.id]={dur:n.dur};
       if(n.csvStart)state.nodes[n.id].csvStart=n.csvStart;
-      // Only save startOverride if it's a genuine manual override
       if(n.startOverride){
         state.nodes[n.id].startOverride=n.startOverride;
         state.nodes[n.id].manualOverride=true;
       }
     });
+    // Save originalCsvStart so reset works after localStorage restore
+    Object.assign(state.originalCsvStart,originalCsvStart);
     localStorage.setItem('aon_saved',JSON.stringify(state));
     document.getElementById('sync-status').textContent=`💾 Saved · ${state.ts} · Loads automatically next visit`;
     const btn=document.getElementById('save-btn');
@@ -326,7 +327,6 @@ function loadFromLocalStorage(){
     const raw=localStorage.getItem('aon_saved');
     if(!raw)return false;
     const state=JSON.parse(raw);
-    // Discard old saves from before v2 (had startOverride bug)
     if(!state.v||state.v<2){
       localStorage.removeItem('aon_saved');
       return false;
@@ -335,10 +335,15 @@ function loadFromLocalStorage(){
     Object.entries(state.nodes||{}).forEach(([id,data])=>{
       const n=map[id];if(!n)return;
       if(data.dur)n.dur=data.dur;
-      if(data.csvStart)n.csvStart=data.csvStart;
-      // Only restore hard pins that were explicitly manual
+      if(data.csvStart){
+        n.csvStart=data.csvStart;
+      }
       if(data.startOverride&&data.manualOverride)n.startOverride=data.startOverride;
     });
+    // Restore originalCsvStart so reset works
+    if(state.originalCsvStart){
+      Object.assign(originalCsvStart,state.originalCsvStart);
+    }
     document.getElementById('sync-status').textContent=`💾 Restored from saved state · ${state.ts} · Load CSV to refresh from Smartsheet`;
     return true;
   }catch(e){return false;}
@@ -353,8 +358,7 @@ function fetchCSVFromRepo(){
     })
     .then(text=>{
       parseCSV(text);
-      const ts=new Date().toLocaleString();
-      document.getElementById('sync-status').textContent=`✓ Auto-loaded from repo data.csv · ${ts} · Save to keep local edits`;
+      // Note: parseCSV already sets status — don't overwrite it here
     })
     .catch(()=>{
       // GitHub fetch failed — try localStorage, then defaults
@@ -553,7 +557,7 @@ function openPanel(id){
   document.getElementById('pi-start').value=toISO(n.es);
   document.getElementById('pi-dur').value=n.dur;
   document.getElementById('pi-end').value=toISO(n.ef);
-  document.getElementById('hint-start').textContent=n.startOverride?'Pinned (from Smartsheet CSV or manual override)':'Driven by predecessor finish dates';
+  document.getElementById('hint-start').textContent=n.startOverride?'⚠ Manually pinned — ignores predecessors':n.csvStart?'Anchored to Smartsheet date (change duration to cascade forward)':'Driven by predecessor finish dates';
   document.getElementById('hint-end').textContent='Changes here are local only — won\'t affect Smartsheet';
   document.getElementById('panel').style.display='block';
   document.getElementById('overlay').style.display='block';
