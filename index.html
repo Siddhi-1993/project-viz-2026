@@ -364,8 +364,8 @@ function fetchCSVFromRepo(){
 
 
 // ── Schedule ──────────────────────────────────────────────────────────────────
-// startOverride = manual hard pin (purple, ignores predecessors)
-// csvStart = soft reference from Smartsheet (used as ES anchor but cascade flows through)
+// startOverride = manual hard pin only (purple border)
+// csvStart = initial reference for nodes with no predecessors only — NEVER blocks cascade
 function calcSchedule(){
   const map={};nodes.forEach(n=>map[n.id]=n);
   const visited=new Set(),order=[];
@@ -375,26 +375,16 @@ function calcSchedule(){
   order.forEach(id=>{
     const n=map[id];
     if(n.startOverride){
-      // Hard pin — manual override, ignore predecessors completely
+      // Hard manual pin — ignores predecessors completely
       n.es=parseDate(n.startOverride);
+    } else if(!n.pre.length){
+      // No predecessors — use csvStart if set, else project start
+      n.es=n.csvStart?parseDate(n.csvStart):new Date(PROJECT_START);
     } else {
-      // Soft: compute from predecessors (cascade flows freely)
-      let computedES;
-      if(!n.pre.length){
-        computedES=new Date(PROJECT_START);
-      } else {
-        let lat=new Date(0);
-        n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
-        computedES=nextWD(lat);
-      }
-      // If we have a csvStart, use whichever is later (Smartsheet date or computed)
-      // This lets the cascade push dates forward if upstream tasks slip
-      if(n.csvStart){
-        const csvDate=parseDate(n.csvStart);
-        n.es=computedES>csvDate?computedES:csvDate;
-      } else {
-        n.es=computedES;
-      }
+      // Has predecessors — ALWAYS cascade, ignore csvStart completely
+      let lat=new Date(0);
+      n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
+      n.es=nextWD(lat);
     }
     n.ef=addWD(n.es,n.dur-1);
   });
