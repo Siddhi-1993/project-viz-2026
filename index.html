@@ -44,6 +44,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button class="sync-btn" onclick="document.getElementById('file-input').click()">
       ↑ Load Smartsheet CSV
     </button>
+    <button class="sync-btn" id="save-btn" onclick="saveToLocalStorage()" style="background:rgba(29,158,117,.3);border-color:#1D9E75">
+      💾 Save
+    </button>
     <div class="launch" id="ldate">Launch: calculating…</div>
   </div>
 </div>
@@ -272,15 +275,17 @@ function parseCSV(text){
     const durDays=parseInt(durStr);
 
     if(sd&&ed){
-      n.startOverride=toISO(sd);
+      n.csvStart=toISO(sd);  // soft pin — cascade still flows through
       n.dur=isNaN(durDays)?countWD(sd,ed):durDays;
+      delete n.startOverride; // clear any previous manual override
       updated++;
     }
   }
 
   const timestamp=new Date().toLocaleString();
-  document.getElementById('sync-status').textContent=`✓ Synced from Smartsheet CSV — ${updated} tasks updated · ${timestamp}`;
+  document.getElementById('sync-status').textContent=`✓ Synced from Smartsheet CSV — ${updated} tasks updated · ${timestamp} · Save to keep changes`;
   render();
+  saveToLocalStorage();
 }
 
 function handleFileSelect(e){
@@ -289,6 +294,40 @@ function handleFileSelect(e){
   reader.onload=ev=>{parseCSV(ev.target.result);};
   reader.readAsText(file);
   e.target.value='';
+}
+
+// ── LocalStorage save / load ──────────────────────────────────────────────────
+function saveToLocalStorage(){
+  try{
+    const state={ts:new Date().toLocaleString(),nodes:{}};
+    nodes.forEach(n=>{
+      state.nodes[n.id]={dur:n.dur};
+      if(n.csvStart)state.nodes[n.id].csvStart=n.csvStart;
+      if(n.startOverride)state.nodes[n.id].startOverride=n.startOverride;
+    });
+    localStorage.setItem('aon_saved',JSON.stringify(state));
+    document.getElementById('sync-status').textContent=`💾 Saved · ${state.ts} · Loads automatically next visit`;
+    const btn=document.getElementById('save-btn');
+    btn.textContent='✓ Saved';
+    setTimeout(()=>btn.textContent='💾 Save',2000);
+  }catch(e){alert('Could not save — localStorage may be unavailable');}
+}
+
+function loadFromLocalStorage(){
+  try{
+    const raw=localStorage.getItem('aon_saved');
+    if(!raw)return false;
+    const state=JSON.parse(raw);
+    const map={};nodes.forEach(n=>map[n.id]=n);
+    Object.entries(state.nodes||{}).forEach(([id,data])=>{
+      const n=map[id];if(!n)return;
+      if(data.dur)n.dur=data.dur;
+      if(data.csvStart)n.csvStart=data.csvStart;
+      if(data.startOverride)n.startOverride=data.startOverride;
+    });
+    document.getElementById('sync-status').textContent=`💾 Restored from saved state · ${state.ts} · Load CSV to refresh from Smartsheet`;
+    return true;
+  }catch(e){return false;}
 }
 
 // Auto-fetch data.csv from the same GitHub repo on load
@@ -315,6 +354,8 @@ function fetchCSVFromRepo(){
 
 
 // ── Schedule ──────────────────────────────────────────────────────────────────
+// startOverride = manual hard pin (purple, ignores predecessors)
+// csvStart = soft reference from Smartsheet (used as ES anchor but cascade flows through)
 function calcSchedule(){
   const map={};nodes.forEach(n=>map[n.id]=n);
   const visited=new Set(),order=[];
@@ -323,12 +364,27 @@ function calcSchedule(){
   const PROJECT_START=parseDate('2026-07-10');
   order.forEach(id=>{
     const n=map[id];
-    if(n.startOverride){n.es=parseDate(n.startOverride);}
-    else if(!n.pre.length){n.es=new Date(PROJECT_START);}
-    else{
-      let lat=new Date(0);
-      n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
-      n.es=nextWD(lat);
+    if(n.startOverride){
+      // Hard pin — manual override, ignore predecessors completely
+      n.es=parseDate(n.startOverride);
+    } else {
+      // Soft: compute from predecessors (cascade flows freely)
+      let computedES;
+      if(!n.pre.length){
+        computedES=new Date(PROJECT_START);
+      } else {
+        let lat=new Date(0);
+        n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
+        computedES=nextWD(lat);
+      }
+      // If we have a csvStart, use whichever is later (Smartsheet date or computed)
+      // This lets the cascade push dates forward if upstream tasks slip
+      if(n.csvStart){
+        const csvDate=parseDate(n.csvStart);
+        n.es=computedES>csvDate?computedES:csvDate;
+      } else {
+        n.es=computedES;
+      }
     }
     n.ef=addWD(n.es,n.dur-1);
   });
@@ -435,21 +491,24 @@ function render(){
   nodes.forEach(n=>{
     const x=colX(n.col),y=rowY(n.row),s=STYLE[n.type]||STYLE.nc;
     const isCrit=n.type==='cp1'||n.type==='cp2'||n.type==='sc'||n.type==='launch';
+    const isManual=!!n.startOverride;  // purple = manual override only
+    const isCsvSynced=!!n.csvStart&&!n.startOverride;  // small dot = synced from CSV
     const g=el('g',{transform:`translate(${x},${y})`,cursor:'pointer'},svg);
     g.onclick=()=>openPanel(n.id);
     if(isCrit)el('rect',{x:2,y:2,width:NW,height:NH,rx:5,fill:s.stroke,opacity:.1},g);
-    el('rect',{x:0,y:0,width:NW,height:NH,rx:5,fill:n.done?'#e8e8e8':s.fill,stroke:n.startOverride?'#7F77DD':s.stroke,'stroke-width':n.startOverride?2.5:s.sw},g);
-    el('rect',{x:0,y:0,width:NW,height:17,rx:5,fill:n.startOverride?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
-    el('rect',{x:0,y:11,width:NW,height:6,fill:n.startOverride?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
+    el('rect',{x:0,y:0,width:NW,height:NH,rx:5,fill:n.done?'#e8e8e8':s.fill,stroke:isManual?'#7F77DD':s.stroke,'stroke-width':isManual?2.5:s.sw},g);
+    el('rect',{x:0,y:0,width:NW,height:17,rx:5,fill:isManual?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
+    el('rect',{x:0,y:11,width:NW,height:6,fill:isManual?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
     if(n.merge){el('rect',{x:NW-32,y:0,width:32,height:17,rx:0,fill:'#7F77DD'},g);txt(g,NW-16,8.5,'MERGE',{'font-size':5.5,'font-weight':700,fill:'#fff'});}
-    if(n.startOverride){el('circle',{cx:NW-6,cy:8.5,r:4,fill:'#fff',opacity:.9},g);}
+    if(isManual){el('circle',{cx:NW-6,cy:8.5,r:4,fill:'#fff',opacity:.9},g);}
+    if(isCsvSynced){el('circle',{cx:NW-6,cy:8.5,r:3,fill:'rgba(255,255,255,0.5)'},g);}
     txt(g,7,8.5,n.id+(n.flag?' ⚠':'')+(n.done?' ✓':''),{'font-size':7.5,'font-weight':700,fill:'#fff','text-anchor':'start'});
     txt(g,NW/2,35,n.dur+'d',{'font-size':14,'font-weight':800,fill:n.flag?'#E24B4A':s.dur});
     const short=n.label.length>21?n.label.slice(0,20)+'…':n.label;
     txt(g,NW/2,51,short,{'font-size':7.5,'font-weight':isCrit?600:400,fill:s.txt});
     txt(g,NW/2,63,fmt(n.es)+' → '+fmt(n.ef),{'font-size':6.5,fill:n.type==='nc'?'#bbb':'#555'});
     const title=el('title',{},g);
-    title.textContent=`${n.id}: ${n.label}\n${n.dur} days | ${fmt(n.es)} → ${fmt(n.ef)}${n.startOverride?' [synced from Smartsheet]':''}\nClick to edit locally`;
+    title.textContent=`${n.id}: ${n.label}\n${n.dur} days | ${fmt(n.es)} → ${fmt(n.ef)}\n${isManual?'[Manual override — purple]':isCsvSynced?'[Synced from Smartsheet CSV]':'[Predecessor-driven]'}\nClick to edit`;
   });
 
   const l3=map['L3'];
@@ -516,8 +575,9 @@ function closePanel(){
 }
 document.getElementById('pi-dur').addEventListener('keydown',e=>{if(e.key==='Enter')applyEdit();if(e.key==='Escape')closePanel();});
 
-// On load: auto-fetch data.csv from repo, fall back to defaults
-fetchCSVFromRepo();
+// Startup: try saved state first, then repo CSV, then defaults
+const hasSaved=loadFromLocalStorage();
+if(hasSaved){render();}else{fetchCSVFromRepo();}
 </script>
 </body>
 </html>
