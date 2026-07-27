@@ -241,6 +241,9 @@ let nodes=[
 ];
 
 // ── CSV parsing ───────────────────────────────────────────────────────────────
+// Store original csvStart values so resetNode can restore them
+const originalCsvStart={};
+
 function parseCSV(text){
   const lines=text.split('\n').filter(l=>l.trim());
   const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
@@ -254,7 +257,6 @@ function parseCSV(text){
   let updated=0;
 
   for(let i=1;i<lines.length;i++){
-    // Handle quoted fields with commas
     const cols=[];let cur='',inQ=false;
     for(const ch of lines[i]){
       if(ch==='"'){inQ=!inQ;}
@@ -275,9 +277,11 @@ function parseCSV(text){
     const durDays=parseInt(durStr);
 
     if(sd&&ed){
-      n.csvStart=toISO(sd);  // soft pin — cascade still flows through
+      const isoStart=toISO(sd);
+      n.csvStart=isoStart;
+      originalCsvStart[nodeId]=isoStart; // store original for reset
       n.dur=isNaN(durDays)?countWD(sd,ed):durDays;
-      delete n.startOverride; // clear any previous manual override
+      delete n.startOverride;
       updated++;
     }
   }
@@ -366,17 +370,12 @@ function fetchCSVFromRepo(){
 
 
 // ── Schedule ──────────────────────────────────────────────────────────────────
-// Logic:
-// 1. startOverride = manual hard pin (purple) — ignores everything
-// 2. csvStart = baseline from Smartsheet — used as anchor for ALL nodes
-// 3. Duration changes cascade as DELTA: if a node's duration changes,
-//    all downstream nodes shift by the same delta
-// 4. If no csvStart, fall back to predecessor cascade
+// Rules (in priority order):
+// 1. startOverride set → hard pin, ignore everything else
+// 2. csvStart set → use as baseline anchor; BUT if predecessor finishes later, cascade wins
+// 3. No csvStart → pure predecessor cascade (or project start if no predecessors)
 function calcSchedule(){
   const map={};nodes.forEach(n=>map[n.id]=n);
-
-  // First pass: compute baseline ES/EF from csvStart for all nodes
-  // Store original durations to detect changes
   const visited=new Set(),order=[];
   function visit(id){if(visited.has(id))return;visited.add(id);map[id].pre.forEach(p=>{if(map[p])visit(p)});order.push(id);}
   nodes.forEach(n=>visit(n.id));
@@ -385,26 +384,24 @@ function calcSchedule(){
   order.forEach(id=>{
     const n=map[id];
     if(n.startOverride){
-      // Hard manual pin — ignores everything
+      // Rule 1: hard manual pin
       n.es=parseDate(n.startOverride);
       n.ef=addWD(n.es,n.dur-1);
       return;
     }
 
     if(n.csvStart){
-      // Use Smartsheet baseline start as anchor
+      // Rule 2: use Smartsheet baseline, but let predecessors push later if needed
       const baseES=parseDate(n.csvStart);
-      // But if any predecessor finishes AFTER the baseline start, cascade forward
       let predEF=new Date(0);
       n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>predEF)predEF=new Date(p.ef);});
       if(predEF>new Date(0)&&nextWD(predEF)>baseES){
-        // Predecessor pushes us later — cascade wins
-        n.es=nextWD(predEF);
+        n.es=nextWD(predEF); // predecessor pushes later
       } else {
-        n.es=baseES;
+        n.es=baseES; // use Smartsheet date
       }
     } else {
-      // No csvStart — pure predecessor cascade
+      // Rule 3: pure cascade
       if(!n.pre.length){
         n.es=new Date(PROJECT_START);
       } else {
@@ -586,21 +583,66 @@ function applyEdit(){
   const n=nodes.find(x=>x.id===editId);if(!n)return;
   const locked=document.getElementById('lock-start').checked;
   const dur=parseInt(document.getElementById('pi-dur').value);
-  if(dur>0)n.dur=dur;
+
+  if(dur>0){
+    // Calculate how many days the duration changed
+    const delta=dur-n.dur;
+    n.dur=dur;
+
+    if(delta!==0){
+      // Strip csvStart from this node and all downstream nodes
+      // so the cascade flows freely from this point forward
+      const downstream=getDownstream(n.id);
+      downstream.forEach(id=>{
+        const dn=nodes.find(x=>x.id===id);
+        if(dn&&!dn.startOverride)delete dn.csvStart;
+      });
+      // Also strip from this node itself
+      if(!n.startOverride)delete n.csvStart;
+    }
+  }
+
   if(locked){
-    // Only set hard pin if user explicitly checked the override box AND changed the date
     const sd=document.getElementById('pi-start').value;
-    if(sd)n.startOverride=sd;
+    if(sd){n.startOverride=sd;delete n.csvStart;}
   } else {
-    // Unlock — remove hard pin, let cascade flow
     delete n.startOverride;
   }
   closePanel();render();
 }
+
+// Get all nodes downstream of a given node id
+function getDownstream(startId){
+  const result=new Set();
+  const map={};nodes.forEach(n=>map[n.id]=n);
+  // Build reverse map: id -> list of nodes that depend on it
+  const dependents={};
+  nodes.forEach(n=>{n.pre.forEach(pid=>{if(!dependents[pid])dependents[pid]=[];dependents[pid].push(n.id);});});
+  function walk(id){
+    const deps=dependents[id]||[];
+    deps.forEach(did=>{if(!result.has(did)){result.add(did);walk(did);}});
+  }
+  walk(startId);
+  return result;
+}
 function resetNode(){
   const n=nodes.find(x=>x.id===editId);if(!n)return;
   delete n.startOverride;
-  delete n.csvStart;
+  // Restore original csvStart from CSV if available
+  if(originalCsvStart[n.id]){
+    n.csvStart=originalCsvStart[n.id];
+  } else {
+    delete n.csvStart;
+  }
+  // Also restore downstream nodes that lost their csvStart
+  const downstream=getDownstream(n.id);
+  downstream.forEach(id=>{
+    const dn=nodes.find(x=>x.id===id);
+    if(dn&&!dn.startOverride){
+      if(originalCsvStart[id])dn.csvStart=originalCsvStart[id];
+      else delete dn.csvStart;
+    }
+  });
   closePanel();render();
 }
 function closePanel(){
