@@ -299,11 +299,15 @@ function handleFileSelect(e){
 // ── LocalStorage save / load ──────────────────────────────────────────────────
 function saveToLocalStorage(){
   try{
-    const state={ts:new Date().toLocaleString(),nodes:{}};
+    const state={v:2,ts:new Date().toLocaleString(),nodes:{}};
     nodes.forEach(n=>{
       state.nodes[n.id]={dur:n.dur};
       if(n.csvStart)state.nodes[n.id].csvStart=n.csvStart;
-      if(n.startOverride)state.nodes[n.id].startOverride=n.startOverride;
+      // Only save startOverride if it's a genuine manual override
+      if(n.startOverride){
+        state.nodes[n.id].startOverride=n.startOverride;
+        state.nodes[n.id].manualOverride=true;
+      }
     });
     localStorage.setItem('aon_saved',JSON.stringify(state));
     document.getElementById('sync-status').textContent=`💾 Saved · ${state.ts} · Loads automatically next visit`;
@@ -318,12 +322,18 @@ function loadFromLocalStorage(){
     const raw=localStorage.getItem('aon_saved');
     if(!raw)return false;
     const state=JSON.parse(raw);
+    // Discard old saves from before v2 (had startOverride bug)
+    if(!state.v||state.v<2){
+      localStorage.removeItem('aon_saved');
+      return false;
+    }
     const map={};nodes.forEach(n=>map[n.id]=n);
     Object.entries(state.nodes||{}).forEach(([id,data])=>{
       const n=map[id];if(!n)return;
       if(data.dur)n.dur=data.dur;
       if(data.csvStart)n.csvStart=data.csvStart;
-      if(data.startOverride)n.startOverride=data.startOverride;
+      // Only restore hard pins that were explicitly manual
+      if(data.startOverride&&data.manualOverride)n.startOverride=data.startOverride;
     });
     document.getElementById('sync-status').textContent=`💾 Restored from saved state · ${state.ts} · Load CSV to refresh from Smartsheet`;
     return true;
@@ -560,13 +570,21 @@ function applyEdit(){
   const locked=document.getElementById('lock-start').checked;
   const dur=parseInt(document.getElementById('pi-dur').value);
   if(dur>0)n.dur=dur;
-  if(locked){const sd=document.getElementById('pi-start').value;if(sd)n.startOverride=sd;}
-  else delete n.startOverride;
+  if(locked){
+    // Only set hard pin if user explicitly checked the override box AND changed the date
+    const sd=document.getElementById('pi-start').value;
+    if(sd)n.startOverride=sd;
+  } else {
+    // Unlock — remove hard pin, let cascade flow
+    delete n.startOverride;
+  }
   closePanel();render();
 }
 function resetNode(){
   const n=nodes.find(x=>x.id===editId);if(!n)return;
-  delete n.startOverride;closePanel();render();
+  delete n.startOverride;
+  delete n.csvStart;
+  closePanel();render();
 }
 function closePanel(){
   document.getElementById('panel').style.display='none';
