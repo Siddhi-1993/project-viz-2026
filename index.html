@@ -1,687 +1,849 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>🍁 Amazon Canada Launch — AON Diagram</title>
+<title>Amazon Canada Launch — AON Diagram</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;overflow:auto}
-.topbar{background:#1a1a18;color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;left:0;top:0;z-index:20;min-width:100vw}
-.topbar h1{font-size:12px;font-weight:600}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.launch{background:#d4a017;color:#1a1a18;padding:5px 14px;border-radius:4px;font-size:12px;font-weight:800}
-.sync-btn{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px}
-.sync-btn:hover{background:rgba(255,255,255,.1)}
-.sync-status{font-size:10px;color:rgba(255,255,255,.6);font-style:italic}
-.legend{display:flex;gap:14px;padding:7px 20px;background:#eceae4;border-bottom:1px solid #d3d1c7;position:sticky;left:0;top:42px;z-index:19;min-width:100vw;flex-wrap:wrap}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f5f4f0;overflow:auto}
+.topbar{background:#1a1a18;color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;left:0;top:0;z-index:30;min-width:100vw}
+.topbar h1{font-size:12px;font-weight:600;white-space:nowrap}
+.spacer{flex:1}
+.status{font-size:10px;color:rgba(255,255,255,.65);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw}
+.btn-bar{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 11px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap}
+.btn-bar:hover{background:rgba(255,255,255,.12)}
+.launch{background:#d4a017;color:#1a1a18;padding:5px 14px;border-radius:4px;font-size:12px;font-weight:800;white-space:nowrap}
+.legend{display:flex;gap:14px;padding:7px 20px;background:#eceae4;border-bottom:1px solid #d3d1c7;position:sticky;left:0;top:41px;z-index:29;min-width:100vw;flex-wrap:wrap}
 .li{display:flex;align-items:center;gap:5px;font-size:10px;color:#5f5e5a}
 .ld{width:9px;height:9px;border-radius:2px}
 .wrap{padding:0 20px 40px;min-width:max-content}
-#panel{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #d3d1c7;border-radius:10px;padding:22px;width:300px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-#panel h2{font-size:13px;font-weight:600;margin-bottom:2px}
-#panel .phase-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:12px;color:#fff}
-.field{margin-bottom:12px}
+#file-input{display:none}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99}
+#panel{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #d3d1c7;border-radius:10px;padding:20px;width:310px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+#panel h2{font-size:13px;font-weight:600;margin-bottom:3px}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:12px;color:#fff}
+.field{margin-bottom:11px}
 .field label{font-size:10px;color:#666;display:block;margin-bottom:4px;font-weight:600}
 .field input{width:100%;border:1.5px solid #d3d1c7;border-radius:4px;padding:7px 10px;font-size:13px;font-weight:600;color:#1a1a18;background:#fafaf8}
 .field input:focus{outline:none;border-color:#d4a017;background:#fff}
-.field .hint{font-size:9px;color:#aaa;margin-top:3px}
-.lock-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:8px;background:#f5f4f0;border-radius:6px;font-size:10px;color:#5f5e5a}
-.lock-row input[type=checkbox]{width:14px;height:14px;cursor:pointer}
+.hint{font-size:9px;color:#999;margin-top:3px;line-height:1.35}
+.baseline{background:#f5f4f0;border-radius:6px;padding:8px 10px;font-size:10px;color:#5f5e5a;margin-bottom:12px;line-height:1.5}
+.baseline b{color:#1a1a18}
 .btns{display:flex;gap:8px;margin-bottom:6px}
 .btn-p{flex:1;padding:8px;background:#1a1a18;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-s{flex:1;padding:8px;background:transparent;color:#1a1a18;border:1px solid #d3d1c7;border-radius:4px;font-size:12px;cursor:pointer}
 .btn-reset{width:100%;padding:6px;background:transparent;color:#aaa;border:none;font-size:10px;cursor:pointer;text-decoration:underline}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:199}
-#file-input{display:none}
 </style>
 </head>
 <body>
-
 <div class="topbar">
-  <h1>🍁 Amazon Canada Launch — AON Diagram</h1>
-  <div class="topbar-right">
-    <span class="sync-status" id="sync-status">No CSV loaded — showing default dates</span>
-    <button class="sync-btn" onclick="document.getElementById('file-input').click()">
-      ↑ Load Smartsheet CSV
-    </button>
-    <button class="sync-btn" id="save-btn" onclick="saveToLocalStorage()" style="background:rgba(29,158,117,.3);border-color:#1D9E75">
-      💾 Save
-    </button>
-    <div class="launch" id="ldate">Launch: calculating…</div>
-  </div>
+  <h1>🍁 Amazon Canada Launch — AON Diagram <span style="font-weight:400;opacity:.5;font-size:10px">build 2026-07-28a</span></h1>
+  <div class="spacer"></div>
+  <div class="status" id="status" title="">Loading…</div>
+  <button class="btn-bar" onclick="document.getElementById('file-input').click()">↑ Load CSV</button>
+  <button class="btn-bar" onclick="resetAll()">↺ Reset all</button>
+  <div class="launch" id="ldate">Launch: —</div>
 </div>
-
 <div class="legend">
-  <div class="li"><div class="ld" style="background:#d4a017"></div><strong>Phase 1: Design & Regulatory (C1–C7)</strong></div>
-  <div class="li"><div class="ld" style="background:#D85A30"></div><strong>Phase 2: Production & Physical (C8+)</strong></div>
+  <div class="li"><div class="ld" style="background:#d4a017"></div><strong>Critical — Phase 1/2 (design)</strong></div>
+  <div class="li"><div class="ld" style="background:#D85A30"></div><strong>Critical — Phase 3/4 (production)</strong></div>
+  <div class="li"><div class="ld" style="background:#A32D2D"></div>Launch</div>
   <div class="li"><div class="ld" style="background:#1D9E75"></div>Supply chain</div>
-  <div class="li"><div class="ld" style="background:#c8c7c2"></div>Non-critical</div>
-  <div class="li"><div class="ld" style="background:#7F77DD;width:9px;height:9px;border-radius:50%"></div>Start date override</div>
-  <div class="li" style="margin-left:auto;font-size:10px;color:#888">Click node to edit · Load CSV to sync from Smartsheet</div>
+  <div class="li"><div class="ld" style="background:#C8C7C2"></div>Non-critical (has float)</div>
+  <div class="li"><div class="ld" style="background:#7F77DD"></div>Edited / shifted</div>
+  <div class="li" style="margin-left:auto">★ = milestone · Click a node to change its duration</div>
 </div>
-
 <div class="wrap"><svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg></div>
-
-
-<input type="file" id="file-input" accept=".csv" onchange="handleFileSelect(event)">
-
+<input type="file" id="file-input" accept=".csv" onchange="onFile(event)">
 <div id="overlay" onclick="closePanel()"></div>
 <div id="panel">
-  <h2 id="pt"></h2>
-  <div class="phase-tag" id="ptag"></div>
-  <div class="lock-row">
-    <input type="checkbox" id="lock-start" onchange="toggleLock()">
-    <div><strong>Override start date</strong> — pin to a specific date regardless of predecessors.<br><span style="color:#aaa">Uncheck to restore predecessor-driven dates.</span></div>
-  </div>
-  <div class="field">
-    <label>Start date (ES)</label>
-    <input type="date" id="pi-start" onchange="syncFromStart()">
-    <div class="hint" id="hint-start"></div>
-  </div>
+  <h2 id="p-title"></h2>
+  <div class="tag" id="p-tag"></div>
+  <div class="baseline" id="p-base"></div>
   <div class="field">
     <label>Duration (working days)</label>
-    <input type="number" id="pi-dur" min="1" max="200" onchange="syncFromDur()">
+    <input type="number" id="p-dur" min="0" max="400">
+    <div class="hint">Changing this shifts every downstream task by the same number of working days, and updates the launch date.</div>
   </div>
   <div class="field">
-    <label>End date (EF) — adjusts duration automatically</label>
-    <input type="date" id="pi-end" onchange="syncFromEnd()">
-    <div class="hint" id="hint-end"></div>
+    <label>Start date (optional override)</label>
+    <input type="date" id="p-start">
+    <div class="hint">Leave as-is to keep the Smartsheet date. Setting it pins this task and shifts everything after it.</div>
   </div>
   <div class="btns">
-    <button class="btn-p" onclick="applyEdit()">Apply & Recalculate</button>
+    <button class="btn-p" onclick="applyEdit()">Apply</button>
     <button class="btn-s" onclick="closePanel()">Cancel</button>
   </div>
-  <button class="btn-reset" onclick="resetNode()">Reset to predecessor-driven dates</button>
+  <button class="btn-reset" onclick="resetNode()">Reset this task to Smartsheet baseline</button>
 </div>
-
 <script>
-const NW=148,NH=74,GX=16,GY=26;
-const LABEL_W=172,AXIS_H=44;
-
-const ROWS={acct:0,qa:1,creative:2,sc:3,fl:4};
-const ROW_LABELS={acct:'Account / Platform',qa:'Quality / Testing',creative:'⚡ Critical Path',sc:'Supply Chain',fl:'Fulfillment / Logistics'};
-const PHASE_LABELS={cp1:'Phase 1: Design & Regulatory',cp2:'Phase 2: Production & Physical',sc:'Supply Chain',launch:'Launch',nc:'Non-critical'};
-const PHASE_COLORS={cp1:'#d4a017',cp2:'#D85A30',sc:'#1D9E75',launch:'#A32D2D',nc:'#888'};
-const STYLE={
-  cp1:{fill:'#FFF8E6',stroke:'#d4a017',hdr:'#d4a017',txt:'#633806',dur:'#d4a017',sw:2},
-  cp2:{fill:'#FDE8DF',stroke:'#D85A30',hdr:'#D85A30',txt:'#711e0a',dur:'#D85A30',sw:2},
-  sc:{fill:'#E0F7F0',stroke:'#1D9E75',hdr:'#1D9E75',txt:'#085041',dur:'#1D9E75',sw:1.5},
-  launch:{fill:'#FCEBEB',stroke:'#A32D2D',hdr:'#A32D2D',txt:'#501313',dur:'#A32D2D',sw:2},
-  nc:{fill:'#F5F5F3',stroke:'#C8C7C2',hdr:'#C8C7C2',txt:'#888780',dur:'#bbb',sw:1},
-};
+/* ══════════════════════════════════════════════════════════════════════════
+   CALENDAR
+   Smartsheet excludes weekends + these US holidays. Verified against the V2
+   sheet: e.g. Gowling review is 10d across Aug 27–Sep 10 (Labor Day skipped),
+   and Inventory-received lands Jan 19 not Jan 18 (MLK skipped).
+   ══════════════════════════════════════════════════════════════════════════ */
+const HOLIDAYS=new Set([
+  '2026-09-07', // Labor Day
+  '2026-10-12', // Columbus Day
+  '2026-11-11', // Veterans Day
+  '2026-11-26', // Thanksgiving
+  '2026-11-27', // Day after Thanksgiving
+  '2026-12-25', // Christmas
+  '2027-01-01', // New Year
+  '2027-01-18'  // MLK Day
+]);
 
 function parseDate(str){
   if(!str)return null;
-  // Handle MM/DD/YY format from Smartsheet
-  if(str.includes('/')){
-    const[m,d,y]=str.split('/');
-    const fullY=parseInt(y)<50?2000+parseInt(y):1900+parseInt(y);
-    return new Date(fullY,parseInt(m)-1,parseInt(d),12,0,0);
-  }
-  // Handle YYYY-MM-DD
-  const[y,m,d]=str.split('-').map(Number);
-  return new Date(y,m-1,d,12,0,0);
+  str=String(str).trim();
+  if(!str)return null;
+  let y,m,d;
+  if(str.includes('/')){                    // MM/DD/YY or MM/DD/YYYY
+    const p=str.split('/');
+    m=+p[0]; d=+p[1]; y=+p[2];
+    if(y<100) y = y<50 ? 2000+y : 1900+y;
+  } else if(str.includes('-')){             // YYYY-MM-DD
+    const p=str.split('-');
+    y=+p[0]; m=+p[1]; d=+p[2];
+  } else return null;
+  if(!y||!m||!d)return null;
+  return new Date(y,m-1,d,12,0,0);          // noon local — never shifts a day
 }
 function toISO(d){
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,'0');
-  const day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function addWD(date,days){
-  let d=new Date(date),a=0;
-  while(a<days){d.setDate(d.getDate()+1);if(d.getDay()!==0&&d.getDay()!==6)a++;}
-  return d;
+function isWorking(d){
+  const w=d.getDay();
+  if(w===0||w===6)return false;
+  return !HOLIDAYS.has(toISO(d));
 }
-function nextWD(date){
-  let d=new Date(date);d.setDate(d.getDate()+1);
-  while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);
-  return d;
+/* First working day on or after d */
+function snapForward(d){
+  let x=new Date(d);
+  while(!isWorking(x))x.setDate(x.getDate()+1);
+  return x;
 }
-function countWD(from,to){
-  let d=new Date(from),count=0;const end=new Date(to);
-  while(d<=end){if(d.getDay()!==0&&d.getDay()!==6)count++;d.setDate(d.getDate()+1);}
-  return Math.max(1,count);
+/* Next working day strictly after d */
+function nextWD(d){
+  let x=new Date(d);
+  do{x.setDate(x.getDate()+1);}while(!isWorking(x));
+  return x;
 }
-function fmt(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}
-function fmtMon(d){return d.toLocaleDateString('en-US',{month:'short',year:'2-digit'})}
-function daysDiff(a,b){return Math.round((b-a)/(1000*60*60*24))}
+/* Add n working days to d (n=0 returns d snapped forward) */
+function addWD(d,n){
+  let x=snapForward(d),i=0;
+  while(i<n){x=nextWD(x);i++;}
+  return x;
+}
+/* Inclusive count of working days from a to b */
+function countWD(a,b){
+  let x=new Date(a),c=0;const end=new Date(b);
+  while(x<=end){if(isWorking(x))c++;x.setDate(x.getDate()+1);}
+  return c;
+}
+/* Finish date given a start and a duration in working days */
+function finishOf(start,dur){
+  const s=snapForward(start);
+  return dur<=1 ? s : addWD(s,dur-1);   // dur 0 and 1 both finish on the start day
+}
+const fmt   = d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const fmtL  = d=>d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+const fmtMon= d=>d.toLocaleDateString('en-US',{month:'short',yy:'2-digit',year:'2-digit'});
 
-// ── Node definitions (matched to Amazon Canada Gantt V2) ─────────────────────
-// Columns: id, label, row (lane), dur (days), pre (predecessor IDs), col (x position), type, flags
-let nodes=[
-  // ── Account / Platform (lane: acct) ──────────────────────────────────────
-  {id:'A1',label:'Entity address update',row:'acct',dur:6,pre:[],col:0,type:'nc'},
-  {id:'A2',label:'Bank verification',row:'acct',dur:11,pre:[],col:1,type:'nc'},
-  {id:'A5',label:'Transparency/UPC=ASIN',row:'acct',dur:11,pre:[],col:2,type:'nc'},
-  {id:'A3',label:'Seller acct reactivated',row:'acct',dur:10,pre:['A1','A2'],col:3,type:'nc'},
-  {id:'A4',label:'Confirm ASINs',row:'acct',dur:6,pre:['A3'],col:4,type:'nc'},
-  {id:'A6',label:'Bilingual image uploads',row:'acct',dur:6,pre:['M1'],col:11,type:'nc'},
-  {id:'A7',label:'Listing review with Kat',row:'acct',dur:11,pre:['A6','Q4'],col:12,type:'nc'},
-  {id:'A8',label:'Listings compliance-approved',row:'acct',dur:1,pre:['A4','A7'],col:13,type:'nc'},
-  // ── Quality / Testing (lane: qa) ─────────────────────────────────────────
-  {id:'Q1',label:'Assess SKUs 90–120% ✓',row:'qa',dur:1,pre:[],col:0,type:'nc',done:true},
-  {id:'Q2',label:'Aliquot single lot',row:'qa',dur:5,pre:['S1'],col:8,type:'nc'},
-  {id:'Q3',label:'Per-lot CoA completed',row:'qa',dur:10,pre:['Q2'],col:9,type:'nc'},
-  {id:'Q4',label:'CoAs sent to Amazon',row:'qa',dur:5,pre:['Q3'],col:10,type:'nc'},
-  // ── Critical Path Phase 1 — Design & Regulatory (lane: creative, amber) ──
-  {id:'C1',label:'NPN license compilation',row:'creative',dur:11,pre:[],col:0,type:'cp1'},
-  {id:'C2',label:'Send packaging files',row:'creative',dur:1,pre:['C1'],col:1,type:'cp1'},
-  {id:'C3',label:'Submit label text',row:'creative',dur:1,pre:['C1','C2'],col:2,type:'cp1'},
-  {id:'C4',label:'French translations',row:'creative',dur:3,pre:['C3'],col:3,type:'cp1'},
-  {id:'C5',label:'Deliver ClickUp brief',row:'creative',dur:1,pre:['C4','S1','A1'],col:4,type:'cp1'},
-  {id:'C6',label:'Creative kickoff',row:'creative',dur:1,pre:['C5'],col:5,type:'cp1'},
-  {id:'C7',label:'Artwork design (4 SKUs)',row:'creative',dur:15,pre:['C6'],col:6,type:'cp1'},
-  // ── Critical Path Phase 2 — Production & Physical (lane: creative, coral) ─
-  {id:'C8',label:'Artwork submitted',row:'creative',dur:1,pre:['C7'],col:7,type:'cp2'},
-  {id:'C9',label:'Gowling review',row:'creative',dur:10,pre:['C8'],col:8,type:'cp2'},
-  {id:'C10',label:'Artwork approved',row:'creative',dur:1,pre:['C9'],col:9,type:'cp2'},
-  {id:'M1',label:'Print Release ★',row:'creative',dur:1,pre:['C10','A4','A3','S3','S2','Q4','F3'],col:10,type:'cp2',merge:true},
-  {id:'C12',label:'PO + Print run ⚠',row:'creative',dur:60,pre:['M1'],col:11,type:'cp2',flag:true},
-  {id:'C13',label:'Printed cartons received',row:'creative',dur:2,pre:['C12'],col:12,type:'cp2'},
-  {id:'C14',label:'Kitting / boxing',row:'creative',dur:10,pre:['C13','Q3','S5','A3'],col:13,type:'cp2'},
-  {id:'M2',label:'Inventory Ready ★',row:'creative',dur:1,pre:['C14','A7'],col:14,type:'cp2',merge:true},
-  // ── Launch (lane: creative, red) ─────────────────────────────────────────
-  {id:'L1',label:'Listings go live',row:'creative',dur:1,pre:['A7','F7'],col:17,type:'launch'},
-  {id:'L2',label:'Ad campaigns',row:'creative',dur:1,pre:['L1'],col:18,type:'launch'},
-  {id:'L3',label:'🍁 Canada Launch',row:'creative',dur:1,pre:['L2'],col:19,type:'launch'},
-  // ── Supply Chain (lane: sc) ───────────────────────────────────────────────
-  {id:'S1',label:'Determine quantity',row:'sc',dur:5,pre:[],col:0,type:'sc'},
-  {id:'S2',label:'S&OP update',row:'sc',dur:3,pre:['S1'],col:1,type:'sc'},
-  {id:'S3',label:'Carton MOQ + print quote',row:'sc',dur:6,pre:['S1'],col:2,type:'sc'},
-  {id:'S5',label:'Repack sequencing',row:'sc',dur:11,pre:[],col:3,type:'nc'},
-  // ── Fulfillment / Logistics (lane: fl) ───────────────────────────────────
-  {id:'F1',label:'Logistics call (Sara)',row:'fl',dur:1,pre:[],col:0,type:'nc'},
-  {id:'F2',label:'Evaluate Forceget + Frisbi',row:'fl',dur:5,pre:['F1'],col:1,type:'nc'},
-  {id:'F4',label:'Confirm customs broker',row:'fl',dur:10,pre:['F1'],col:2,type:'nc'},
-  {id:'F5',label:'Fulfillment route decision',row:'fl',dur:1,pre:['F2','F4'],col:3,type:'nc'},
-  {id:'F3',label:'Contract Canada 3PL',row:'fl',dur:5,pre:['F5'],col:4,type:'nc'},
-  {id:'F6',label:'Shipment preparation',row:'fl',dur:2,pre:['M2'],col:15,type:'nc'},
-  {id:'F6B',label:'Shipping to Amazon FC',row:'fl',dur:10,pre:['F6'],col:16,type:'nc'},
-  {id:'F7',label:'Inventory at Amazon FC',row:'fl',dur:1,pre:['F6B'],col:17,type:'nc'},
-];
-
-// ── TASK_MAP: Smartsheet task name → node ID ──────────────────────────────────
-const TASK_MAP={
-  // Regulatory / NPN
-  'NPN license compilation (4 launch SKUs)':'C1',
-  'Send current packaging files to Allison':'C2',
-  'Submit English label text to Gowling':'C3',
-  'French translations returned from Gowling':'C4',
-  'Gowling NPN placement confirmation':'C4',
-  // Creative
-  'Allison delivers complete ClickUp brief to creative':'C5',
-  'Creative kickoff with Michelle':'C6',
-  'Bilingual artwork design (4 SKUs)':'C7',
-  'Artwork submitted to Allison for Gowling review':'C8',
-  'Gowling artwork review + revisions':'C9',
-  'Artwork approved by Gowling':'C10',
-  'Print Release & Platform Ready':'M1',
-  'Design & Sourcing Inputs Locked':'C5',
-  'PO + print run':'C12',
-  'PO + Print run':'C12',
-  'Printed cartons received':'C13',
-  'Printed cartons received / kitting begins':'C13',
-  'Kitting / boxing':'C14',
-  'Inventory Ready & Listings Approved':'M2',
-  // Quality
-  'Assess all 4 launch SKUs vs. 90–120% spec':'Q1',
-  'Assess all 4 launch SKUs vs. 90-120% spec':'Q1',
-  'Aliquot single lot for Amazon Canada':'Q2',
-  'Per-lot CoA completed for each launch SKU':'Q3',
-  'CoAs compiled and sent to Amazon':'Q4',
-  // Account / Platform
-  'Entity address update completed':'A1',
-  'Bank information verification resolved':'A2',
-  'Transparency Program / UPC=ASIN confirmation':'A5',
-  'Seller account reactivated':'A3',
-  'Confirm  ASINs':'A4',
-  'Confirm ASINs':'A4',
-  'Canada bilingual image uploads':'A6',
-  'Listing content review with Kat':'A7',
-  'Listings built and compliance-approved':'A8',
-  'Listings live and verified':'A8',
-  // Supply Chain
-  'Determine quantity required for Canada launch':'S1',
-  'S&OP update for Canada launch SKUs':'S2',
-  'Carton MOQ + print quote confirmation':'S3',
-  'MOQ confirmation with INW':'S3',
-  'Place PO for bilingual cartons':'S3',
-  'Repack sequencing plan (vs. Walmart / Target)':'S5',
-  // Fulfillment / Logistics
-  'Logistics call with Sara':'F1',
-  'Evaluate Forceget + Frisbi (3PL options)':'F2',
-  'Confirm customs broker (direct-to-FC capable)':'F4',
-  'Fulfillment route decision finalized':'F5',
-  'Contract Canada 3PL / return facility':'F3',
-  'Shipment preparation':'F6',
-  'Shipping to Amazon Canada FC':'F6B',
-  'Inventory received at Amazon Canada FC':'F7',
-  // Launch
-  'Amazon.ca listings go live':'L1',
-  'Canada ad campaigns activated':'L2',
-  '🍁 Amazon Canada launch':'L3',
-  'Amazon Canada Launch Live':'L3',
+/* ══════════════════════════════════════════════════════════════════════════
+   NODES  — predecessors transcribed row-by-row from Amazon Canada Gantt V2.
+   Smartsheet row numbers are shown so this can be re-verified against the sheet.
+   `dur` values here are fallbacks only; the CSV overwrites them on load.
+   ══════════════════════════════════════════════════════════════════════════ */
+const LANES={acct:0,qa:1,cp:2,sc:3,fl:4};
+const LANE_LABELS={
+  acct:'Account / Platform',
+  qa:'Quality / Testing',
+  cp:'⚡ Critical Path',
+  sc:'Supply Chain',
+  fl:'Fulfillment / Logistics'
 };
 
-// ── CSV parsing ───────────────────────────────────────────────────────────────
-// Store original csvStart values so resetNode can restore them
-const originalCsvStart={};
+let nodes=[
+  /* ── Account / Platform ─────────────────────────────────────────── */
+  {id:'A1', row:12, lane:'acct', col:0,  dur:6,  pre:[],                label:'Entity address update',      kind:'nc'},
+  {id:'A2', row:17, lane:'acct', col:1,  dur:11, pre:[],                label:'Bank verification',          kind:'nc'},
+  {id:'A5', row:18, lane:'acct', col:2,  dur:11, pre:[],                label:'Transparency / UPC=ASIN',    kind:'nc'},
+  {id:'HC', row:21, lane:'acct', col:3,  dur:5,  pre:['C1','G1'],       label:'HC documentation package',   kind:'nc'},
+  {id:'A3', row:19, lane:'acct', col:4,  dur:10, pre:['A1','A2'],       label:'Seller acct reactivated',    kind:'nc'},
+  {id:'A4', row:20, lane:'acct', col:5,  dur:6,  pre:['A3'],            label:'Confirm ASINs',              kind:'nc'},
+  {id:'A6', row:49, lane:'acct', col:13, dur:6,  pre:['M1'],            label:'Bilingual image uploads',    kind:'nc'},
+  {id:'A7', row:50, lane:'acct', col:14, dur:11, pre:['A6','HC','Q4'],  label:'Listing review with Kat',    kind:'nc'},
+  {id:'A8', row:51, lane:'acct', col:15, dur:1,  pre:['A4','A7'],       label:'Listings compliance-approved',kind:'nc'},
 
-function parseCSV(text){
-  const lines=text.split('\n').filter(l=>l.trim());
-  const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
-  const taskIdx=headers.indexOf('Tasks');
-  const durIdx=headers.indexOf('Duration');
-  const startIdx=headers.indexOf('Start Date');
-  const endIdx=headers.indexOf('End Date');
-  if(taskIdx<0||startIdx<0||endIdx<0){alert('Could not find required columns (Tasks, Start Date, End Date). Make sure you exported from Smartsheet.');return;}
+  /* ── Quality / Testing ──────────────────────────────────────────── */
+  {id:'Q1', row:6,  lane:'qa',   col:0,  dur:1,  pre:[],                label:'Assess SKUs 90–120%',        kind:'nc', done:true},
+  {id:'Q2', row:34, lane:'qa',   col:3,  dur:5,  pre:['S1'],            label:'Aliquot single lot',         kind:'nc'},
+  {id:'Q3', row:35, lane:'qa',   col:4,  dur:10, pre:['Q2'],            label:'Per-lot CoA completed',      kind:'nc'},
+  {id:'Q4', row:36, lane:'qa',   col:5,  dur:5,  pre:['Q3'],            label:'CoAs sent to Amazon',        kind:'nc'},
 
-  const map={};nodes.forEach(n=>map[n.id]=n);
-  let updated=0;
+  /* ── Critical path — Phase 1 & 2 (design / regulatory) ──────────── */
+  {id:'C1', row:5,  lane:'cp',   col:0,  dur:11, pre:[],                label:'NPN license compilation',    kind:'cp1'},
+  {id:'C2', row:7,  lane:'cp',   col:1,  dur:1,  pre:['C1'],            label:'Send packaging files',       kind:'cp1'},
+  {id:'G1', row:8,  lane:'cp',   col:2,  dur:5,  pre:['C1'],            label:'Gowling NPN placement',      kind:'cp1'},
+  {id:'C3', row:9,  lane:'cp',   col:3,  dur:1,  pre:['C1','C2'],       label:'Submit label text',          kind:'cp1'},
+  {id:'C4', row:10, lane:'cp',   col:4,  dur:3,  pre:['C3'],            label:'French translations',        kind:'cp1'},
+  {id:'M0', row:14, lane:'cp',   col:5,  dur:0,  pre:['G1','C4','S1','A1','F1'], label:'Inputs Locked ★',   kind:'cp1', ms:true},
+  {id:'C5', row:23, lane:'cp',   col:6,  dur:1,  pre:['M0'],            label:'Deliver ClickUp brief',      kind:'cp1'},
+  {id:'C6', row:24, lane:'cp',   col:7,  dur:1,  pre:['C5'],            label:'Creative kickoff',           kind:'cp1'},
+  {id:'C7', row:25, lane:'cp',   col:8,  dur:15, pre:['C6'],            label:'Artwork design (4 SKUs)',    kind:'cp1'},
+  {id:'C8', row:26, lane:'cp',   col:9,  dur:1,  pre:['C7'],            label:'Artwork submitted',          kind:'cp2'},
+  {id:'C9', row:27, lane:'cp',   col:10, dur:10, pre:['C8'],            label:'Gowling review',             kind:'cp2'},
+  {id:'C10',row:28, lane:'cp',   col:11, dur:1,  pre:['C9'],            label:'Artwork approved',           kind:'cp2'},
+  {id:'M1', row:42, lane:'cp',   col:12, dur:0,  pre:['C10','A4','A5','S3','S2','Q4','F3'], label:'Print Release ★', kind:'cp2', ms:true},
 
-  for(let i=1;i<lines.length;i++){
-    const cols=[];let cur='',inQ=false;
-    for(const ch of lines[i]){
-      if(ch==='"'){inQ=!inQ;}
-      else if(ch===','&&!inQ){cols.push(cur.trim());cur='';}
-      else cur+=ch;
-    }
-    cols.push(cur.trim());
+  /* ── Critical path — Phase 3 (production) ───────────────────────── */
+  {id:'C12',row:45, lane:'cp',   col:13, dur:60, pre:['M1'],            label:'PO + print run',             kind:'cp2', flag:true},
+  {id:'C13',row:46, lane:'cp',   col:14, dur:2,  pre:['C12'],           label:'Printed cartons received',   kind:'cp2'},
+  {id:'C14',row:47, lane:'cp',   col:15, dur:10, pre:['C13','Q3','S5','A5'], label:'Kitting / boxing',      kind:'cp2'},
+  {id:'M2', row:52, lane:'cp',   col:16, dur:0,  pre:['C14','A8'],      label:'Inventory Ready ★',          kind:'cp2', ms:true},
 
-    const taskName=cols[taskIdx]||'';
-    const nodeId=TASK_MAP[taskName];
-    if(!nodeId)continue;
+  /* ── Launch ─────────────────────────────────────────────────────── */
+  {id:'L1', row:57, lane:'cp',   col:20, dur:1,  pre:['A8','F7'],       label:'Listings go live',           kind:'launch'},
+  {id:'L2', row:58, lane:'cp',   col:21, dur:1,  pre:['L1'],            label:'Ad campaigns activated',     kind:'launch'},
+  {id:'L3', row:59, lane:'cp',   col:22, dur:0,  pre:['L2'],            label:'🍁 Canada Launch',           kind:'launch', ms:true},
 
-    const n=map[nodeId];if(!n)continue;
+  /* ── Supply chain ───────────────────────────────────────────────── */
+  {id:'S1', row:11, lane:'sc',   col:0,  dur:5,  pre:[],                label:'Determine quantity',         kind:'sc'},
+  {id:'S2', row:30, lane:'sc',   col:3,  dur:3,  pre:['S1'],            label:'S&OP update',                kind:'sc'},
+  {id:'S3', row:31, lane:'sc',   col:4,  dur:6,  pre:['S1'],            label:'Carton MOQ + print quote',   kind:'sc'},
+  {id:'S5', row:32, lane:'sc',   col:5,  dur:11, pre:[],                label:'Repack sequencing',          kind:'nc'},
 
-    const sd=parseDate(cols[startIdx]);
-    const ed=parseDate(cols[endIdx]);
-    const durStr=cols[durIdx]||'';
-    const durDays=parseInt(durStr);
+  /* ── Fulfillment / logistics ────────────────────────────────────── */
+  {id:'F1', row:13, lane:'fl',   col:0,  dur:1,  pre:[],                label:'Logistics call (Sara)',      kind:'nc'},
+  {id:'F2', row:38, lane:'fl',   col:1,  dur:5,  pre:['F1'],            label:'Evaluate Forceget + Frisbi', kind:'nc'},
+  {id:'F4', row:39, lane:'fl',   col:2,  dur:10, pre:['F1'],            label:'Confirm customs broker',     kind:'nc'},
+  {id:'F5', row:40, lane:'fl',   col:3,  dur:0,  pre:['F2','F4'],       label:'Route decision ★',           kind:'nc', ms:true},
+  {id:'F3', row:41, lane:'fl',   col:4,  dur:5,  pre:['F5'],            label:'Contract Canada 3PL',        kind:'nc'},
+  {id:'F6', row:54, lane:'fl',   col:17, dur:2,  pre:['M2'],            label:'Shipment preparation',       kind:'cp2'},
+  {id:'F6B',row:55, lane:'fl',   col:18, dur:10, pre:['F6'],            label:'Shipping to Amazon FC',      kind:'cp2'},
+  {id:'F7', row:56, lane:'fl',   col:19, dur:1,  pre:['F6B'],           label:'Inventory at Amazon FC',     kind:'cp2'}
+];
 
-    if(sd&&ed){
-      const isoStart=toISO(sd);
-      n.csvStart=isoStart;
-      originalCsvStart[nodeId]=isoStart; // store original for reset
-      n.dur=isNaN(durDays)?countWD(sd,ed):durDays;
-      delete n.startOverride;
-      updated++;
-    }
+/* Smartsheet task name → node id. Names are normalised before lookup, so
+   punctuation/spacing differences between exports do not break the match. */
+const TASK_MAP={
+  'npn license compilation 4 launch skus':'C1',
+  'assess all 4 launch skus vs 90 120 spec':'Q1',
+  'send current packaging files to allison':'C2',
+  'gowling npn placement confirmation':'G1',
+  'submit english label text to gowling':'C3',
+  'french translations returned from gowling':'C4',
+  'determine quantity required for canada launch':'S1',
+  'entity address update completed':'A1',
+  'logistics call with sara':'F1',
+  'design sourcing inputs locked':'M0',
+  'bank information verification resolved':'A2',
+  'transparency program upc asin confirmation':'A5',
+  'seller account reactivated':'A3',
+  'confirm asins':'A4',
+  'hc documentation package for amazon':'HC',
+  'allison delivers complete clickup brief to creative':'C5',
+  'creative kickoff with michelle':'C6',
+  'bilingual artwork design 4 skus':'C7',
+  'artwork submitted to allison for gowling review':'C8',
+  'gowling artwork review revisions':'C9',
+  'artwork approved by gowling':'C10',
+  's op update for canada launch skus':'S2',
+  'carton moq print quote confirmation':'S3',
+  'repack sequencing plan vs walmart target':'S5',
+  'aliquot single lot for amazon canada':'Q2',
+  'per lot coa completed for each launch sku':'Q3',
+  'coas compiled and sent to amazon':'Q4',
+  'evaluate forceget frisbi 3pl options':'F2',
+  'confirm customs broker direct to fc capable':'F4',
+  'fulfillment route decision finalized':'F5',
+  'contract canada 3pl return facility':'F3',
+  'print release platform ready':'M1',
+  'po print run':'C12',
+  'printed cartons received':'C13',
+  'kitting boxing':'C14',
+  'canada bilingual image uploads':'A6',
+  'listing content review with kat':'A7',
+  'listings built and compliance approved':'A8',
+  'inventory ready listings approved':'M2',
+  'shipment preparation':'F6',
+  'shipping to amazon canada fc':'F6B',
+  'inventory received at amazon canada fc':'F7',
+  'amazon ca listings go live':'L1',
+  'canada ad campaigns activated':'L2',
+  'amazon canada launch live':'L3',
+
+  /* ── aliases from the V1 sheet, so an older export still matches ── */
+  'amazon canada launch':'L3',
+  'canada launch':'L3',
+  'listings live and verified':'A8',
+  'listings built and compliance approved':'A8',
+  'moq confirmation with inw':'S3',
+  'place po for bilingual cartons':'S3',
+  'carton moq print quote':'S3',
+  'printed cartons received kitting begins':'C13',
+  'po print run':'C12',
+  'kitting boxing':'C14',
+  'assess all 4 launch skus vs 90 120 spec':'Q1',
+  'inventory ready for shipment':'M2',
+  'print release platform ready':'M1',
+  'design sourcing inputs locked':'M0',
+  'files sent to printer':'M1',
+  'gowling artwork review revisions':'C9',
+  'shipping to amazon canada fc':'F6B'
+};
+
+/* Exact match first. If that fails, fall back to a containment match, but
+   only when it is unambiguous — one candidate and nothing else close. This
+   absorbs small wording changes between exports without ever guessing. */
+function lookupTask(raw){
+  const k=normName(raw);
+  if(!k)return null;
+  if(TASK_MAP[k])return {id:TASK_MAP[k],exact:true};
+  const keys=Object.keys(TASK_MAP);
+  const hits=keys.filter(function(m){
+    return (k.length>10&&m.length>10) && (k.indexOf(m)===0||m.indexOf(k)===0);
+  });
+  const ids=Array.from(new Set(hits.map(function(m){return TASK_MAP[m];})));
+  return ids.length===1 ? {id:ids[0],exact:false,via:hits[0]} : null;
+}
+
+/* Lowercase, strip accents/emoji/punctuation, collapse whitespace. */
+function normName(s){
+  return String(s)
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CSV LOAD
+   The CSV is the single source of truth for the baseline. For every matched
+   row we store baseStart + baseDur, and set the live duration to match.
+   ══════════════════════════════════════════════════════════════════════════ */
+function splitCSVLine(line){
+  const out=[];let cur='',q=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(ch===','&&!q){ out.push(cur.trim()); cur=''; }
+    else cur+=ch;
+  }
+  out.push(cur.trim());
+  return out.map(s=>s.replace(/\r$/,'').trim());
+}
+
+function parseCSV(text,sourceLabel){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length){setStatus('CSV was empty.');return;}
+  const H=splitCSVLine(lines[0]).map(h=>h.replace(/^"|"$/g,''));
+  const iTask =H.findIndex(h=>/^task/i.test(h));
+  const iDur  =H.findIndex(h=>/^duration/i.test(h));
+  const iStart=H.findIndex(h=>/^start/i.test(h));
+  const iEnd  =H.findIndex(h=>/^end/i.test(h));
+  if(iTask<0||iStart<0||iEnd<0){
+    setStatus('CSV missing Tasks / Start Date / End Date columns.');
+    return;
   }
 
-  const timestamp=new Date().toLocaleString();
-  document.getElementById('sync-status').textContent=`✓ Synced from Smartsheet CSV — ${updated} tasks updated · ${timestamp} · Save to keep changes`;
+  const byId={};nodes.forEach(n=>byId[n.id]=n);
+  let matched=0;const unmatched=[];const fuzzy=[];const seen=new Set();
+
+  for(let i=1;i<lines.length;i++){
+    const c=splitCSVLine(lines[i]);
+    const rawName=c[iTask]||'';
+    if(!rawName)continue;
+    const hit=lookupTask(rawName);
+    if(!hit){
+      // Ignore phase/section header rows (they carry no dates)
+      if(parseDate(c[iStart]))unmatched.push(rawName);
+      continue;
+    }
+    if(!hit.exact)fuzzy.push(rawName+' → '+hit.id);
+    const n=byId[hit.id];if(!n)continue;
+    const id=hit.id;
+    const sd=parseDate(c[iStart]);
+    const ed=parseDate(c[iEnd]);
+    if(!sd||!ed)continue;
+
+    const durRaw=(c[iDur]||'').replace(/[^0-9.]/g,'');
+    const durNum=durRaw===''?NaN:parseInt(durRaw,10);
+    const dur=Number.isNaN(durNum)?countWD(sd,ed):durNum;
+
+    n.baseStart=toISO(sd);
+    n.baseEnd  =toISO(ed);
+    n.baseDur  =dur;
+    n.dur      =dur;
+    delete n.startOverride;
+    matched++;seen.add(id);
+  }
+
+  const missing=nodes.filter(n=>!seen.has(n.id)).map(n=>n.id);
+
+  // The launch date exactly as the sheet states it
+  const L3=byId['L3'];
+  CSV_LAUNCH = L3 && L3.baseEnd ? L3.baseEnd : null;
+
+  // Self-check: with no edits, every node must land on its CSV dates
+  schedule();
+  const off=[];
+  nodes.forEach(function(n){
+    if(!n.baseStart)return;
+    if(toISO(n.es)!==n.baseStart||toISO(n.ef)!==n.baseEnd){
+      off.push(n.id+' computed '+toISO(n.es)+'→'+toISO(n.ef)+' but sheet says '+n.baseStart+'→'+n.baseEnd);
+    }
+  });
+  BASELINE_OK = off.length===0;
+
+  let msg='✓ '+sourceLabel+' · '+matched+' rows matched';
+  if(missing.length)   msg+=' · '+missing.length+' node(s) not in CSV: '+missing.join(', ');
+  if(unmatched.length) msg+=' · '+unmatched.length+' CSV row(s) unrecognised';
+  if(fuzzy.length)     msg+=' · '+fuzzy.length+' matched loosely';
+  msg += BASELINE_OK ? ' · baseline check '+matched+'/'+matched+' ✓'
+                     : ' · ⚠ '+off.length+' BASELINE MISMATCH';
+  setStatus(msg,[].concat(off,fuzzy,unmatched,missing.map(function(m){return 'node '+m+' had no CSV row';})).join('\n')||msg);
   render();
-  saveToLocalStorage();
 }
 
-function handleFileSelect(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{parseCSV(ev.target.result);};
-  reader.readAsText(file);
-  e.target.value='';
-}
+/* Launch date verbatim from the sheet, and whether we reproduce the sheet. */
+var CSV_LAUNCH=null, BASELINE_OK=false;
 
-// ── LocalStorage save / load ──────────────────────────────────────────────────
-function saveToLocalStorage(){
-  try{
-    const state={v:2,ts:new Date().toLocaleString(),nodes:{},originalCsvStart:{}};
-    nodes.forEach(n=>{
-      state.nodes[n.id]={dur:n.dur};
-      if(n.csvStart)state.nodes[n.id].csvStart=n.csvStart;
-      if(n.startOverride){
-        state.nodes[n.id].startOverride=n.startOverride;
-        state.nodes[n.id].manualOverride=true;
-      }
-    });
-    // Save originalCsvStart so reset works after localStorage restore
-    Object.assign(state.originalCsvStart,originalCsvStart);
-    localStorage.setItem('aon_saved',JSON.stringify(state));
-    document.getElementById('sync-status').textContent=`💾 Saved · ${state.ts} · Loads automatically next visit`;
-    const btn=document.getElementById('save-btn');
-    btn.textContent='✓ Saved';
-    setTimeout(()=>btn.textContent='💾 Save',2000);
-  }catch(e){alert('Could not save — localStorage may be unavailable');}
-}
-
-function loadFromLocalStorage(){
-  try{
-    const raw=localStorage.getItem('aon_saved');
-    if(!raw)return false;
-    const state=JSON.parse(raw);
-    if(!state.v||state.v<2){
-      localStorage.removeItem('aon_saved');
-      return false;
-    }
-    const map={};nodes.forEach(n=>map[n.id]=n);
-    Object.entries(state.nodes||{}).forEach(([id,data])=>{
-      const n=map[id];if(!n)return;
-      if(data.dur)n.dur=data.dur;
-      if(data.csvStart){
-        n.csvStart=data.csvStart;
-      }
-      if(data.startOverride&&data.manualOverride)n.startOverride=data.startOverride;
-    });
-    // Restore originalCsvStart so reset works
-    if(state.originalCsvStart){
-      Object.assign(originalCsvStart,state.originalCsvStart);
-    }
-    document.getElementById('sync-status').textContent=`💾 Restored from saved state · ${state.ts} · Load CSV to refresh from Smartsheet`;
-    return true;
-  }catch(e){return false;}
-}
-
-// Auto-fetch data.csv from GitHub on every page load
-function fetchCSVFromRepo(){
-  fetch('data.csv?nocache='+Date.now())
-    .then(r=>{
-      if(!r.ok)throw new Error('No data.csv found');
-      return r.text();
-    })
-    .then(text=>{
-      parseCSV(text);
-      // Note: parseCSV already sets status — don't overwrite it here
-    })
-    .catch(()=>{
-      // GitHub fetch failed — try localStorage, then defaults
-      const hasSaved=loadFromLocalStorage();
-      if(hasSaved){render();}
-      else{
-        document.getElementById('sync-status').textContent='No data.csv in repo — showing default dates · Upload CSV to sync';
-        render();
-      }
-    });
-}
-
-
-
-// ── Schedule ──────────────────────────────────────────────────────────────────
-// Rules (in priority order):
-// 1. startOverride set → hard pin, ignore everything else
-// 2. csvStart set → use as baseline anchor; BUT if predecessor finishes later, cascade wins
-// 3. No csvStart → pure predecessor cascade (or project start if no predecessors)
-function calcSchedule(){
-  const map={};nodes.forEach(n=>map[n.id]=n);
-  const visited=new Set(),order=[];
-  function visit(id){if(visited.has(id))return;visited.add(id);map[id].pre.forEach(p=>{if(map[p])visit(p)});order.push(id);}
-  nodes.forEach(n=>visit(n.id));
-  const PROJECT_START=parseDate('2026-07-10');
-
-  order.forEach(id=>{
-    const n=map[id];
-    if(n.startOverride){
-      // Rule 1: hard manual pin
-      n.es=parseDate(n.startOverride);
-      n.ef=addWD(n.es,n.dur-1);
-      return;
-    }
-
-    if(n.csvStart){
-      // Rule 2: use Smartsheet baseline, but let predecessors push later if needed
-      const baseES=parseDate(n.csvStart);
-      let predEF=new Date(0);
-      n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>predEF)predEF=new Date(p.ef);});
-      if(predEF>new Date(0)&&nextWD(predEF)>baseES){
-        n.es=nextWD(predEF); // predecessor pushes later
-      } else {
-        n.es=baseES; // use Smartsheet date
-      }
-    } else {
-      // Rule 3: pure cascade
-      if(!n.pre.length){
-        n.es=new Date(PROJECT_START);
-      } else {
-        let lat=new Date(0);
-        n.pre.forEach(pid=>{const p=map[pid];if(p&&p.ef>lat)lat=new Date(p.ef);});
-        n.es=nextWD(lat);
-      }
-    }
-    n.ef=addWD(n.es,n.dur-1);
+/* True when the user has changed nothing. */
+function isPristine(){
+  return !nodes.some(function(n){
+    return n.startOverride || (typeof n.baseDur==='number' && n.dur!==n.baseDur);
   });
 }
 
-function colX(col){return LABEL_W+col*(NW+GX);}
-function rowY(row){return AXIS_H+ROWS[row]*(NH+GY);}
+function setStatus(text,tip){
+  const el=document.getElementById('status');
+  el.textContent=text;
+  el.title=tip||text;
+}
 
-// ── Render ────────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════════════════════════════════
+   SCHEDULE  —  CPM with preserved baseline lag
+
+   Two passes:
+     1. BASELINE. Every task sits on its Smartsheet date. For each task we
+        record how many working days of slack sit between "the earliest its
+        predecessors allow" and "where Smartsheet actually put it". That gap
+        is real (holidays, deliberate buffer, resource waits) and must survive.
+     2. LIVE. Recompute the earliest-allowed date from the *current* finishes,
+        then re-apply the same slack.
+
+   With no edits, pass 2 lands exactly on pass 1, so the diagram can never
+   drift from the Gantt. An edit moves a predecessor's finish, and every
+   successor moves with it — earlier or later — while keeping its own slack.
+   Tasks with float absorb upstream changes instead of passing them on.
+   ══════════════════════════════════════════════════════════════════════════ */
+const PROJECT_START=parseDate('2026-07-10');
+
+function topoOrder(){
+  const byId={};nodes.forEach(n=>byId[n.id]=n);
+  const seen=new Set(),out=[];
+  const visit=(id,stack)=>{
+    if(seen.has(id)||stack.has(id))return;
+    stack.add(id);
+    (byId[id]?byId[id].pre:[]).forEach(p=>{if(byId[p])visit(p,stack);});
+    stack.delete(id);
+    seen.add(id);out.push(id);
+  };
+  nodes.forEach(n=>visit(n.id,new Set()));
+  return out.map(id=>byId[id]);
+}
+
+/* previous working day, strictly before d */
+function prevWD(d){
+  let x=new Date(d);
+  do{x.setDate(x.getDate()-1);}while(!isWorking(x));
+  return x;
+}
+/* signed working-day distance from a to b (0 when same day) */
+function diffWD(a,b){
+  if(toISO(a)===toISO(b))return 0;
+  return b>a ? countWD(a,b)-1 : -(countWD(b,a)-1);
+}
+/* shift d by n working days, n may be negative */
+function shiftWD(d,n){
+  let x=snapForward(d),i=0;
+  if(n>0){while(i<n){x=nextWD(x);i++;}}
+  else if(n<0){while(i>n){x=prevWD(x);i--;}}
+  return x;
+}
+/* earliest a task may start given a set of predecessor finish dates */
+function earliestFrom(pre,byId,field){
+  let latest=null;
+  pre.forEach(pid=>{
+    const p=byId[pid];if(!p)return;
+    const f=p[field];if(!f)return;
+    if(!latest||f>latest)latest=f;
+  });
+  return latest?nextWD(latest):null;
+}
+
+function schedule(){
+  const byId={};nodes.forEach(n=>byId[n.id]=n);
+  const order=topoOrder();
+
+  /* ── pass 1: baseline + slack ─────────────────────────────────────── */
+  order.forEach(n=>{
+    if(n.baseStart){
+      n._bes=snapForward(parseDate(n.baseStart));
+    }else if(!n.pre.length){
+      n._bes=snapForward(PROJECT_START);
+    }else{
+      n._bes=earliestFrom(n.pre,byId,'_bef')||snapForward(PROJECT_START);
+    }
+    const bd=(typeof n.baseDur==='number')?n.baseDur:n.dur;
+    n._bef=finishOf(n._bes,bd);
+    const gate=earliestFrom(n.pre,byId,'_bef');
+    n._slack = gate ? diffWD(gate,n._bes) : null;   // null = no predecessors
+  });
+
+  /* ── pass 2: live ─────────────────────────────────────────────────── */
+  order.forEach(n=>{
+    if(n.startOverride){
+      n.es=snapForward(parseDate(n.startOverride));
+    }else{
+      const gate=earliestFrom(n.pre,byId,'ef');
+      if(gate===null){
+        n.es=new Date(n._bes);                       // no predecessors: hold baseline
+      }else{
+        n.es=shiftWD(gate, n._slack===null?0:n._slack);
+      }
+    }
+    n.ef=finishOf(n.es,n.dur);
+    n.drift=diffWD(n._bes,n.es);                     // working days off baseline
+    n.durChanged=(typeof n.baseDur==='number')&&n.dur!==n.baseDur;
+  });
+}
+
+/* Has this task moved off its Smartsheet baseline? */
+function isMoved(n){return !n.startOverride && n.drift!==0;}
+
+/* All ids downstream of a node */
+function downstreamOf(id){
+  const kids={};
+  nodes.forEach(n=>n.pre.forEach(p=>{(kids[p]=kids[p]||[]).push(n.id);}));
+  const out=new Set(),stack=[id];
+  while(stack.length){
+    const cur=stack.pop();
+    (kids[cur]||[]).forEach(k=>{if(!out.has(k)){out.add(k);stack.push(k);}});
+  }
+  return out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════════════════════════════════════ */
+const NW=150,NH=76,GX=18,GY=34,LABEL_W=150,AXIS_H=46;
+const STYLE={
+  cp1   :{fill:'#FFF8E6',stroke:'#d4a017',hdr:'#d4a017',txt:'#5c3406',sw:2},
+  cp2   :{fill:'#FDE8DF',stroke:'#D85A30',hdr:'#D85A30',txt:'#6d1d09',sw:2},
+  launch:{fill:'#FBE9E9',stroke:'#A32D2D',hdr:'#A32D2D',txt:'#4a1212',sw:2},
+  sc    :{fill:'#E3F7F1',stroke:'#1D9E75',hdr:'#1D9E75',txt:'#07463a',sw:1.5},
+  nc    :{fill:'#F4F4F2',stroke:'#C8C7C2',hdr:'#C8C7C2',txt:'#83827d',sw:1}
+};
+const MOVED='#7F77DD';
+const PHASES=[
+  {a:0, b:5, label:'Phase 1 — Define & Qualify',            c:'#d4a017'},
+  {a:6, b:12,label:'Phase 2 — Design, Approval & Sourcing', c:'#d4a017'},
+  {a:13,b:16,label:'Phase 3 — Production & Platform Build', c:'#D85A30'},
+  {a:17,b:22,label:'Phase 4 — Fulfillment & Launch',        c:'#A32D2D'}
+];
+
+const colX = c => LABEL_W + c*(NW+GX);
+const laneY = l => AXIS_H + LANES[l]*(NH+GY);
+const NS='http://www.w3.org/2000/svg';
+
+function el(tag,attrs,parent){
+  const e=document.createElementNS(NS,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);
+  if(parent)parent.appendChild(e);
+  return e;
+}
+function txt(parent,x,y,s,attrs){
+  const t=el('text',Object.assign({x,y,'dominant-baseline':'central','text-anchor':'middle','font-family':'Arial'},attrs||{}),parent);
+  t.textContent=s;return t;
+}
+
 function render(){
-  calcSchedule();
-  const svg=document.getElementById('svg');svg.innerHTML='';
-  const ns='http://www.w3.org/2000/svg';
-  const map={};nodes.forEach(n=>map[n.id]=n);
-  const maxCol=Math.max(...nodes.map(n=>n.col));
-  const W=colX(maxCol)+NW+60;
-  const H=AXIS_H+Object.keys(ROWS).length*(NH+GY)+20;
+  schedule();
+  const svg=document.getElementById('svg');
+  svg.innerHTML='';
+  const byId={};nodes.forEach(n=>byId[n.id]=n);
+  const maxCol=Math.max.apply(null,nodes.map(n=>n.col));
+  const W=colX(maxCol)+NW+40;
+  const H=AXIS_H+Object.keys(LANES).length*(NH+GY)+20;
   svg.setAttribute('width',W);svg.setAttribute('height',H);
 
-  function el(tag,attrs,par){const e=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(par)par.appendChild(e);return e;}
-  function txt(par,x,y,text,attrs){const t=el('text',{x,y,'dominant-baseline':'central','text-anchor':'middle','font-family':'Arial',...attrs},par);t.textContent=text;return t;}
-
+  /* arrow heads */
   const defs=el('defs',{},svg);
-  [['gold','#d4a017'],['coral','#D85A30'],['teal','#1D9E75'],['red','#A32D2D'],['grey','#bbb']].forEach(([name,col])=>{
-    const mk=el('marker',{id:'arr-'+name,viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'},defs);
-    el('path',{d:'M2 1L8 5L2 9',fill:'none',stroke:col,'stroke-width':1.5,'stroke-linecap':'round'},mk);
+  [['gold','#d4a017'],['coral','#D85A30'],['red','#A32D2D'],['teal','#1D9E75'],['grey','#C0BFBA'],['moved',MOVED]]
+  .forEach(function(p){
+    const mk=el('marker',{id:'ah-'+p[0],viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'},defs);
+    el('path',{d:'M1 1L9 5L1 9Z',fill:p[1]},mk);
   });
 
-  // Phase banners
-  const bY=AXIS_H-2;
-  [{x1:colX(0),x2:colX(6)+NW,label:'Phase 1: Design & Regulatory',col:'#d4a017'},
-   {x1:colX(7),x2:colX(14)+NW,label:'Phase 2: Production & Physical (incl. Milestones)',col:'#D85A30'},
-   {x1:colX(17),x2:colX(19)+NW,label:'Launch',col:'#A32D2D'}].forEach(({x1,x2,label,col})=>{
-    el('rect',{x:x1,y:bY-10,width:x2-x1,height:10,fill:col,opacity:.18,rx:2},svg);
-    txt(svg,(x1+x2)/2,bY-5,label,{'font-size':6.5,'font-weight':700,fill:col});
+  /* lane bands */
+  Object.keys(LANES).forEach(function(lane){
+    const y=laneY(lane);
+    const isCp=lane==='cp', isSc=lane==='sc';
+    el('rect',{x:0,y:y-10,width:W,height:NH+20,fill:isCp?'#FFFCF2':isSc?'#F0FBF8':'#FAFAF8'},svg);
+    el('rect',{x:0,y:y-10,width:LABEL_W-10,height:NH+20,fill:isCp?'#d4a017':isSc?'#1D9E75':'#d3d1c7',opacity:.16},svg);
+    txt(svg,(LABEL_W-10)/2,y+NH/2,LANE_LABELS[lane],{
+      'font-size':9,'font-weight':700,
+      fill:isCp?'#a67c11':isSc?'#127354':'#8a8984'
+    });
+    el('line',{x1:0,y1:y+NH+GY/2-4,x2:W,y2:y+NH+GY/2-4,stroke:'#e4e2db','stroke-width':1},svg);
   });
 
-  // Date axis
-  el('rect',{x:0,y:0,width:W,height:AXIS_H,fill:'#1a1a18',opacity:.05},svg);
-  const monthsSeen=new Set();
-  nodes.forEach(n=>{
-    const mk=n.es.getFullYear()+'-'+n.es.getMonth();
-    if(!monthsSeen.has(mk)){
-      monthsSeen.add(mk);
-      const mn=nodes.filter(m=>m.es.getFullYear()===n.es.getFullYear()&&m.es.getMonth()===n.es.getMonth());
-      const lc=Math.min(...mn.map(m=>m.col)),rc=Math.max(...mn.map(m=>m.col));
-      const x1=colX(lc),x2=colX(rc)+NW;
-      el('rect',{x:x1,y:0,width:x2-x1,height:AXIS_H,fill:n.es.getMonth()%2===0?'#378ADD':'#1D9E75',opacity:.07},svg);
-      el('line',{x1:x1,y1:0,x2:x1,y2:AXIS_H,stroke:'#d3d1c7','stroke-width':.5},svg);
-      txt(svg,(x1+x2)/2,12,fmtMon(n.es),{'font-size':9,'font-weight':700,fill:'#444'});
+  /* phase bands + month axis */
+  el('rect',{x:0,y:0,width:W,height:AXIS_H,fill:'#fff',opacity:.55},svg);
+  PHASES.forEach(function(p){
+    const x1=colX(p.a)-GX/2, x2=colX(p.b)+NW+GX/2;
+    el('rect',{x:x1,y:AXIS_H-13,width:x2-x1,height:12,fill:p.c,opacity:.16,rx:2},svg);
+    txt(svg,(x1+x2)/2,AXIS_H-7,p.label,{'font-size':7.5,'font-weight':700,fill:p.c});
+  });
+
+  /* per-column month + date ticks */
+  const seenMonth={};
+  nodes.slice().sort((a,b)=>a.col-b.col).forEach(function(n){
+    const key=n.es.getFullYear()+'-'+n.es.getMonth();
+    const cx=colX(n.col)+NW/2;
+    if(!seenMonth[key]){
+      seenMonth[key]=true;
+      txt(svg,cx,11,n.es.toLocaleDateString('en-US',{month:'short',year:'2-digit'}),
+          {'font-size':9,'font-weight':700,fill:'#6f6e69'});
     }
   });
-  nodes.forEach(n=>{
-    const s=STYLE[n.type]||STYLE.nc;const cx=colX(n.col)+NW/2;
-    el('line',{x1:cx,y1:22,x2:cx,y2:AXIS_H,stroke:s.stroke,'stroke-width':n.type==='nc'?.6:1.2,opacity:n.type==='nc'?.4:1},svg);
-    txt(svg,cx,32,fmt(n.es),{'font-size':6.5,'font-weight':n.type==='nc'?400:700,fill:n.type==='nc'?'#aaa':s.stroke});
+  nodes.forEach(function(n){
+    const s=STYLE[n.kind]||STYLE.nc;
+    const cx=colX(n.col)+NW/2;
+    const col=isMoved(n)||n.startOverride?MOVED:s.stroke;
+    el('line',{x1:cx,y1:AXIS_H-24,x2:cx,y2:AXIS_H-14,stroke:col,'stroke-width':n.kind==='nc'?.8:1.4,opacity:n.kind==='nc'?.5:1},svg);
+    txt(svg,cx,AXIS_H-30,fmt(n.es),{'font-size':7,'font-weight':n.kind==='nc'?400:700,fill:n.kind==='nc'?'#a9a8a3':col});
   });
 
-  // Today + cutoffs
-  const today=parseDate('2026-07-25');
-  let cc=0,md2=Infinity;nodes.forEach(n=>{const d=Math.abs(daysDiff(today,n.es));if(d<md2){md2=d;cc=n.col;}});
-  const tx=colX(cc)+NW/2;
-  el('line',{x1:tx,y1:0,x2:tx,y2:H,stroke:'#E24B4A','stroke-width':1.5,'stroke-dasharray':'4 3',opacity:.7},svg);
-  txt(svg,tx,7,'TODAY',{'font-size':6.5,'font-weight':700,fill:'#E24B4A'});
-  [{d:'2026-09-18',label:'Prime Day'},{d:'2026-11-05',label:'BFCM'}].forEach(({d,label})=>{
-    const kd=parseDate(d);let cn=nodes[0];let md3=Infinity;
-    nodes.forEach(n=>{const diff=Math.abs(daysDiff(kd,n.es));if(diff<md3){md3=diff;cn=n;}});
-    if(md3<35){const kx=colX(cn.col)+NW/2;el('line',{x1:kx,y1:0,x2:kx,y2:H,stroke:'#7F77DD','stroke-width':1,'stroke-dasharray':'3 3',opacity:.6},svg);txt(svg,kx,7,label,{'font-size':6,'font-weight':700,fill:'#7F77DD'});}
+  /* key date guides */
+  [['2026-09-18','Prime Day cutoff','#7F77DD'],['2026-11-05','BFCM cutoff','#7F77DD']].forEach(function(k){
+    const target=parseDate(k[0]);
+    let best=null,bd=1e9;
+    nodes.forEach(function(n){
+      const d=Math.abs((n.es-target)/86400000);
+      if(d<bd){bd=d;best=n;}
+    });
+    if(best&&bd<40){
+      const x=colX(best.col)+NW/2;
+      el('line',{x1:x,y1:AXIS_H-14,x2:x,y2:H,stroke:k[2],'stroke-width':1,'stroke-dasharray':'3 4',opacity:.5},svg);
+      txt(svg,x,AXIS_H-38,k[1],{'font-size':6.5,'font-weight':700,fill:k[2]});
+    }
   });
 
-  // Lane backgrounds
-  Object.entries(ROWS).forEach(([row])=>{
-    const y=rowY(row);const isCP=row==='creative',isSC=row==='sc';
-    el('rect',{x:0,y,width:W,height:NH,fill:isCP?'#FFF8E6':isSC?'#E0F7F0':'#F1EFE8',opacity:.5},svg);
-    el('rect',{x:0,y,width:LABEL_W-4,height:NH,fill:isCP?'#d4a017':isSC?'#1D9E75':'#d3d1c7',opacity:.2},svg);
-    txt(svg,LABEL_W/2-2,y+NH/2,ROW_LABELS[row],{'font-size':7.5,'font-weight':700,fill:isCP?'#d4a017':isSC?'#1D9E75':'#888','text-anchor':'middle'});
-    el('line',{x1:0,y1:y+NH+GY/2,x2:W,y2:y+NH+GY/2,stroke:'#d3d1c7','stroke-width':.5},svg);
-  });
+  /* ── edges ──────────────────────────────────────────────────────────
+     Long runs travel in the gap strip beneath the source lane, so a line
+     never crosses an unrelated node box.                                */
+  nodes.forEach(function(n){
+    n.pre.forEach(function(pid){
+      const p=byId[pid];if(!p)return;
+      const px=colX(p.col)+NW, py=laneY(p.lane)+NH/2;
+      const nx=colX(n.col),   ny=laneY(n.lane)+NH/2;
 
-  // Phase divider
-  const divX=colX(7)-GX/2;
-  el('line',{x1:divX,y1:rowY('creative')-2,x2:divX,y2:rowY('creative')+NH+2,stroke:'#888','stroke-width':1.5,'stroke-dasharray':'4 3'},svg);
+      const bothCp = (p.kind!=='nc'&&p.kind!=='sc') && (n.kind!=='nc'&&n.kind!=='sc');
+      let stroke='#C0BFBA', head='grey', sw=1, dash='4 3';
+      if(bothCp){
+        stroke = n.kind==='launch'?'#A32D2D':n.kind==='cp2'?'#D85A30':'#d4a017';
+        head   = n.kind==='launch'?'red':n.kind==='cp2'?'coral':'gold';
+        sw=2.2; dash='none';
+      } else if(p.kind==='sc'){
+        stroke='#1D9E75'; head='teal'; sw=1.6; dash='none';
+      }
+      if(isMoved(n)&&bothCp){stroke=MOVED;head='moved';}
 
-  // Arrows
-  nodes.forEach(n=>{
-    const ny=rowY(n.row);
-    n.pre.forEach(pid=>{
-      const p=map[pid];if(!p)return;
-      const py=rowY(p.row);
-      const x1=colX(p.col)+NW,y1=py+NH/2,x2=colX(n.col),y2=ny+NH/2;
-      const isP1P1=p.type==='cp1'&&n.type==='cp1',isP1P2=p.type==='cp1'&&n.type==='cp2';
-      const isP2P2=p.type==='cp2'&&n.type==='cp2',isSCCP=p.type==='sc'&&(n.type==='cp1'||n.type==='cp2');
-      const isToLaunch=n.type==='launch';
-      const stroke=isP1P1?'#d4a017':isP1P2||isP2P2?'#D85A30':isSCCP?'#1D9E75':isToLaunch?'#A32D2D':'#ccc';
-      const marker=stroke==='#d4a017'?'url(#arr-gold)':stroke==='#D85A30'?'url(#arr-coral)':stroke==='#1D9E75'?'url(#arr-teal)':stroke==='#A32D2D'?'url(#arr-red)':'url(#arr-grey)';
-      const sw=(isP1P1||isP1P2||isP2P2||isSCCP)?2:1;
-      const dash=(!isP1P1&&!isP1P2&&!isP2P2&&!isSCCP&&!isToLaunch)?'4 3':'none';
-      if(p.row===n.row){el('line',{x1,y1,x2,y2,stroke,fill:'none','stroke-width':sw,'stroke-dasharray':dash,'marker-end':marker},svg);}
-      else{const midX=x1+Math.max(8,(x2-x1)/2);el('path',{d:`M${x1} ${y1} L${midX} ${y1} L${midX} ${y2} L${x2} ${y2}`,stroke,fill:'none','stroke-width':sw,'stroke-dasharray':dash,'marker-end':marker},svg);}
+      const sameLane=p.lane===n.lane;
+      const adjacent=(n.col-p.col)===1;
+      let d;
+      if(sameLane&&adjacent){
+        d='M'+px+' '+py+'L'+nx+' '+ny;
+      }else{
+        // drop into the channel under the source lane, run across, then rise
+        const ch=laneY(p.lane)+NH+GY/2-4;
+        const x1=px+9, x2=nx-11;
+        d='M'+px+' '+py+'L'+x1+' '+py+'L'+x1+' '+ch+'L'+x2+' '+ch+'L'+x2+' '+ny+'L'+nx+' '+ny;
+      }
+      el('path',{d:d,fill:'none',stroke:stroke,'stroke-width':sw,'stroke-dasharray':dash,'marker-end':'url(#ah-'+head+')','stroke-linejoin':'round'},svg);
     });
   });
 
-  // Nodes
-  nodes.forEach(n=>{
-    const x=colX(n.col),y=rowY(n.row),s=STYLE[n.type]||STYLE.nc;
-    const isCrit=n.type==='cp1'||n.type==='cp2'||n.type==='sc'||n.type==='launch';
-    const isManual=!!n.startOverride;  // purple = manual override only
-    const isCsvSynced=!!n.csvStart&&!n.startOverride;  // small dot = synced from CSV
-    const g=el('g',{transform:`translate(${x},${y})`,cursor:'pointer'},svg);
-    g.onclick=()=>openPanel(n.id);
-    if(isCrit)el('rect',{x:2,y:2,width:NW,height:NH,rx:5,fill:s.stroke,opacity:.1},g);
-    el('rect',{x:0,y:0,width:NW,height:NH,rx:5,fill:n.done?'#e8e8e8':s.fill,stroke:isManual?'#7F77DD':s.stroke,'stroke-width':isManual?2.5:s.sw},g);
-    el('rect',{x:0,y:0,width:NW,height:17,rx:5,fill:isManual?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
-    el('rect',{x:0,y:11,width:NW,height:6,fill:isManual?'#7F77DD':s.hdr,opacity:n.done?.4:n.type==='nc'?.5:1},g);
-    if(n.merge){el('rect',{x:NW-32,y:0,width:32,height:17,rx:0,fill:'#7F77DD'},g);txt(g,NW-16,8.5,'MERGE',{'font-size':5.5,'font-weight':700,fill:'#fff'});}
-    if(isManual){el('circle',{cx:NW-6,cy:8.5,r:4,fill:'#fff',opacity:.9},g);}
-    if(isCsvSynced){el('circle',{cx:NW-6,cy:8.5,r:3,fill:'rgba(255,255,255,0.5)'},g);}
-    txt(g,7,8.5,n.id+(n.flag?' ⚠':'')+(n.done?' ✓':''),{'font-size':7.5,'font-weight':700,fill:'#fff','text-anchor':'start'});
-    txt(g,NW/2,35,n.dur+'d',{'font-size':14,'font-weight':800,fill:n.flag?'#E24B4A':s.dur});
-    const short=n.label.length>21?n.label.slice(0,20)+'…':n.label;
-    txt(g,NW/2,51,short,{'font-size':7.5,'font-weight':isCrit?600:400,fill:s.txt});
-    txt(g,NW/2,63,fmt(n.es)+' → '+fmt(n.ef),{'font-size':6.5,fill:n.type==='nc'?'#bbb':'#555'});
-    const title=el('title',{},g);
-    title.textContent=`${n.id}: ${n.label}\n${n.dur} days | ${fmt(n.es)} → ${fmt(n.ef)}\n${isManual?'[Manual override — purple]':isCsvSynced?'[Synced from Smartsheet CSV]':'[Predecessor-driven]'}\nClick to edit`;
+  /* ── node boxes ─────────────────────────────────────────────────── */
+  nodes.forEach(function(n){
+    const x=colX(n.col), y=laneY(n.lane);
+    const s=STYLE[n.kind]||STYLE.nc;
+    const moved=isMoved(n), pinned=!!n.startOverride, durChanged=!!n.durChanged;
+    const accent=(moved||pinned||durChanged)?MOVED:s.stroke;
+    const g=el('g',{transform:'translate('+x+','+y+')',cursor:'pointer'},svg);
+    g.addEventListener('click',function(){openPanel(n.id);});
+
+    if(n.kind!=='nc')el('rect',{x:2,y:3,width:NW,height:NH,rx:6,fill:s.stroke,opacity:.10},g);
+    el('rect',{x:0,y:0,width:NW,height:NH,rx:6,fill:n.done?'#ececea':s.fill,stroke:accent,'stroke-width':(moved||pinned||durChanged)?2.4:s.sw},g);
+    el('rect',{x:0,y:0,width:NW,height:18,rx:6,fill:accent,opacity:n.done?.45:1},g);
+    el('rect',{x:0,y:11,width:NW,height:7,fill:accent,opacity:n.done?.45:1},g);
+
+    txt(g,8,9,n.id+(n.flag?' ⚠':'')+(n.done?' ✓':''),{'font-size':8,'font-weight':700,fill:'#fff','text-anchor':'start'});
+    txt(g,NW-8,9,'r'+n.row,{'font-size':6.5,fill:'rgba(255,255,255,.75)','text-anchor':'end'});
+
+    const durLabel=n.ms?'milestone':(n.dur+'d');
+    txt(g,NW/2,36,durLabel,{'font-size':n.ms?9:15,'font-weight':800,fill:n.flag?'#c0392b':accent});
+    if(durChanged){
+      txt(g,NW/2,47,'was '+n.baseDur+'d',{'font-size':6.5,'font-weight':700,fill:MOVED});
+    }
+    const label=n.label.length>22?n.label.slice(0,21)+'…':n.label;
+    txt(g,NW/2,durChanged?57:53,label,{'font-size':7.6,'font-weight':n.kind==='nc'?400:600,fill:s.txt});
+    txt(g,NW/2,68,fmt(n.es)+' → '+fmt(n.ef),{'font-size':6.8,fill:moved||pinned?MOVED:(n.kind==='nc'?'#adaca7':'#6a6963')});
+
+    const tip=el('title',{},g);
+    let t=n.id+' — '+n.label+'  (Smartsheet row '+n.row+')'
+        +'\nDuration: '+n.dur+'d'+(typeof n.baseDur==='number'?' (baseline '+n.baseDur+'d)':'')
+        +'\n'+fmt(n.es)+' → '+fmt(n.ef);
+    if(n.baseStart)t+='\nBaseline: '+fmt(parseDate(n.baseStart))+' → '+fmt(parseDate(n.baseEnd));
+    if(pinned)t+='\n⚑ Start pinned manually';
+    else if(moved)t+='\n→ '+(n.drift>0?'Pushed +':'Pulled in ')+n.drift+' working day(s) vs baseline';
+    t+='\nPredecessors: '+(n.pre.length?n.pre.join(', '):'none');
+    tip.textContent=t;
   });
 
-  const l3=map['L3'];
-  if(l3)document.getElementById('ldate').textContent='🍁 Launch: '+l3.ef.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const L3=byId['L3'];
+  const badge=document.getElementById('ldate');
+  if(!L3){badge.textContent='🍁 Launch: —';return;}
+
+  const pristine=isPristine();
+  // Untouched: show the sheet's own launch date. Edited: show the recalculation.
+  const shown = (pristine && CSV_LAUNCH) ? parseDate(CSV_LAUNCH) : L3.ef;
+  badge.textContent='🍁 Launch: '+fmtL(shown);
+
+  if(pristine && CSV_LAUNCH && !BASELINE_OK){
+    badge.style.background='#c0392b';badge.style.color='#fff';
+    badge.title='The diagram does not reproduce the sheet exactly — see the status bar.';
+  }else if(!pristine){
+    const d=diffWD(parseDate(CSV_LAUNCH||toISO(L3.ef)),L3.ef);
+    badge.style.background=d>0?'#c0392b':d<0?'#1D9E75':'#d4a017';
+    badge.style.color=d===0?'#1a1a18':'#fff';
+    badge.textContent='🍁 Launch: '+fmtL(L3.ef)+(d===0?'':'  ('+(d>0?'+':'')+d+'d vs sheet)');
+    badge.title='Recalculated from your edits. Sheet baseline: '+(CSV_LAUNCH?fmtL(parseDate(CSV_LAUNCH)):'—');
+  }else{
+    badge.style.background='#d4a017';badge.style.color='#1a1a18';
+    badge.title='Straight from the sheet. Change any duration to see the impact.';
+  }
 }
 
-// ── Panel ─────────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════════════════════════════════
+   EDIT PANEL
+   ══════════════════════════════════════════════════════════════════════════ */
 let editId=null;
+const KIND_LABEL={cp1:'Critical — design & regulatory',cp2:'Critical — production',launch:'Launch',sc:'Supply chain',nc:'Non-critical'};
+const KIND_COLOR={cp1:'#d4a017',cp2:'#D85A30',launch:'#A32D2D',sc:'#1D9E75',nc:'#8a8984'};
+
 function openPanel(id){
   const n=nodes.find(x=>x.id===id);if(!n)return;
   editId=id;
-  document.getElementById('pt').textContent=n.id+' — '+n.label;
-  const tag=document.getElementById('ptag');
-  tag.textContent=PHASE_LABELS[n.type]||'Non-critical';
-  tag.style.background=PHASE_COLORS[n.type]||'#888';
-  document.getElementById('lock-start').checked=!!n.startOverride;
-  toggleLock();
-  document.getElementById('pi-start').value=toISO(n.es);
-  document.getElementById('pi-dur').value=n.dur;
-  document.getElementById('pi-end').value=toISO(n.ef);
-  document.getElementById('hint-start').textContent=n.startOverride?'⚠ Manually pinned — ignores predecessors':n.csvStart?'Anchored to Smartsheet date (change duration to cascade forward)':'Driven by predecessor finish dates';
-  document.getElementById('hint-end').textContent='Changes here are local only — won\'t affect Smartsheet';
+  document.getElementById('p-title').textContent=n.id+' — '+n.label;
+  const tag=document.getElementById('p-tag');
+  tag.textContent=KIND_LABEL[n.kind]||'Task';
+  tag.style.background=KIND_COLOR[n.kind]||'#8a8984';
+
+  let b='<b>Smartsheet row '+n.row+'</b><br>';
+  if(n.baseStart){
+    b+='Baseline: '+fmt(parseDate(n.baseStart))+' → '+fmt(parseDate(n.baseEnd))+' ('+n.baseDur+'d)<br>';
+  }else{
+    b+='<i>No matching row found in the CSV</i><br>';
+  }
+  b+='Now: '+fmt(n.es)+' → '+fmt(n.ef)+' ('+n.dur+'d)';
+  if(n.drift!==0&&!n.startOverride)b+='<br>'+(n.drift>0?'Pushed +'+n.drift:'Pulled in '+n.drift)+' working day(s) vs baseline';
+  b+='<br>Predecessors: '+(n.pre.length?n.pre.join(', '):'none');
+  document.getElementById('p-base').innerHTML=b;
+
+  document.getElementById('p-dur').value=n.dur;
+  document.getElementById('p-start').value=toISO(n.es);
   document.getElementById('panel').style.display='block';
   document.getElementById('overlay').style.display='block';
-}
-function toggleLock(){
-  const locked=document.getElementById('lock-start').checked;
-  document.getElementById('pi-start').disabled=!locked;
-  document.getElementById('pi-start').style.opacity=locked?1:.5;
-  document.getElementById('pi-start').style.background=locked?'#fff':'#f5f4f0';
-}
-function syncFromStart(){
-  const sd=parseDate(document.getElementById('pi-start').value);
-  const dur=parseInt(document.getElementById('pi-dur').value)||1;
-  document.getElementById('pi-end').value=toISO(addWD(sd,dur-1));
-}
-function syncFromDur(){
-  const sd=parseDate(document.getElementById('pi-start').value);
-  const dur=parseInt(document.getElementById('pi-dur').value)||1;
-  document.getElementById('pi-end').value=toISO(addWD(sd,dur-1));
-}
-function syncFromEnd(){
-  const sd=parseDate(document.getElementById('pi-start').value);
-  const ed=parseDate(document.getElementById('pi-end').value);
-  if(ed>=sd)document.getElementById('pi-dur').value=countWD(sd,ed);
-}
-function applyEdit(){
-  const n=nodes.find(x=>x.id===editId);if(!n)return;
-  const locked=document.getElementById('lock-start').checked;
-  const dur=parseInt(document.getElementById('pi-dur').value);
-
-  if(dur>0){
-    // Calculate how many days the duration changed
-    const delta=dur-n.dur;
-    n.dur=dur;
-
-    if(delta!==0){
-      // Strip csvStart from this node and all downstream nodes
-      // so the cascade flows freely from this point forward
-      const downstream=getDownstream(n.id);
-      downstream.forEach(id=>{
-        const dn=nodes.find(x=>x.id===id);
-        if(dn&&!dn.startOverride)delete dn.csvStart;
-      });
-      // Also strip from this node itself
-      if(!n.startOverride)delete n.csvStart;
-    }
-  }
-
-  if(locked){
-    const sd=document.getElementById('pi-start').value;
-    if(sd){n.startOverride=sd;delete n.csvStart;}
-  } else {
-    delete n.startOverride;
-  }
-  closePanel();render();
-}
-
-// Get all nodes downstream of a given node id
-function getDownstream(startId){
-  const result=new Set();
-  const map={};nodes.forEach(n=>map[n.id]=n);
-  // Build reverse map: id -> list of nodes that depend on it
-  const dependents={};
-  nodes.forEach(n=>{n.pre.forEach(pid=>{if(!dependents[pid])dependents[pid]=[];dependents[pid].push(n.id);});});
-  function walk(id){
-    const deps=dependents[id]||[];
-    deps.forEach(did=>{if(!result.has(did)){result.add(did);walk(did);}});
-  }
-  walk(startId);
-  return result;
-}
-function resetNode(){
-  const n=nodes.find(x=>x.id===editId);if(!n)return;
-  delete n.startOverride;
-  // Restore original csvStart from CSV if available
-  if(originalCsvStart[n.id]){
-    n.csvStart=originalCsvStart[n.id];
-  } else {
-    delete n.csvStart;
-  }
-  // Also restore downstream nodes that lost their csvStart
-  const downstream=getDownstream(n.id);
-  downstream.forEach(id=>{
-    const dn=nodes.find(x=>x.id===id);
-    if(dn&&!dn.startOverride){
-      if(originalCsvStart[id])dn.csvStart=originalCsvStart[id];
-      else delete dn.csvStart;
-    }
-  });
-  closePanel();render();
+  setTimeout(function(){
+    const f=document.getElementById('p-dur');f.focus();f.select();
+  },40);
 }
 function closePanel(){
   document.getElementById('panel').style.display='none';
   document.getElementById('overlay').style.display='none';
   editId=null;
 }
-document.getElementById('pi-dur').addEventListener('keydown',e=>{if(e.key==='Enter')applyEdit();if(e.key==='Escape')closePanel();});
+function applyEdit(){
+  const n=nodes.find(x=>x.id===editId);if(!n)return;
+  const d=parseInt(document.getElementById('p-dur').value,10);
+  if(!Number.isNaN(d)&&d>=0)n.dur=d;
 
-// Always fetch fresh from GitHub on load — localStorage only if fetch fails
-fetchCSVFromRepo();
+  const chosen=document.getElementById('p-start').value;
+  if(chosen){
+    const cd=parseDate(chosen);
+    // Only treat it as a pin if it actually differs from where it sits now
+    if(cd && toISO(snapForward(cd))!==toISO(n.es)) n.startOverride=toISO(cd);
+  }
+  closePanel();render();
+}
+function resetNode(){
+  const n=nodes.find(x=>x.id===editId);if(!n)return;
+  delete n.startOverride;
+  if(typeof n.baseDur==='number')n.dur=n.baseDur;
+  closePanel();render();
+}
+function resetAll(){
+  nodes.forEach(function(n){
+    delete n.startOverride;
+    if(typeof n.baseDur==='number')n.dur=n.baseDur;
+  });
+  render();
+  setStatus('↺ All tasks reset to the Smartsheet baseline.');
+}
+document.getElementById('p-dur').addEventListener('keydown',function(e){
+  if(e.key==='Enter')applyEdit();
+  if(e.key==='Escape')closePanel();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')closePanel();
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BOOT — always read data.csv from the repo so the diagram matches the sheet
+   ══════════════════════════════════════════════════════════════════════════ */
+function onFile(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=function(ev){parseCSV(ev.target.result,'Loaded '+f.name);};
+  r.readAsText(f);
+  e.target.value='';
+}
+
+function boot(){
+  const candidates=['data.csv','Data.csv'];
+  let i=0;
+  function tryNext(){
+    if(i>=candidates.length){
+      setStatus('No data.csv found in the repo — showing built-in fallback dates. Use “Load CSV”.');
+      render();
+      return;
+    }
+    const name=candidates[i++];
+    fetch(name+'?t='+Date.now())
+      .then(function(r){if(!r.ok)throw new Error('404');return r.text();})
+      .then(function(t){parseCSV(t,'Loaded '+name+' from repo');})
+      .catch(tryNext);
+  }
+  tryNext();
+}
+boot();
 </script>
 </body>
 </html>
