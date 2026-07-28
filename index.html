@@ -99,7 +99,7 @@ const NW=148,NH=74,GX=16,GY=26;
 const LABEL_W=172,AXIS_H=44;
 
 const ROWS={acct:0,qa:1,creative:2,sc:3,fl:4};
-const ROW_LABELS={acct:'Account / Platform',qa:'Quality / Testing',creative:'⚡ Critical Path',sc:'Supply Chain → merges at C11',fl:'Fulfillment / Logistics'};
+const ROW_LABELS={acct:'Account / Platform',qa:'Quality / Testing',creative:'⚡ Critical Path',sc:'Supply Chain',fl:'Fulfillment / Logistics'};
 const PHASE_LABELS={cp1:'Phase 1: Design & Regulatory',cp2:'Phase 2: Production & Physical',sc:'Supply Chain',launch:'Launch',nc:'Non-critical'};
 const PHASE_COLORS={cp1:'#d4a017',cp2:'#D85A30',sc:'#1D9E75',launch:'#A32D2D',nc:'#888'};
 const STYLE={
@@ -108,53 +108,6 @@ const STYLE={
   sc:{fill:'#E0F7F0',stroke:'#1D9E75',hdr:'#1D9E75',txt:'#085041',dur:'#1D9E75',sw:1.5},
   launch:{fill:'#FCEBEB',stroke:'#A32D2D',hdr:'#A32D2D',txt:'#501313',dur:'#A32D2D',sw:2},
   nc:{fill:'#F5F5F3',stroke:'#C8C7C2',hdr:'#C8C7C2',txt:'#888780',dur:'#bbb',sw:1},
-};
-
-// Map Smartsheet task names → node IDs
-const TASK_MAP={
-  'NPN license compilation (4 launch SKUs)':'C1',
-  'Send current packaging files to Allison':'C2',
-  'Submit English label text to Gowling':'C3',
-  'French translations returned from Gowling':'C4',
-  'Allison delivers complete ClickUp brief to creative':'C5',
-  'Creative kickoff with Michelle':'C6',
-  'Bilingual artwork design (4 SKUs)':'C7',
-  'Artwork submitted to Allison for Gowling review':'C8',
-  'Gowling artwork review + revisions':'C9',
-  'Artwork approved by Gowling':'C10',
-  'Files sent to printer':'C11',
-  'PO + Print run':'C12',
-  'Printed cartons received / kitting begins':'C13',
-  'Kitting / boxing':'C14',
-  'Inventory ready for shipment':'C15',
-  'Amazon.ca listings go live':'L1',
-  'Canada ad campaigns activated':'L2',
-  '🍁 Amazon Canada launch':'L3',
-  'Determine quantity required for Canada launch':'S1',
-  'S&OP update for Canada launch SKUs':'S2',
-  'MOQ confirmation with INW':'S3',
-  'Place PO for bilingual cartons':'S4',
-  'Repack sequencing plan (vs. Walmart / Target)':'S5',
-  'Entity address update completed':'A1',
-  'Bank information verification resolved':'A2',
-  'Seller account reactivated':'A3',
-  'Confirm  ASINs':'A4',
-  'Confirm ASINs':'A4',
-  'Transparency Program / UPC=ASIN confirmation':'A5',
-  'Canada bilingual image uploads':'A6',
-  'Listing content review with Kat':'A7',
-  'Listings live and verified':'A8',
-  'Assess all 4 launch SKUs vs. 90–120% spec':'Q1',
-  'Aliquot single lot for Amazon Canada':'Q2',
-  'Per-lot CoA completed for each launch SKU':'Q3',
-  'CoAs compiled and sent to Amazon':'Q4',
-  'Logistics call with Sara':'F1',
-  'Evaluate Forceget + Frisbi (3PL options)':'F2',
-  'Contract Canada 3PL / return facility':'F3',
-  'Confirm customs broker (direct-to-FC capable)':'F4',
-  'Fulfillment route decision finalized':'F5',
-  'Shipment preparation':'F6',
-  'Inventory received at Amazon Canada FC':'F7',
 };
 
 function parseDate(str){
@@ -194,51 +147,121 @@ function fmt(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'
 function fmtMon(d){return d.toLocaleDateString('en-US',{month:'short',year:'2-digit'})}
 function daysDiff(a,b){return Math.round((b-a)/(1000*60*60*24))}
 
-// ── Node definitions ─────────────────────────────────────────────────────────
+// ── Node definitions (matched to Amazon Canada Gantt V2) ─────────────────────
+// Columns: id, label, row (lane), dur (days), pre (predecessor IDs), col (x position), type, flags
 let nodes=[
+  // ── Account / Platform (lane: acct) ──────────────────────────────────────
   {id:'A1',label:'Entity address update',row:'acct',dur:6,pre:[],col:0,type:'nc'},
   {id:'A2',label:'Bank verification',row:'acct',dur:11,pre:[],col:1,type:'nc'},
-  {id:'A3',label:'Seller acct reactivated',row:'acct',dur:1,pre:['A1','A2'],col:2,type:'nc'},
-  {id:'A4',label:'Confirm ASINs',row:'acct',dur:6,pre:['A3'],col:3,type:'nc'},
-  {id:'A5',label:'Transparency/UPC=ASIN',row:'acct',dur:11,pre:['A3'],col:4,type:'nc'},
-  {id:'A6',label:'Bilingual image uploads',row:'acct',dur:6,pre:['C10'],col:10,type:'nc'},
-  {id:'A7',label:'Listing review with Kat',row:'acct',dur:11,pre:['A6'],col:11,type:'nc'},
-  {id:'A8',label:'Listings live & verified',row:'acct',dur:1,pre:['A7'],col:12,type:'nc'},
+  {id:'A5',label:'Transparency/UPC=ASIN',row:'acct',dur:11,pre:[],col:2,type:'nc'},
+  {id:'A3',label:'Seller acct reactivated',row:'acct',dur:10,pre:['A1','A2'],col:3,type:'nc'},
+  {id:'A4',label:'Confirm ASINs',row:'acct',dur:6,pre:['A3'],col:4,type:'nc'},
+  {id:'A6',label:'Bilingual image uploads',row:'acct',dur:6,pre:['M1'],col:11,type:'nc'},
+  {id:'A7',label:'Listing review with Kat',row:'acct',dur:11,pre:['A6','A4','Q4'],col:12,type:'nc'},
+  {id:'A8',label:'Listings compliance-approved',row:'acct',dur:1,pre:['Q1','A7'],col:13,type:'nc'},
+  // ── Quality / Testing (lane: qa) ─────────────────────────────────────────
   {id:'Q1',label:'Assess SKUs 90–120% ✓',row:'qa',dur:1,pre:[],col:0,type:'nc',done:true},
-  {id:'Q2',label:'Aliquot single lot',row:'qa',dur:5,pre:['S4'],col:9,type:'nc'},
-  {id:'Q3',label:'Per-lot CoA completed',row:'qa',dur:10,pre:['Q2'],col:10,type:'nc'},
-  {id:'Q4',label:'CoAs sent to Amazon',row:'qa',dur:5,pre:['Q3'],col:11,type:'nc'},
-  {id:'C1',label:'NPN license compilation',row:'creative',dur:16,pre:[],col:0,type:'cp1'},
+  {id:'Q2',label:'Aliquot single lot',row:'qa',dur:5,pre:['M1'],col:8,type:'nc'},
+  {id:'Q3',label:'Per-lot CoA completed',row:'qa',dur:10,pre:['Q2'],col:9,type:'nc'},
+  {id:'Q4',label:'CoAs sent to Amazon',row:'qa',dur:5,pre:['Q3'],col:10,type:'nc'},
+  // ── Critical Path Phase 1 — Design & Regulatory (lane: creative, amber) ──
+  {id:'C1',label:'NPN license compilation',row:'creative',dur:11,pre:[],col:0,type:'cp1'},
   {id:'C2',label:'Send packaging files',row:'creative',dur:1,pre:['C1'],col:1,type:'cp1'},
-  {id:'C3',label:'Submit label text',row:'creative',dur:1,pre:['C2'],col:2,type:'cp1'},
+  {id:'C3',label:'Submit label text',row:'creative',dur:1,pre:['C1','C2'],col:2,type:'cp1'},
   {id:'C4',label:'French translations',row:'creative',dur:3,pre:['C3'],col:3,type:'cp1'},
-  {id:'C5',label:'Deliver ClickUp brief',row:'creative',dur:1,pre:['C4'],col:4,type:'cp1'},
+  {id:'C5',label:'Deliver ClickUp brief',row:'creative',dur:1,pre:['M1'],col:4,type:'cp1'},
   {id:'C6',label:'Creative kickoff',row:'creative',dur:1,pre:['C5'],col:5,type:'cp1'},
   {id:'C7',label:'Artwork design (4 SKUs)',row:'creative',dur:15,pre:['C6'],col:6,type:'cp1'},
+  // ── Critical Path Phase 2 — Production & Physical (lane: creative, coral) ─
   {id:'C8',label:'Artwork submitted',row:'creative',dur:1,pre:['C7'],col:7,type:'cp2'},
   {id:'C9',label:'Gowling review',row:'creative',dur:10,pre:['C8'],col:8,type:'cp2'},
   {id:'C10',label:'Artwork approved',row:'creative',dur:1,pre:['C9'],col:9,type:'cp2'},
-  {id:'C11',label:'Files to printer',row:'creative',dur:1,pre:['C10','S4'],col:10,type:'cp2',merge:true},
-  {id:'C12',label:'PO + Print run ⚠',row:'creative',dur:60,pre:['C11'],col:11,type:'cp2',flag:true},
-  {id:'C13',label:'Cartons received',row:'creative',dur:1,pre:['C12'],col:12,type:'cp2'},
-  {id:'C14',label:'Kitting / boxing',row:'creative',dur:10,pre:['C13'],col:13,type:'cp2'},
-  {id:'C15',label:'Inventory ready',row:'creative',dur:1,pre:['C14'],col:14,type:'cp2'},
+  {id:'M1',label:'Print Release ★',row:'creative',dur:1,pre:['C10','S2','S3','Q4','F3'],col:10,type:'cp2',merge:true},
+  {id:'C12',label:'PO + Print run ⚠',row:'creative',dur:60,pre:['M1'],col:11,type:'cp2',flag:true},
+  {id:'C13',label:'Printed cartons received',row:'creative',dur:2,pre:['C12'],col:12,type:'cp2'},
+  {id:'C14',label:'Kitting / boxing',row:'creative',dur:10,pre:['C13','Q3','S5','A5'],col:13,type:'cp2'},
+  {id:'M2',label:'Inventory Ready ★',row:'creative',dur:1,pre:['C14','A8'],col:14,type:'cp2',merge:true},
+  // ── Launch (lane: creative, red) ─────────────────────────────────────────
   {id:'L1',label:'Listings go live',row:'creative',dur:1,pre:['A8','F7'],col:17,type:'launch'},
   {id:'L2',label:'Ad campaigns',row:'creative',dur:1,pre:['L1'],col:18,type:'launch'},
   {id:'L3',label:'🍁 Canada Launch',row:'creative',dur:1,pre:['L2'],col:19,type:'launch'},
+  // ── Supply Chain (lane: sc) ───────────────────────────────────────────────
   {id:'S1',label:'Determine quantity',row:'sc',dur:5,pre:[],col:0,type:'sc'},
   {id:'S2',label:'S&OP update',row:'sc',dur:3,pre:['S1'],col:1,type:'sc'},
-  {id:'S3',label:'MOQ confirmation',row:'sc',dur:6,pre:['S2'],col:2,type:'sc'},
-  {id:'S4',label:'Place PO for cartons',row:'sc',dur:5,pre:['S3'],col:3,type:'sc'},
-  {id:'S5',label:'Repack sequencing',row:'sc',dur:11,pre:[],col:4,type:'nc'},
+  {id:'S3',label:'Carton MOQ + print quote',row:'sc',dur:6,pre:['S1'],col:2,type:'sc'},
+  {id:'S5',label:'Repack sequencing',row:'sc',dur:11,pre:[],col:3,type:'nc'},
+  // ── Fulfillment / Logistics (lane: fl) ───────────────────────────────────
   {id:'F1',label:'Logistics call (Sara)',row:'fl',dur:1,pre:[],col:0,type:'nc'},
-  {id:'F2',label:'Evaluate 3PLs',row:'fl',dur:5,pre:['F1'],col:1,type:'nc'},
-  {id:'F3',label:'Contract Canada 3PL',row:'fl',dur:5,pre:['F2'],col:2,type:'nc'},
-  {id:'F4',label:'Confirm customs broker',row:'fl',dur:10,pre:['F1'],col:3,type:'nc'},
-  {id:'F5',label:'Route decision',row:'fl',dur:1,pre:['F3','F4'],col:4,type:'nc'},
-  {id:'F6',label:'Shipment preparation',row:'fl',dur:5,pre:['C15'],col:15,type:'nc'},
-  {id:'F7',label:'Inventory at Amazon FC',row:'fl',dur:5,pre:['F6'],col:16,type:'nc'},
+  {id:'F2',label:'Evaluate Forceget + Frisbi',row:'fl',dur:5,pre:['F1'],col:1,type:'nc'},
+  {id:'F4',label:'Confirm customs broker',row:'fl',dur:10,pre:['F1'],col:2,type:'nc'},
+  {id:'F5',label:'Fulfillment route decision',row:'fl',dur:1,pre:['F2','F4'],col:3,type:'nc'},
+  {id:'F3',label:'Contract Canada 3PL',row:'fl',dur:5,pre:['F5'],col:4,type:'nc'},
+  {id:'F6',label:'Shipment preparation',row:'fl',dur:2,pre:['M2'],col:15,type:'nc'},
+  {id:'F6B',label:'Shipping to Amazon FC',row:'fl',dur:10,pre:['F6'],col:16,type:'nc'},
+  {id:'F7',label:'Inventory at Amazon FC',row:'fl',dur:1,pre:['F6B'],col:17,type:'nc'},
 ];
+
+// ── TASK_MAP: Smartsheet task name → node ID ──────────────────────────────────
+const TASK_MAP={
+  // Regulatory / NPN
+  'NPN license compilation (4 launch SKUs)':'C1',
+  'Send current packaging files to Allison':'C2',
+  'Submit English label text to Gowling':'C3',
+  'French translations returned from Gowling':'C4',
+  'Gowling NPN placement confirmation':'C4',
+  // Creative
+  'Allison delivers complete ClickUp brief to creative':'C5',
+  'Creative kickoff with Michelle':'C6',
+  'Bilingual artwork design (4 SKUs)':'C7',
+  'Artwork submitted to Allison for Gowling review':'C8',
+  'Gowling artwork review + revisions':'C9',
+  'Artwork approved by Gowling':'C10',
+  'Print Release & Platform Ready':'M1',
+  'PO + print run':'C12',
+  'PO + Print run':'C12',
+  'Printed cartons received':'C13',
+  'Printed cartons received / kitting begins':'C13',
+  'Kitting / boxing':'C14',
+  'Inventory Ready & Listings Approved':'M2',
+  // Quality
+  'Assess all 4 launch SKUs vs. 90–120% spec':'Q1',
+  'Assess all 4 launch SKUs vs. 90-120% spec':'Q1',
+  'Aliquot single lot for Amazon Canada':'Q2',
+  'Per-lot CoA completed for each launch SKU':'Q3',
+  'CoAs compiled and sent to Amazon':'Q4',
+  // Account / Platform
+  'Entity address update completed':'A1',
+  'Bank information verification resolved':'A2',
+  'Transparency Program / UPC=ASIN confirmation':'A5',
+  'Seller account reactivated':'A3',
+  'Confirm  ASINs':'A4',
+  'Confirm ASINs':'A4',
+  'Canada bilingual image uploads':'A6',
+  'Listing content review with Kat':'A7',
+  'Listings built and compliance-approved':'A8',
+  'Listings live and verified':'A8',
+  // Supply Chain
+  'Determine quantity required for Canada launch':'S1',
+  'S&OP update for Canada launch SKUs':'S2',
+  'Carton MOQ + print quote confirmation':'S3',
+  'MOQ confirmation with INW':'S3',
+  'Place PO for bilingual cartons':'S3',
+  'Repack sequencing plan (vs. Walmart / Target)':'S5',
+  // Fulfillment / Logistics
+  'Logistics call with Sara':'F1',
+  'Evaluate Forceget + Frisbi (3PL options)':'F2',
+  'Confirm customs broker (direct-to-FC capable)':'F4',
+  'Fulfillment route decision finalized':'F5',
+  'Contract Canada 3PL / return facility':'F3',
+  'Shipment preparation':'F6',
+  'Shipping to Amazon Canada FC':'F6B',
+  'Inventory received at Amazon Canada FC':'F7',
+  // Launch
+  'Amazon.ca listings go live':'L1',
+  'Canada ad campaigns activated':'L2',
+  '🍁 Amazon Canada launch':'L3',
+  'Amazon Canada Launch Live':'L3',
+};
 
 // ── CSV parsing ───────────────────────────────────────────────────────────────
 // Store original csvStart values so resetNode can restore them
@@ -444,7 +467,7 @@ function render(){
   // Phase banners
   const bY=AXIS_H-2;
   [{x1:colX(0),x2:colX(6)+NW,label:'Phase 1: Design & Regulatory',col:'#d4a017'},
-   {x1:colX(7),x2:colX(14)+NW,label:'Phase 2: Production & Physical',col:'#D85A30'},
+   {x1:colX(7),x2:colX(14)+NW,label:'Phase 2: Production & Physical (incl. Milestones)',col:'#D85A30'},
    {x1:colX(17),x2:colX(19)+NW,label:'Launch',col:'#A32D2D'}].forEach(({x1,x2,label,col})=>{
     el('rect',{x:x1,y:bY-10,width:x2-x1,height:10,fill:col,opacity:.18,rx:2},svg);
     txt(svg,(x1+x2)/2,bY-5,label,{'font-size':6.5,'font-weight':700,fill:col});
