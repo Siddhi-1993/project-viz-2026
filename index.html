@@ -5,845 +5,670 @@
 <title>Amazon Canada Launch — AON Diagram</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f5f4f0;overflow:auto}
-.topbar{background:#1a1a18;color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;left:0;top:0;z-index:30;min-width:100vw}
-.topbar h1{font-size:12px;font-weight:600;white-space:nowrap}
-.spacer{flex:1}
-.status{font-size:10px;color:rgba(255,255,255,.65);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw}
-.btn-bar{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 11px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap}
-.btn-bar:hover{background:rgba(255,255,255,.12)}
-.launch{background:#d4a017;color:#1a1a18;padding:5px 14px;border-radius:4px;font-size:12px;font-weight:800;white-space:nowrap}
-.legend{display:flex;gap:14px;padding:7px 20px;background:#eceae4;border-bottom:1px solid #d3d1c7;position:sticky;left:0;top:41px;z-index:29;min-width:100vw;flex-wrap:wrap}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f5f4f0;color:#1a1a18;overflow:auto}
+.bar{background:#1a1a18;color:#fff;padding:9px 18px;display:flex;align-items:center;gap:10px;position:sticky;left:0;top:0;z-index:40;min-width:100vw}
+.bar h1{font-size:12px;font-weight:600;white-space:nowrap}
+.stamp{font-weight:400;opacity:.45;font-size:10px}
+.grow{flex:1}
+.st{font-size:10px;color:rgba(255,255,255,.6);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:30vw}
+.b{background:transparent;border:1px solid rgba(255,255,255,.32);color:#fff;padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap}
+.b:hover{background:rgba(255,255,255,.12)}
+.b.on{background:#d4a017;border-color:#d4a017;color:#1a1a18;font-weight:700}
+.fin{background:#d4a017;color:#1a1a18;padding:5px 13px;border-radius:4px;font-size:12px;font-weight:800;white-space:nowrap}
+.lg{display:flex;gap:13px;padding:6px 18px;background:#eceae4;border-bottom:1px solid #d3d1c7;position:sticky;left:0;top:39px;z-index:39;min-width:100vw;flex-wrap:wrap;align-items:center}
 .li{display:flex;align-items:center;gap:5px;font-size:10px;color:#5f5e5a}
-.ld{width:9px;height:9px;border-radius:2px}
-.wrap{padding:0 20px 40px;min-width:max-content}
-#file-input{display:none}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99}
-#panel{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #d3d1c7;border-radius:10px;padding:20px;width:310px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-#panel h2{font-size:13px;font-weight:600;margin-bottom:3px}
-.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:12px;color:#fff}
-.field{margin-bottom:11px}
-.field label{font-size:10px;color:#666;display:block;margin-bottom:4px;font-weight:600}
-.field input{width:100%;border:1.5px solid #d3d1c7;border-radius:4px;padding:7px 10px;font-size:13px;font-weight:600;color:#1a1a18;background:#fafaf8}
-.field input:focus{outline:none;border-color:#d4a017;background:#fff}
-.hint{font-size:9px;color:#999;margin-top:3px;line-height:1.35}
-.baseline{background:#f5f4f0;border-radius:6px;padding:8px 10px;font-size:10px;color:#5f5e5a;margin-bottom:12px;line-height:1.5}
-.baseline b{color:#1a1a18}
-.btns{display:flex;gap:8px;margin-bottom:6px}
-.btn-p{flex:1;padding:8px;background:#1a1a18;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer}
-.btn-s{flex:1;padding:8px;background:transparent;color:#1a1a18;border:1px solid #d3d1c7;border-radius:4px;font-size:12px;cursor:pointer}
-.btn-reset{width:100%;padding:6px;background:transparent;color:#aaa;border:none;font-size:10px;cursor:pointer;text-decoration:underline}
+.sw{width:9px;height:9px;border-radius:2px}
+.wrap{padding:0 18px 36px;min-width:max-content}
+#drop{position:fixed;inset:0;background:rgba(26,26,24,.9);z-index:200;display:none;align-items:center;justify-content:center;color:#fff}
+#drop.on{display:flex}
+#drop .in{border:2px dashed rgba(255,255,255,.45);border-radius:14px;padding:56px 72px;text-align:center}
+#drop h2{font-size:17px;margin-bottom:8px}
+#drop p{font-size:12px;color:rgba(255,255,255,.6);line-height:1.7}
+#fi{display:none}
+#ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99}
+#pn{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #d3d1c7;border-radius:10px;padding:20px;width:320px;z-index:100;box-shadow:0 8px 34px rgba(0,0,0,.26)}
+#pn h2{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:11px;color:#fff}
+.bx{background:#f5f4f0;border-radius:6px;padding:9px 11px;font-size:10.5px;color:#5f5e5a;margin-bottom:12px;line-height:1.6}
+.bx b{color:#1a1a18}
+.fl label{font-size:10px;color:#666;display:block;margin-bottom:4px;font-weight:600}
+.fl input{width:100%;border:1.5px solid #d3d1c7;border-radius:4px;padding:7px 10px;font-size:13px;font-weight:600;color:#1a1a18;background:#fafaf8;margin-bottom:4px}
+.fl input:focus{outline:none;border-color:#d4a017;background:#fff}
+.hint{font-size:9px;color:#9b9a95;margin-bottom:11px;line-height:1.4}
+.row2{display:flex;gap:8px;margin-bottom:6px}
+.bp{flex:1;padding:8px;background:#1a1a18;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer}
+.bs{flex:1;padding:8px;background:transparent;color:#1a1a18;border:1px solid #d3d1c7;border-radius:4px;font-size:12px;cursor:pointer}
+.br{width:100%;padding:6px;background:transparent;color:#a9a8a3;border:none;font-size:10px;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <h1>🍁 Amazon Canada Launch — AON Diagram <span style="font-weight:400;opacity:.5;font-size:10px">build 2026-07-28a</span></h1>
-  <div class="spacer"></div>
-  <div class="status" id="status" title="">Loading…</div>
-  <button class="btn-bar" onclick="document.getElementById('file-input').click()">↑ Load CSV</button>
-  <button class="btn-bar" onclick="resetAll()">↺ Reset all</button>
-  <div class="launch" id="ldate">Launch: —</div>
+<div class="bar">
+  <h1>🍁 Amazon Canada Launch — AON <span class="stamp">build 2026-07-28b · auto-reads the Gantt</span></h1>
+  <div class="grow"></div>
+  <div class="st" id="st">Loading…</div>
+  <button class="b" onclick="document.getElementById('fi').click()">↑ Upload Gantt</button>
+  <button class="b" id="cpBtn" onclick="toggleCP()">Critical path only</button>
+  <button class="b" onclick="resetAll()">↺ Reset</button>
+  <div class="fin" id="fin">—</div>
 </div>
-<div class="legend">
-  <div class="li"><div class="ld" style="background:#d4a017"></div><strong>Critical — Phase 1/2 (design)</strong></div>
-  <div class="li"><div class="ld" style="background:#D85A30"></div><strong>Critical — Phase 3/4 (production)</strong></div>
-  <div class="li"><div class="ld" style="background:#A32D2D"></div>Launch</div>
-  <div class="li"><div class="ld" style="background:#1D9E75"></div>Supply chain</div>
-  <div class="li"><div class="ld" style="background:#C8C7C2"></div>Non-critical (has float)</div>
-  <div class="li"><div class="ld" style="background:#7F77DD"></div>Edited / shifted</div>
-  <div class="li" style="margin-left:auto">★ = milestone · Click a node to change its duration</div>
+<div class="lg">
+  <div class="li"><div class="sw" style="background:#c0392b"></div><strong>Critical path (zero float)</strong></div>
+  <div class="li"><div class="sw" style="background:#d4a017"></div>Near-critical (≤5d float)</div>
+  <div class="li"><div class="sw" style="background:#C8C7C2"></div>Has float</div>
+  <div class="li"><div class="sw" style="background:#7F77DD"></div>Edited / shifted</div>
+  <div class="li">◆ milestone</div>
+  <div class="li" style="margin-left:auto">Click any task to change its duration — the critical path re-derives</div>
 </div>
 <div class="wrap"><svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg></div>
-<input type="file" id="file-input" accept=".csv" onchange="onFile(event)">
-<div id="overlay" onclick="closePanel()"></div>
-<div id="panel">
-  <h2 id="p-title"></h2>
-  <div class="tag" id="p-tag"></div>
-  <div class="baseline" id="p-base"></div>
-  <div class="field">
+<input type="file" id="fi" accept=".csv,.xlsx,.xls" onchange="onFile(event)">
+<div id="drop"><div class="in"><h2>Drop your Gantt export here</h2>
+<p>Smartsheet → File → Export → Excel (.xlsx) or CSV<br>
+Everything is read from the file: tasks, dependencies, dates and hierarchy.</p></div></div>
+<div id="ov" onclick="closePanel()"></div>
+<div id="pn">
+  <h2 id="pT"></h2>
+  <div class="tag" id="pG"></div>
+  <div class="bx" id="pB"></div>
+  <div class="fl">
     <label>Duration (working days)</label>
-    <input type="number" id="p-dur" min="0" max="400">
-    <div class="hint">Changing this shifts every downstream task by the same number of working days, and updates the launch date.</div>
+    <input type="number" id="pD" min="0" max="500">
+    <div class="hint">Downstream tasks move with it and the critical path is recalculated.</div>
+    <label>Start date (optional pin)</label>
+    <input type="date" id="pS">
+    <div class="hint">Leave alone to keep the sheet's date.</div>
   </div>
-  <div class="field">
-    <label>Start date (optional override)</label>
-    <input type="date" id="p-start">
-    <div class="hint">Leave as-is to keep the Smartsheet date. Setting it pins this task and shifts everything after it.</div>
+  <div class="row2">
+    <button class="bp" onclick="applyEdit()">Apply</button>
+    <button class="bs" onclick="closePanel()">Cancel</button>
   </div>
-  <div class="btns">
-    <button class="btn-p" onclick="applyEdit()">Apply</button>
-    <button class="btn-s" onclick="closePanel()">Cancel</button>
-  </div>
-  <button class="btn-reset" onclick="resetNode()">Reset this task to Smartsheet baseline</button>
+  <button class="br" onclick="resetNode()">Reset this task</button>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════════
-   CALENDAR
-   Smartsheet excludes weekends + these US holidays. Verified against the V2
-   sheet: e.g. Gowling review is 10d across Aug 27–Sep 10 (Labor Day skipped),
-   and Inventory-received lands Jan 19 not Jan 18 (MLK skipped).
+   GENERIC GANTT ENGINE
+   Nothing about this project is hardcoded. Feed it rows from any Smartsheet
+   export and it derives the hierarchy, the dependency graph, the schedule,
+   the float and the critical path on its own.
    ══════════════════════════════════════════════════════════════════════════ */
-const HOLIDAYS=new Set([
-  '2026-09-07', // Labor Day
-  '2026-10-12', // Columbus Day
-  '2026-11-11', // Veterans Day
-  '2026-11-26', // Thanksgiving
-  '2026-11-27', // Day after Thanksgiving
-  '2026-12-25', // Christmas
-  '2027-01-01', // New Year
-  '2027-01-18'  // MLK Day
-]);
 
-function parseDate(str){
-  if(!str)return null;
-  str=String(str).trim();
-  if(!str)return null;
-  let y,m,d;
-  if(str.includes('/')){                    // MM/DD/YY or MM/DD/YYYY
-    const p=str.split('/');
-    m=+p[0]; d=+p[1]; y=+p[2];
-    if(y<100) y = y<50 ? 2000+y : 1900+y;
-  } else if(str.includes('-')){             // YYYY-MM-DD
-    const p=str.split('-');
-    y=+p[0]; m=+p[1]; d=+p[2];
-  } else return null;
+/* ---- calendar ---------------------------------------------------------- */
+var HOLIDAYS=new Set(['2026-09-07','2026-10-12','2026-11-11','2026-11-26','2026-11-27','2026-12-25','2027-01-01','2027-01-18']);
+function parseDate(s){
+  if(!s)return null;
+  if(s instanceof Date)return new Date(s.getFullYear(),s.getMonth(),s.getDate(),12,0,0);
+  s=String(s).trim();if(!s)return null;
+  var y,m,d,p;
+  if(s.indexOf('/')>-1){p=s.split('/');m=+p[0];d=+p[1];y=+p[2];if(y<100)y=y<50?2000+y:1900+y;}
+  else if(s.indexOf('-')>-1){p=s.split('-');y=+p[0];m=+p[1];d=+p[2];}
+  else return null;
   if(!y||!m||!d)return null;
-  return new Date(y,m-1,d,12,0,0);          // noon local — never shifts a day
+  return new Date(y,m-1,d,12,0,0);
 }
-function toISO(d){
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-}
-function isWorking(d){
-  const w=d.getDay();
-  if(w===0||w===6)return false;
-  return !HOLIDAYS.has(toISO(d));
-}
-/* First working day on or after d */
-function snapForward(d){
-  let x=new Date(d);
-  while(!isWorking(x))x.setDate(x.getDate()+1);
-  return x;
-}
-/* Next working day strictly after d */
-function nextWD(d){
-  let x=new Date(d);
-  do{x.setDate(x.getDate()+1);}while(!isWorking(x));
-  return x;
-}
-/* Add n working days to d (n=0 returns d snapped forward) */
-function addWD(d,n){
-  let x=snapForward(d),i=0;
-  while(i<n){x=nextWD(x);i++;}
-  return x;
-}
-/* Inclusive count of working days from a to b */
-function countWD(a,b){
-  let x=new Date(a),c=0;const end=new Date(b);
-  while(x<=end){if(isWorking(x))c++;x.setDate(x.getDate()+1);}
-  return c;
-}
-/* Finish date given a start and a duration in working days */
-function finishOf(start,dur){
-  const s=snapForward(start);
-  return dur<=1 ? s : addWD(s,dur-1);   // dur 0 and 1 both finish on the start day
-}
-const fmt   = d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-const fmtL  = d=>d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-const fmtMon= d=>d.toLocaleDateString('en-US',{month:'short',yy:'2-digit',year:'2-digit'});
+function toISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function isWorking(d){var w=d.getDay();return w!==0&&w!==6&&!HOLIDAYS.has(toISO(d));}
+function snapFwd(d){var x=new Date(d);while(!isWorking(x))x.setDate(x.getDate()+1);return x;}
+function snapBack(d){var x=new Date(d);while(!isWorking(x))x.setDate(x.getDate()-1);return x;}
+function nextWD(d){var x=new Date(d);do{x.setDate(x.getDate()+1);}while(!isWorking(x));return x;}
+function prevWD(d){var x=new Date(d);do{x.setDate(x.getDate()-1);}while(!isWorking(x));return x;}
+function countWD(a,b){var x=new Date(a),c=0,e=new Date(b);while(x<=e){if(isWorking(x))c++;x.setDate(x.getDate()+1);}return c;}
+function diffWD(a,b){if(toISO(a)===toISO(b))return 0;return b>a?countWD(a,b)-1:-(countWD(b,a)-1);}
+function shiftWD(d,n){var x=snapFwd(d),i=0;if(n>0){while(i<n){x=nextWD(x);i++;}}else if(n<0){while(i>n){x=prevWD(x);i--;}}return x;}
+function addWD(d,n){return shiftWD(d,n);}
+function finishOf(s,dur){var a=snapFwd(s);return dur<=1?a:addWD(a,dur-1);}
+function startFromFinish(f,dur){var a=snapBack(f);return dur<=1?a:shiftWD(a,-(dur-1));}
 
-/* ══════════════════════════════════════════════════════════════════════════
-   NODES  — predecessors transcribed row-by-row from Amazon Canada Gantt V2.
-   Smartsheet row numbers are shown so this can be re-verified against the sheet.
-   `dur` values here are fallbacks only; the CSV overwrites them on load.
-   ══════════════════════════════════════════════════════════════════════════ */
-const LANES={acct:0,qa:1,cp:2,sc:3,fl:4};
-const LANE_LABELS={
-  acct:'Account / Platform',
-  qa:'Quality / Testing',
-  cp:'⚡ Critical Path',
-  sc:'Supply Chain',
-  fl:'Fulfillment / Logistics'
-};
-
-let nodes=[
-  /* ── Account / Platform ─────────────────────────────────────────── */
-  {id:'A1', row:12, lane:'acct', col:0,  dur:6,  pre:[],                label:'Entity address update',      kind:'nc'},
-  {id:'A2', row:17, lane:'acct', col:1,  dur:11, pre:[],                label:'Bank verification',          kind:'nc'},
-  {id:'A5', row:18, lane:'acct', col:2,  dur:11, pre:[],                label:'Transparency / UPC=ASIN',    kind:'nc'},
-  {id:'HC', row:21, lane:'acct', col:3,  dur:5,  pre:['C1','G1'],       label:'HC documentation package',   kind:'nc'},
-  {id:'A3', row:19, lane:'acct', col:4,  dur:10, pre:['A1','A2'],       label:'Seller acct reactivated',    kind:'nc'},
-  {id:'A4', row:20, lane:'acct', col:5,  dur:6,  pre:['A3'],            label:'Confirm ASINs',              kind:'nc'},
-  {id:'A6', row:49, lane:'acct', col:13, dur:6,  pre:['M1'],            label:'Bilingual image uploads',    kind:'nc'},
-  {id:'A7', row:50, lane:'acct', col:14, dur:11, pre:['A6','HC','Q4'],  label:'Listing review with Kat',    kind:'nc'},
-  {id:'A8', row:51, lane:'acct', col:15, dur:1,  pre:['A4','A7'],       label:'Listings compliance-approved',kind:'nc'},
-
-  /* ── Quality / Testing ──────────────────────────────────────────── */
-  {id:'Q1', row:6,  lane:'qa',   col:0,  dur:1,  pre:[],                label:'Assess SKUs 90–120%',        kind:'nc', done:true},
-  {id:'Q2', row:34, lane:'qa',   col:3,  dur:5,  pre:['S1'],            label:'Aliquot single lot',         kind:'nc'},
-  {id:'Q3', row:35, lane:'qa',   col:4,  dur:10, pre:['Q2'],            label:'Per-lot CoA completed',      kind:'nc'},
-  {id:'Q4', row:36, lane:'qa',   col:5,  dur:5,  pre:['Q3'],            label:'CoAs sent to Amazon',        kind:'nc'},
-
-  /* ── Critical path — Phase 1 & 2 (design / regulatory) ──────────── */
-  {id:'C1', row:5,  lane:'cp',   col:0,  dur:11, pre:[],                label:'NPN license compilation',    kind:'cp1'},
-  {id:'C2', row:7,  lane:'cp',   col:1,  dur:1,  pre:['C1'],            label:'Send packaging files',       kind:'cp1'},
-  {id:'G1', row:8,  lane:'cp',   col:2,  dur:5,  pre:['C1'],            label:'Gowling NPN placement',      kind:'cp1'},
-  {id:'C3', row:9,  lane:'cp',   col:3,  dur:1,  pre:['C1','C2'],       label:'Submit label text',          kind:'cp1'},
-  {id:'C4', row:10, lane:'cp',   col:4,  dur:3,  pre:['C3'],            label:'French translations',        kind:'cp1'},
-  {id:'M0', row:14, lane:'cp',   col:5,  dur:0,  pre:['G1','C4','S1','A1','F1'], label:'Inputs Locked ★',   kind:'cp1', ms:true},
-  {id:'C5', row:23, lane:'cp',   col:6,  dur:1,  pre:['M0'],            label:'Deliver ClickUp brief',      kind:'cp1'},
-  {id:'C6', row:24, lane:'cp',   col:7,  dur:1,  pre:['C5'],            label:'Creative kickoff',           kind:'cp1'},
-  {id:'C7', row:25, lane:'cp',   col:8,  dur:15, pre:['C6'],            label:'Artwork design (4 SKUs)',    kind:'cp1'},
-  {id:'C8', row:26, lane:'cp',   col:9,  dur:1,  pre:['C7'],            label:'Artwork submitted',          kind:'cp2'},
-  {id:'C9', row:27, lane:'cp',   col:10, dur:10, pre:['C8'],            label:'Gowling review',             kind:'cp2'},
-  {id:'C10',row:28, lane:'cp',   col:11, dur:1,  pre:['C9'],            label:'Artwork approved',           kind:'cp2'},
-  {id:'M1', row:42, lane:'cp',   col:12, dur:0,  pre:['C10','A4','A5','S3','S2','Q4','F3'], label:'Print Release ★', kind:'cp2', ms:true},
-
-  /* ── Critical path — Phase 3 (production) ───────────────────────── */
-  {id:'C12',row:45, lane:'cp',   col:13, dur:60, pre:['M1'],            label:'PO + print run',             kind:'cp2', flag:true},
-  {id:'C13',row:46, lane:'cp',   col:14, dur:2,  pre:['C12'],           label:'Printed cartons received',   kind:'cp2'},
-  {id:'C14',row:47, lane:'cp',   col:15, dur:10, pre:['C13','Q3','S5','A5'], label:'Kitting / boxing',      kind:'cp2'},
-  {id:'M2', row:52, lane:'cp',   col:16, dur:0,  pre:['C14','A8'],      label:'Inventory Ready ★',          kind:'cp2', ms:true},
-
-  /* ── Launch ─────────────────────────────────────────────────────── */
-  {id:'L1', row:57, lane:'cp',   col:20, dur:1,  pre:['A8','F7'],       label:'Listings go live',           kind:'launch'},
-  {id:'L2', row:58, lane:'cp',   col:21, dur:1,  pre:['L1'],            label:'Ad campaigns activated',     kind:'launch'},
-  {id:'L3', row:59, lane:'cp',   col:22, dur:0,  pre:['L2'],            label:'🍁 Canada Launch',           kind:'launch', ms:true},
-
-  /* ── Supply chain ───────────────────────────────────────────────── */
-  {id:'S1', row:11, lane:'sc',   col:0,  dur:5,  pre:[],                label:'Determine quantity',         kind:'sc'},
-  {id:'S2', row:30, lane:'sc',   col:3,  dur:3,  pre:['S1'],            label:'S&OP update',                kind:'sc'},
-  {id:'S3', row:31, lane:'sc',   col:4,  dur:6,  pre:['S1'],            label:'Carton MOQ + print quote',   kind:'sc'},
-  {id:'S5', row:32, lane:'sc',   col:5,  dur:11, pre:[],                label:'Repack sequencing',          kind:'nc'},
-
-  /* ── Fulfillment / logistics ────────────────────────────────────── */
-  {id:'F1', row:13, lane:'fl',   col:0,  dur:1,  pre:[],                label:'Logistics call (Sara)',      kind:'nc'},
-  {id:'F2', row:38, lane:'fl',   col:1,  dur:5,  pre:['F1'],            label:'Evaluate Forceget + Frisbi', kind:'nc'},
-  {id:'F4', row:39, lane:'fl',   col:2,  dur:10, pre:['F1'],            label:'Confirm customs broker',     kind:'nc'},
-  {id:'F5', row:40, lane:'fl',   col:3,  dur:0,  pre:['F2','F4'],       label:'Route decision ★',           kind:'nc', ms:true},
-  {id:'F3', row:41, lane:'fl',   col:4,  dur:5,  pre:['F5'],            label:'Contract Canada 3PL',        kind:'nc'},
-  {id:'F6', row:54, lane:'fl',   col:17, dur:2,  pre:['M2'],            label:'Shipment preparation',       kind:'cp2'},
-  {id:'F6B',row:55, lane:'fl',   col:18, dur:10, pre:['F6'],            label:'Shipping to Amazon FC',      kind:'cp2'},
-  {id:'F7', row:56, lane:'fl',   col:19, dur:1,  pre:['F6B'],           label:'Inventory at Amazon FC',     kind:'cp2'}
+/* ---- workstream classifier -------------------------------------------- */
+var STREAM_RULES=[
+  {lane:'Regulatory',            re:/npn|gowling|health canada|\bhc \b|regulator|label text|translation/i},
+  {lane:'Creative & Packaging',  re:/artwork|creative|clickup|design|packaging files|brief/i},
+  {lane:'Quality',               re:/coa|aliquot|spec|testing|quality|assess all/i},
+  {lane:'Amazon Platform',       re:/amazon|asin|seller|listing|storefront|transparency|bank info|entity address|image upload|ad campaign/i},
+  {lane:'Supply Chain',          re:/forecast|s&op|\bpo\b|purchase order|moq|carton|packet|production|print run|repack|quantity|sourcing/i},
+  {lane:'Logistics & Fulfilment',re:/logistic|3pl|customs|freight|ship|transit|kitting|boxing|fulfil|fulfill|broker|warehouse/i}
 ];
-
-/* Smartsheet task name → node id. Names are normalised before lookup, so
-   punctuation/spacing differences between exports do not break the match. */
-const TASK_MAP={
-  'npn license compilation 4 launch skus':'C1',
-  'assess all 4 launch skus vs 90 120 spec':'Q1',
-  'send current packaging files to allison':'C2',
-  'gowling npn placement confirmation':'G1',
-  'submit english label text to gowling':'C3',
-  'french translations returned from gowling':'C4',
-  'determine quantity required for canada launch':'S1',
-  'entity address update completed':'A1',
-  'logistics call with sara':'F1',
-  'design sourcing inputs locked':'M0',
-  'bank information verification resolved':'A2',
-  'transparency program upc asin confirmation':'A5',
-  'seller account reactivated':'A3',
-  'confirm asins':'A4',
-  'hc documentation package for amazon':'HC',
-  'allison delivers complete clickup brief to creative':'C5',
-  'creative kickoff with michelle':'C6',
-  'bilingual artwork design 4 skus':'C7',
-  'artwork submitted to allison for gowling review':'C8',
-  'gowling artwork review revisions':'C9',
-  'artwork approved by gowling':'C10',
-  's op update for canada launch skus':'S2',
-  'carton moq print quote confirmation':'S3',
-  'repack sequencing plan vs walmart target':'S5',
-  'aliquot single lot for amazon canada':'Q2',
-  'per lot coa completed for each launch sku':'Q3',
-  'coas compiled and sent to amazon':'Q4',
-  'evaluate forceget frisbi 3pl options':'F2',
-  'confirm customs broker direct to fc capable':'F4',
-  'fulfillment route decision finalized':'F5',
-  'contract canada 3pl return facility':'F3',
-  'print release platform ready':'M1',
-  'po print run':'C12',
-  'printed cartons received':'C13',
-  'kitting boxing':'C14',
-  'canada bilingual image uploads':'A6',
-  'listing content review with kat':'A7',
-  'listings built and compliance approved':'A8',
-  'inventory ready listings approved':'M2',
-  'shipment preparation':'F6',
-  'shipping to amazon canada fc':'F6B',
-  'inventory received at amazon canada fc':'F7',
-  'amazon ca listings go live':'L1',
-  'canada ad campaigns activated':'L2',
-  'amazon canada launch live':'L3',
-
-  /* ── aliases from the V1 sheet, so an older export still matches ── */
-  'amazon canada launch':'L3',
-  'canada launch':'L3',
-  'listings live and verified':'A8',
-  'listings built and compliance approved':'A8',
-  'moq confirmation with inw':'S3',
-  'place po for bilingual cartons':'S3',
-  'carton moq print quote':'S3',
-  'printed cartons received kitting begins':'C13',
-  'po print run':'C12',
-  'kitting boxing':'C14',
-  'assess all 4 launch skus vs 90 120 spec':'Q1',
-  'inventory ready for shipment':'M2',
-  'print release platform ready':'M1',
-  'design sourcing inputs locked':'M0',
-  'files sent to printer':'M1',
-  'gowling artwork review revisions':'C9',
-  'shipping to amazon canada fc':'F6B'
-};
-
-/* Exact match first. If that fails, fall back to a containment match, but
-   only when it is unambiguous — one candidate and nothing else close. This
-   absorbs small wording changes between exports without ever guessing. */
-function lookupTask(raw){
-  const k=normName(raw);
-  if(!k)return null;
-  if(TASK_MAP[k])return {id:TASK_MAP[k],exact:true};
-  const keys=Object.keys(TASK_MAP);
-  const hits=keys.filter(function(m){
-    return (k.length>10&&m.length>10) && (k.indexOf(m)===0||m.indexOf(k)===0);
-  });
-  const ids=Array.from(new Set(hits.map(function(m){return TASK_MAP[m];})));
-  return ids.length===1 ? {id:ids[0],exact:false,via:hits[0]} : null;
+function classifyLane(task,sectionName){
+  var hay=(task+' '+(sectionName||''));
+  if(/^gate\b/i.test(task))return 'Gates & Launch';
+  if(/launch live|go live/i.test(task))return 'Gates & Launch';
+  for(var i=0;i<STREAM_RULES.length;i++)if(STREAM_RULES[i].re.test(hay))return STREAM_RULES[i].lane;
+  return sectionName||'Other';
 }
 
-/* Lowercase, strip accents/emoji/punctuation, collapse whitespace. */
-function normName(s){
-  return String(s)
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g,'')
-    .replace(/[^a-z0-9]+/g,' ')
-    .trim();
+/* ---- model build ------------------------------------------------------- */
+function parsePreds(raw){
+  if(!raw)return [];
+  return String(raw).split(/[,;]/).map(function(t){
+    var m=String(t).trim().match(/^(\d+)/);   // tolerate "12FS+3d"
+    return m?parseInt(m[1],10):null;
+  }).filter(function(v){return v!==null;});
 }
-
-/* ══════════════════════════════════════════════════════════════════════════
-   CSV LOAD
-   The CSV is the single source of truth for the baseline. For every matched
-   row we store baseStart + baseDur, and set the live duration to match.
-   ══════════════════════════════════════════════════════════════════════════ */
-function splitCSVLine(line){
-  const out=[];let cur='',q=false;
-  for(let i=0;i<line.length;i++){
-    const ch=line[i];
-    if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
-    else if(ch===','&&!q){ out.push(cur.trim()); cur=''; }
-    else cur+=ch;
+function parseDur(raw,s,e){
+  if(raw!==null&&raw!==undefined&&String(raw).trim()!==''){
+    var m=String(raw).match(/-?\d+(\.\d+)?/);
+    if(m)return Math.max(0,Math.round(parseFloat(m[0])));
   }
-  out.push(cur.trim());
-  return out.map(s=>s.replace(/\r$/,'').trim());
+  return (s&&e)?countWD(s,e):1;
 }
 
-function parseCSV(text,sourceLabel){
-  const lines=text.split(/\r?\n/).filter(l=>l.trim());
-  if(!lines.length){setStatus('CSV was empty.');return;}
-  const H=splitCSVLine(lines[0]).map(h=>h.replace(/^"|"$/g,''));
-  const iTask =H.findIndex(h=>/^task/i.test(h));
-  const iDur  =H.findIndex(h=>/^duration/i.test(h));
-  const iStart=H.findIndex(h=>/^start/i.test(h));
-  const iEnd  =H.findIndex(h=>/^end/i.test(h));
-  if(iTask<0||iStart<0||iEnd<0){
-    setStatus('CSV missing Tasks / Start Date / End Date columns.');
-    return;
-  }
+function buildModel(raw){
+  // raw: [{row,name,assignee,dur,start,end,preds,indent?}]
+  var rows=raw.map(function(r){
+    return {row:r.row,name:String(r.name||'').trim(),assignee:String(r.assignee||'').trim(),
+            durRaw:r.dur,startRaw:r.start,endRaw:r.end,predsRaw:r.preds,
+            indent:(typeof r.indent==='number')?r.indent:null};
+  }).filter(function(r){return r.name;});
 
-  const byId={};nodes.forEach(n=>byId[n.id]=n);
-  let matched=0;const unmatched=[];const fuzzy=[];const seen=new Set();
-
-  for(let i=1;i<lines.length;i++){
-    const c=splitCSVLine(lines[i]);
-    const rawName=c[iTask]||'';
-    if(!rawName)continue;
-    const hit=lookupTask(rawName);
-    if(!hit){
-      // Ignore phase/section header rows (they carry no dates)
-      if(parseDate(c[iStart]))unmatched.push(rawName);
-      continue;
-    }
-    if(!hit.exact)fuzzy.push(rawName+' → '+hit.id);
-    const n=byId[hit.id];if(!n)continue;
-    const id=hit.id;
-    const sd=parseDate(c[iStart]);
-    const ed=parseDate(c[iEnd]);
-    if(!sd||!ed)continue;
-
-    const durRaw=(c[iDur]||'').replace(/[^0-9.]/g,'');
-    const durNum=durRaw===''?NaN:parseInt(durRaw,10);
-    const dur=Number.isNaN(durNum)?countWD(sd,ed):durNum;
-
-    n.baseStart=toISO(sd);
-    n.baseEnd  =toISO(ed);
-    n.baseDur  =dur;
-    n.dur      =dur;
-    delete n.startOverride;
-    matched++;seen.add(id);
-  }
-
-  const missing=nodes.filter(n=>!seen.has(n.id)).map(n=>n.id);
-
-  // The launch date exactly as the sheet states it
-  const L3=byId['L3'];
-  CSV_LAUNCH = L3 && L3.baseEnd ? L3.baseEnd : null;
-
-  // Self-check: with no edits, every node must land on its CSV dates
-  schedule();
-  const off=[];
-  nodes.forEach(function(n){
-    if(!n.baseStart)return;
-    if(toISO(n.es)!==n.baseStart||toISO(n.ef)!==n.baseEnd){
-      off.push(n.id+' computed '+toISO(n.es)+'→'+toISO(n.ef)+' but sheet says '+n.baseStart+'→'+n.baseEnd);
-    }
+  // hierarchy: prefer indent when present, else infer by containment
+  var hasIndent=rows.some(function(r){return r.indent!==null;});
+  rows.forEach(function(r,i){
+    r.start=parseDate(r.startRaw);r.end=parseDate(r.endRaw);
+    r.preds=parsePreds(r.predsRaw);
   });
-  BASELINE_OK = off.length===0;
-
-  let msg='✓ '+sourceLabel+' · '+matched+' rows matched';
-  if(missing.length)   msg+=' · '+missing.length+' node(s) not in CSV: '+missing.join(', ');
-  if(unmatched.length) msg+=' · '+unmatched.length+' CSV row(s) unrecognised';
-  if(fuzzy.length)     msg+=' · '+fuzzy.length+' matched loosely';
-  msg += BASELINE_OK ? ' · baseline check '+matched+'/'+matched+' ✓'
-                     : ' · ⚠ '+off.length+' BASELINE MISMATCH';
-  setStatus(msg,[].concat(off,fuzzy,unmatched,missing.map(function(m){return 'node '+m+' had no CSV row';})).join('\n')||msg);
-  render();
-}
-
-/* Launch date verbatim from the sheet, and whether we reproduce the sheet. */
-var CSV_LAUNCH=null, BASELINE_OK=false;
-
-/* True when the user has changed nothing. */
-function isPristine(){
-  return !nodes.some(function(n){
-    return n.startOverride || (typeof n.baseDur==='number' && n.dur!==n.baseDur);
-  });
-}
-
-function setStatus(text,tip){
-  const el=document.getElementById('status');
-  el.textContent=text;
-  el.title=tip||text;
-}
-
-/* ══════════════════════════════════════════════════════════════════════════
-   SCHEDULE  —  CPM with preserved baseline lag
-
-   Two passes:
-     1. BASELINE. Every task sits on its Smartsheet date. For each task we
-        record how many working days of slack sit between "the earliest its
-        predecessors allow" and "where Smartsheet actually put it". That gap
-        is real (holidays, deliberate buffer, resource waits) and must survive.
-     2. LIVE. Recompute the earliest-allowed date from the *current* finishes,
-        then re-apply the same slack.
-
-   With no edits, pass 2 lands exactly on pass 1, so the diagram can never
-   drift from the Gantt. An edit moves a predecessor's finish, and every
-   successor moves with it — earlier or later — while keeping its own slack.
-   Tasks with float absorb upstream changes instead of passing them on.
-   ══════════════════════════════════════════════════════════════════════════ */
-const PROJECT_START=parseDate('2026-07-10');
-
-function topoOrder(){
-  const byId={};nodes.forEach(n=>byId[n.id]=n);
-  const seen=new Set(),out=[];
-  const visit=(id,stack)=>{
-    if(seen.has(id)||stack.has(id))return;
-    stack.add(id);
-    (byId[id]?byId[id].pre:[]).forEach(p=>{if(byId[p])visit(p,stack);});
-    stack.delete(id);
-    seen.add(id);out.push(id);
-  };
-  nodes.forEach(n=>visit(n.id,new Set()));
-  return out.map(id=>byId[id]);
-}
-
-/* previous working day, strictly before d */
-function prevWD(d){
-  let x=new Date(d);
-  do{x.setDate(x.getDate()-1);}while(!isWorking(x));
-  return x;
-}
-/* signed working-day distance from a to b (0 when same day) */
-function diffWD(a,b){
-  if(toISO(a)===toISO(b))return 0;
-  return b>a ? countWD(a,b)-1 : -(countWD(b,a)-1);
-}
-/* shift d by n working days, n may be negative */
-function shiftWD(d,n){
-  let x=snapForward(d),i=0;
-  if(n>0){while(i<n){x=nextWD(x);i++;}}
-  else if(n<0){while(i>n){x=prevWD(x);i--;}}
-  return x;
-}
-/* earliest a task may start given a set of predecessor finish dates */
-function earliestFrom(pre,byId,field){
-  let latest=null;
-  pre.forEach(pid=>{
-    const p=byId[pid];if(!p)return;
-    const f=p[field];if(!f)return;
-    if(!latest||f>latest)latest=f;
-  });
-  return latest?nextWD(latest):null;
-}
-
-function schedule(){
-  const byId={};nodes.forEach(n=>byId[n.id]=n);
-  const order=topoOrder();
-
-  /* ── pass 1: baseline + slack ─────────────────────────────────────── */
-  order.forEach(n=>{
-    if(n.baseStart){
-      n._bes=snapForward(parseDate(n.baseStart));
-    }else if(!n.pre.length){
-      n._bes=snapForward(PROJECT_START);
+  rows.forEach(function(r,i){
+    if(hasIndent){
+      var nxt=rows[i+1];
+      r.summary=!!(nxt&&nxt.indent!==null&&r.indent!==null&&nxt.indent>r.indent);
     }else{
-      n._bes=earliestFrom(n.pre,byId,'_bef')||snapForward(PROJECT_START);
-    }
-    const bd=(typeof n.baseDur==='number')?n.baseDur:n.dur;
-    n._bef=finishOf(n._bes,bd);
-    const gate=earliestFrom(n.pre,byId,'_bef');
-    n._slack = gate ? diffWD(gate,n._bes) : null;   // null = no predecessors
-  });
-
-  /* ── pass 2: live ─────────────────────────────────────────────────── */
-  order.forEach(n=>{
-    if(n.startOverride){
-      n.es=snapForward(parseDate(n.startOverride));
-    }else{
-      const gate=earliestFrom(n.pre,byId,'ef');
-      if(gate===null){
-        n.es=new Date(n._bes);                       // no predecessors: hold baseline
-      }else{
-        n.es=shiftWD(gate, n._slack===null?0:n._slack);
+      r.summary=false;
+      if(!r.preds.length&&!r.assignee&&r.start&&r.end){
+        for(var j=i+1;j<rows.length;j++){
+          var y=rows[j];if(!y.start)continue;
+          if(y.start>=r.start&&y.end<=r.end&&(y.preds.length||y.assignee)){r.summary=true;break;}
+        }
       }
     }
-    n.ef=finishOf(n.es,n.dur);
-    n.drift=diffWD(n._bes,n.es);                     // working days off baseline
-    n.durChanged=(typeof n.baseDur==='number')&&n.dur!==n.baseDur;
+  });
+
+  // section = nearest preceding summary that is not a top-level phase, else the phase
+  var stack=[];
+  rows.forEach(function(r,i){
+    if(hasIndent){
+      stack=stack.filter(function(s){return s.indent<r.indent;});
+    }else{
+      stack=stack.filter(function(s){return s.end>=r.end&&s.start<=r.start&&s.row<r.row;});
+    }
+    r.section = stack.length?stack[stack.length-1].name:'';
+    r.phase   = stack.length?stack[0].name:'';
+    if(r.summary)stack.push(r);
+  });
+
+  var byRow={};rows.forEach(function(r){byRow[r.row]=r;});
+
+  // leaves only; a predecessor pointing at a summary expands to its leaf descendants
+  function expand(rowNum,depth){
+    var t=byRow[rowNum];
+    if(!t)return [];
+    if(!t.summary)return [rowNum];
+    if(depth>4)return [];
+    var out=[];
+    rows.forEach(function(y){
+      if(y.row>t.row&&y.start&&t.start&&y.start>=t.start&&y.end<=t.end&&!y.summary)out.push(y.row);
+    });
+    return out;
+  }
+  var tasks=rows.filter(function(r){return !r.summary&&r.start&&r.end;}).map(function(r){
+    var pre=[];
+    r.preds.forEach(function(p){expand(p,0).forEach(function(q){if(q!==r.row&&pre.indexOf(q)<0)pre.push(q);});});
+    return {
+      row:r.row,id:'r'+r.row,name:r.name,assignee:r.assignee,section:r.section,phase:r.phase,
+      pre:pre,
+      baseStart:toISO(r.start),baseEnd:toISO(r.end),
+      baseDur:parseDur(r.durRaw,r.start,r.end),
+      dur:parseDur(r.durRaw,r.start,r.end),
+      lane:classifyLane(r.name,r.section||r.phase),
+      milestone:parseDur(r.durRaw,r.start,r.end)===0,
+      startOverride:null
+    };
+  });
+  // drop predecessor references to rows that are not tasks
+  var ids={};tasks.forEach(function(t){ids[t.row]=true;});
+  tasks.forEach(function(t){t.pre=t.pre.filter(function(p){return ids[p];});});
+  return {tasks:tasks,rows:rows};
+}
+
+/* ---- topological order ------------------------------------------------- */
+function topo(tasks){
+  var by={};tasks.forEach(function(t){by[t.row]=t;});
+  var seen={},out=[];
+  function visit(r,stack){
+    if(seen[r]||stack[r])return;
+    stack[r]=1;
+    (by[r]?by[r].pre:[]).forEach(function(p){if(by[p])visit(p,stack);});
+    delete stack[r];
+    seen[r]=1;out.push(by[r]);
+  }
+  tasks.forEach(function(t){visit(t.row,{});});
+  return out;
+}
+
+/* ---- schedule: baseline lag preserved, then forward pass --------------- */
+function schedule(tasks){
+  var by={};tasks.forEach(function(t){by[t.row]=t;});
+  var order=topo(tasks);
+  function gateOf(t,field){
+    var latest=null;
+    t.pre.forEach(function(p){var q=by[p];if(!q)return;var f=q[field];if(!f)return;if(!latest||f>latest)latest=f;});
+    return latest?nextWD(latest):null;
+  }
+  // pass 1 — baseline exactly as the sheet states it, plus each task's own slack
+  order.forEach(function(t){
+    t._bes=snapFwd(parseDate(t.baseStart));
+    t._bef=finishOf(t._bes,t.baseDur);
+    var g=gateOf(t,'_bef');
+    t._lag = g? diffWD(g,t._bes) : null;
+  });
+  // pass 2 — live
+  order.forEach(function(t){
+    if(t.startOverride){t.es=snapFwd(parseDate(t.startOverride));}
+    else{
+      var g=gateOf(t,'ef');
+      t.es = (g===null)? new Date(t._bes) : shiftWD(g,t._lag===null?0:t._lag);
+    }
+    t.ef=finishOf(t.es,t.dur);
+    t.drift=diffWD(t._bes,t.es);
+  });
+  return tasks;
+}
+
+/* ---- backward pass: float + critical path ------------------------------ */
+function analyse(tasks){
+  var by={};tasks.forEach(function(t){by[t.row]=t;});
+  var succ={};tasks.forEach(function(t){t.pre.forEach(function(p){(succ[p]=succ[p]||[]).push(t.row);});});
+  var finish=null;
+  tasks.forEach(function(t){if(!finish||t.ef>finish)finish=t.ef;});
+  var order=topo(tasks).slice().reverse();
+  order.forEach(function(t){
+    var kids=succ[t.row]||[];
+    if(!kids.length){t.lf=new Date(finish);}
+    else{
+      var earliest=null;
+      kids.forEach(function(k){var q=by[k];if(!q||!q.ls)return;var c=prevWD(q.ls);if(!earliest||c<earliest)earliest=c;});
+      t.lf=earliest||new Date(finish);
+    }
+    t.ls=startFromFinish(t.lf,t.dur);
+    t.float=diffWD(t.es,t.ls);
+    t.critical=t.float<=0;
+  });
+  return {finish:finish,tasks:tasks};
+}
+
+/* ---- layout ------------------------------------------------------------
+   Columns are allocated in topological order, so a task always sits strictly
+   to the right of everything it depends on, and no two tasks in the same lane
+   ever share a column. That makes a backward-pointing arrow impossible.      */
+function layout(tasks){
+  var by={};tasks.forEach(function(t){by[t.row]=t;});
+  var order=topo(tasks);
+  var used={};
+  order.forEach(function(t){t.col=null;});
+  order.forEach(function(t){
+    var c=0;
+    t.pre.forEach(function(p){
+      var q=by[p];
+      if(q&&typeof q.col==='number')c=Math.max(c,q.col+1);
+    });
+    while(used[t.lane+':'+c])c++;
+    used[t.lane+':'+c]=true;
+    t.col=c;
+  });
+  return tasks;
+}
+
+function laneOrder(tasks){
+  var counts={};
+  tasks.forEach(function(t){
+    counts[t.lane]=counts[t.lane]||{n:0,crit:0,first:t.es};
+    counts[t.lane].n++;
+    if(t.critical)counts[t.lane].crit++;
+    if(t.es<counts[t.lane].first)counts[t.lane].first=t.es;
+  });
+  return Object.keys(counts).sort(function(a,b){
+    return counts[b].crit-counts[a].crit || counts[a].first-counts[b].first;
   });
 }
 
-/* Has this task moved off its Smartsheet baseline? */
-function isMoved(n){return !n.startOverride && n.drift!==0;}
+if(typeof module!=='undefined')module.exports={buildModel,schedule,analyse,layout,laneOrder,parseDate,toISO,diffWD,countWD,topo,finishOf};
 
-/* All ids downstream of a node */
-function downstreamOf(id){
-  const kids={};
-  nodes.forEach(n=>n.pre.forEach(p=>{(kids[p]=kids[p]||[]).push(n.id);}));
-  const out=new Set(),stack=[id];
-  while(stack.length){
-    const cur=stack.pop();
-    (kids[cur]||[]).forEach(k=>{if(!out.has(k)){out.add(k);stack.push(k);}});
+/* ══════════════════════════════════════════════════════════════════════════
+   FILE INPUT — xlsx via SheetJS, csv natively. Row numbers are kept aligned
+   with Smartsheet's own numbering so the Predecessors column resolves.
+   ══════════════════════════════════════════════════════════════════════════ */
+function splitCSVLine(line){
+  var out=[],cur='',q=false;
+  for(var i=0;i<line.length;i++){
+    var ch=line[i];
+    if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(ch===','&&!q){out.push(cur);cur='';}
+    else cur+=ch;
+  }
+  out.push(cur);
+  return out.map(function(s){return s.replace(/\r$/,'').trim();});
+}
+function colIndex(headers){
+  function find(re){for(var i=0;i<headers.length;i++)if(re.test(String(headers[i]||'').trim()))return i;return -1;}
+  return {
+    name:find(/^task/i)>=0?find(/^task/i):0,
+    assignee:find(/assign/i),
+    dur:find(/^duration/i),
+    start:find(/^start/i),
+    end:find(/^(end|finish)/i),
+    preds:find(/predecessor/i)
+  };
+}
+function rowsFromMatrix(mat){
+  if(!mat.length)return [];
+  var C=colIndex(mat[0]);
+  if(C.start<0||C.end<0){throw new Error('Could not find Start Date / End Date columns.');}
+  var out=[];
+  for(var i=1;i<mat.length;i++){
+    var r=mat[i]||[];
+    var nm=r[C.name];
+    out.push({row:i,name:nm==null?'':String(nm),
+      assignee:C.assignee>=0?(r[C.assignee]==null?'':String(r[C.assignee])):'',
+      dur:C.dur>=0?r[C.dur]:null,
+      start:r[C.start],end:r[C.end],
+      preds:C.preds>=0?(r[C.preds]==null?'':String(r[C.preds])):''});
   }
   return out;
+}
+function loadCSVText(text,label){
+  try{
+    var lines=text.split(/\r?\n/);
+    while(lines.length&&!lines[lines.length-1].trim())lines.pop();
+    if(!lines.length){setStatus('That file was empty.');return;}
+    ingest(rowsFromMatrix(lines.map(splitCSVLine)),label);
+  }catch(e){setStatus('Could not read that file — '+e.message);}
+}
+function loadWorkbook(ab,label){
+  try{
+    if(typeof XLSX==='undefined'){setStatus('Excel reader did not load — export as CSV instead.');return;}
+    var wb=XLSX.read(new Uint8Array(ab),{type:'array',cellDates:true});
+    var ws=wb.Sheets[wb.SheetNames[0]];
+    ingest(rowsFromMatrix(XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:null,blankrows:true})),label);
+  }catch(e){setStatus('Could not read that workbook — '+e.message);}
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   INGEST + SELF-CHECK
+   ══════════════════════════════════════════════════════════════════════════ */
+var MODEL=null, SHEET_FINISH=null, BASE_OK=false, CP_ONLY=false;
+
+function ingest(rawRows,label){
+  var m;
+  try{ m=buildModel(rawRows); }
+  catch(e){ setStatus('Could not read that file: '+e.message); return; }
+  if(!m.tasks.length){ setStatus('No dated tasks found in that file.'); return; }
+
+  MODEL=m;
+  schedule(MODEL.tasks); analyse(MODEL.tasks); layout(MODEL.tasks);
+
+  var last=null;
+  MODEL.tasks.forEach(function(t){var d=parseDate(t.baseEnd);if(!last||d>last)last=d;});
+  SHEET_FINISH=last?toISO(last):null;
+
+  var off=[];
+  MODEL.tasks.forEach(function(t){
+    if(toISO(t.es)!==t.baseStart||toISO(t.ef)!==t.baseEnd)
+      off.push('r'+t.row+' '+t.name+': computed '+toISO(t.es)+'→'+toISO(t.ef)+' vs sheet '+t.baseStart+'→'+t.baseEnd);
+  });
+  BASE_OK=off.length===0;
+
+  var summaries=m.rows.length-MODEL.tasks.length;
+  var crit=MODEL.tasks.filter(function(t){return t.critical;}).length;
+  var msg='✓ '+label+' · '+MODEL.tasks.length+' tasks · '+summaries+' summary rows skipped · '
+        +crit+' on the critical path · baseline '+(BASE_OK?MODEL.tasks.length+'/'+MODEL.tasks.length+' ✓':'⚠ '+off.length+' MISMATCH');
+  setStatus(msg,off.join('\n')||msg);
+  render();
+}
+function setStatus(t,tip){var e=document.getElementById('st');e.textContent=t;e.title=tip||t;}
+function isPristine(){
+  return !MODEL||!MODEL.tasks.some(function(t){return t.startOverride||t.dur!==t.baseDur;});
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
    RENDER
    ══════════════════════════════════════════════════════════════════════════ */
-const NW=150,NH=76,GX=18,GY=34,LABEL_W=150,AXIS_H=46;
-const STYLE={
-  cp1   :{fill:'#FFF8E6',stroke:'#d4a017',hdr:'#d4a017',txt:'#5c3406',sw:2},
-  cp2   :{fill:'#FDE8DF',stroke:'#D85A30',hdr:'#D85A30',txt:'#6d1d09',sw:2},
-  launch:{fill:'#FBE9E9',stroke:'#A32D2D',hdr:'#A32D2D',txt:'#4a1212',sw:2},
-  sc    :{fill:'#E3F7F1',stroke:'#1D9E75',hdr:'#1D9E75',txt:'#07463a',sw:1.5},
-  nc    :{fill:'#F4F4F2',stroke:'#C8C7C2',hdr:'#C8C7C2',txt:'#83827d',sw:1}
-};
-const MOVED='#7F77DD';
-const PHASES=[
-  {a:0, b:5, label:'Phase 1 — Define & Qualify',            c:'#d4a017'},
-  {a:6, b:12,label:'Phase 2 — Design, Approval & Sourcing', c:'#d4a017'},
-  {a:13,b:16,label:'Phase 3 — Production & Platform Build', c:'#D85A30'},
-  {a:17,b:22,label:'Phase 4 — Fulfillment & Launch',        c:'#A32D2D'}
-];
+var NW=152,NH=78,GX=18,GY=32,LABEL_W=158,AXIS_H=40;
+var C_CRIT='#c0392b', C_NEAR='#d4a017', C_FLOAT='#C8C7C2', C_EDIT='#7F77DD';
+var NS='http://www.w3.org/2000/svg';
+function svgEl(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function svgTxt(p,x,y,s,a){var o={x:x,y:y,'dominant-baseline':'central','text-anchor':'middle','font-family':'Arial'};for(var k in (a||{}))o[k]=a[k];var t=svgEl('text',o,p);t.textContent=s;return t;}
+function fmt(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function fmtL(d){return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
 
-const colX = c => LABEL_W + c*(NW+GX);
-const laneY = l => AXIS_H + LANES[l]*(NH+GY);
-const NS='http://www.w3.org/2000/svg';
-
-function el(tag,attrs,parent){
-  const e=document.createElementNS(NS,tag);
-  for(const k in attrs)e.setAttribute(k,attrs[k]);
-  if(parent)parent.appendChild(e);
-  return e;
+function toneOf(t){
+  if(t.startOverride||t.dur!==t.baseDur||t.drift!==0)return C_EDIT;
+  if(t.critical)return C_CRIT;
+  if(t.float<=5)return C_NEAR;
+  return C_FLOAT;
 }
-function txt(parent,x,y,s,attrs){
-  const t=el('text',Object.assign({x,y,'dominant-baseline':'central','text-anchor':'middle','font-family':'Arial'},attrs||{}),parent);
-  t.textContent=s;return t;
+function tintOf(t){
+  var c=toneOf(t);
+  return c===C_CRIT?'#FDECEA':c===C_NEAR?'#FFF8E6':c===C_EDIT?'#EFEDFF':'#F5F5F3';
 }
 
 function render(){
-  schedule();
-  const svg=document.getElementById('svg');
-  svg.innerHTML='';
-  const byId={};nodes.forEach(n=>byId[n.id]=n);
-  const maxCol=Math.max.apply(null,nodes.map(n=>n.col));
-  const W=colX(maxCol)+NW+40;
-  const H=AXIS_H+Object.keys(LANES).length*(NH+GY)+20;
+  var svg=document.getElementById('svg');svg.innerHTML='';
+  if(!MODEL){svg.setAttribute('width',10);svg.setAttribute('height',10);return;}
+
+  schedule(MODEL.tasks); analyse(MODEL.tasks); layout(MODEL.tasks);
+
+  var shown=MODEL.tasks.filter(function(t){return CP_ONLY?t.critical:true;});
+  var lanes=laneOrder(shown);
+  var laneIdx={};lanes.forEach(function(L,i){laneIdx[L]=i;});
+
+  // compact columns so hidden tasks do not leave gaps
+  var cols=shown.map(function(t){return t.col;}).sort(function(a,b){return a-b;});
+  var uniq=[];cols.forEach(function(c){if(uniq[uniq.length-1]!==c)uniq.push(c);});
+  var remap={};uniq.forEach(function(c,i){remap[c]=i;});
+  var X=function(t){return LABEL_W+remap[t.col]*(NW+GX);};
+  var Y=function(t){return AXIS_H+laneIdx[t.lane]*(NH+GY);};
+
+  var W=LABEL_W+uniq.length*(NW+GX)+30;
+  var H=AXIS_H+lanes.length*(NH+GY)+16;
   svg.setAttribute('width',W);svg.setAttribute('height',H);
 
-  /* arrow heads */
-  const defs=el('defs',{},svg);
-  [['gold','#d4a017'],['coral','#D85A30'],['red','#A32D2D'],['teal','#1D9E75'],['grey','#C0BFBA'],['moved',MOVED]]
-  .forEach(function(p){
-    const mk=el('marker',{id:'ah-'+p[0],viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'},defs);
-    el('path',{d:'M1 1L9 5L1 9Z',fill:p[1]},mk);
+  var defs=svgEl('defs',{},svg);
+  [['crit',C_CRIT],['near',C_NEAR],['float',C_FLOAT],['edit',C_EDIT]].forEach(function(p){
+    var mk=svgEl('marker',{id:'m-'+p[0],viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'},defs);
+    svgEl('path',{d:'M1 1L9 5L1 9Z',fill:p[1]},mk);
   });
 
-  /* lane bands */
-  Object.keys(LANES).forEach(function(lane){
-    const y=laneY(lane);
-    const isCp=lane==='cp', isSc=lane==='sc';
-    el('rect',{x:0,y:y-10,width:W,height:NH+20,fill:isCp?'#FFFCF2':isSc?'#F0FBF8':'#FAFAF8'},svg);
-    el('rect',{x:0,y:y-10,width:LABEL_W-10,height:NH+20,fill:isCp?'#d4a017':isSc?'#1D9E75':'#d3d1c7',opacity:.16},svg);
-    txt(svg,(LABEL_W-10)/2,y+NH/2,LANE_LABELS[lane],{
-      'font-size':9,'font-weight':700,
-      fill:isCp?'#a67c11':isSc?'#127354':'#8a8984'
-    });
-    el('line',{x1:0,y1:y+NH+GY/2-4,x2:W,y2:y+NH+GY/2-4,stroke:'#e4e2db','stroke-width':1},svg);
+  // lane bands
+  lanes.forEach(function(L,i){
+    var y=AXIS_H+i*(NH+GY);
+    var inLane=shown.filter(function(t){return t.lane===L;});
+    var nCrit=inLane.filter(function(t){return t.critical;}).length;
+    svgEl('rect',{x:0,y:y-9,width:W,height:NH+18,fill:nCrit?'#FEF7F6':'#FAFAF8'},svg);
+    svgEl('rect',{x:0,y:y-9,width:LABEL_W-10,height:NH+18,fill:nCrit?C_CRIT:'#d3d1c7',opacity:.14},svg);
+    svgTxt(svg,(LABEL_W-10)/2,y+NH/2-6,L,{'font-size':9,'font-weight':700,fill:nCrit?'#8e2b20':'#84837e'});
+    svgTxt(svg,(LABEL_W-10)/2,y+NH/2+8,inLane.length+' tasks'+(nCrit?' · '+nCrit+' critical':''),{'font-size':7.5,fill:'#a3a29d'});
+    svgEl('line',{x1:0,y1:y+NH+GY/2-3,x2:W,y2:y+NH+GY/2-3,stroke:'#e6e4dd','stroke-width':1},svg);
   });
 
-  /* phase bands + month axis */
-  el('rect',{x:0,y:0,width:W,height:AXIS_H,fill:'#fff',opacity:.55},svg);
-  PHASES.forEach(function(p){
-    const x1=colX(p.a)-GX/2, x2=colX(p.b)+NW+GX/2;
-    el('rect',{x:x1,y:AXIS_H-13,width:x2-x1,height:12,fill:p.c,opacity:.16,rx:2},svg);
-    txt(svg,(x1+x2)/2,AXIS_H-7,p.label,{'font-size':7.5,'font-weight':700,fill:p.c});
+  // month header
+  var seen={};
+  shown.slice().sort(function(a,b){return remap[a.col]-remap[b.col];}).forEach(function(t){
+    var k=t.es.getFullYear()+'-'+t.es.getMonth();
+    if(seen[k])return;seen[k]=1;
+    svgTxt(svg,X(t)+NW/2,13,t.es.toLocaleDateString('en-US',{month:'short',year:'2-digit'}),
+      {'font-size':9,'font-weight':700,fill:'#77766f'});
+  });
+  shown.forEach(function(t){
+    var c=toneOf(t),cx=X(t)+NW/2;
+    svgEl('line',{x1:cx,y1:AXIS_H-16,x2:cx,y2:AXIS_H-7,stroke:c,'stroke-width':t.critical?1.5:.8,opacity:t.critical?1:.55},svg);
+    svgTxt(svg,cx,AXIS_H-22,fmt(t.es),{'font-size':7,'font-weight':t.critical?700:400,fill:t.critical?c:'#a9a8a3'});
   });
 
-  /* per-column month + date ticks */
-  const seenMonth={};
-  nodes.slice().sort((a,b)=>a.col-b.col).forEach(function(n){
-    const key=n.es.getFullYear()+'-'+n.es.getMonth();
-    const cx=colX(n.col)+NW/2;
-    if(!seenMonth[key]){
-      seenMonth[key]=true;
-      txt(svg,cx,11,n.es.toLocaleDateString('en-US',{month:'short',year:'2-digit'}),
-          {'font-size':9,'font-weight':700,fill:'#6f6e69'});
-    }
-  });
-  nodes.forEach(function(n){
-    const s=STYLE[n.kind]||STYLE.nc;
-    const cx=colX(n.col)+NW/2;
-    const col=isMoved(n)||n.startOverride?MOVED:s.stroke;
-    el('line',{x1:cx,y1:AXIS_H-24,x2:cx,y2:AXIS_H-14,stroke:col,'stroke-width':n.kind==='nc'?.8:1.4,opacity:n.kind==='nc'?.5:1},svg);
-    txt(svg,cx,AXIS_H-30,fmt(n.es),{'font-size':7,'font-weight':n.kind==='nc'?400:700,fill:n.kind==='nc'?'#a9a8a3':col});
-  });
+  var vis={};shown.forEach(function(t){vis[t.row]=t;});
 
-  /* key date guides */
-  [['2026-09-18','Prime Day cutoff','#7F77DD'],['2026-11-05','BFCM cutoff','#7F77DD']].forEach(function(k){
-    const target=parseDate(k[0]);
-    let best=null,bd=1e9;
-    nodes.forEach(function(n){
-      const d=Math.abs((n.es-target)/86400000);
-      if(d<bd){bd=d;best=n;}
-    });
-    if(best&&bd<40){
-      const x=colX(best.col)+NW/2;
-      el('line',{x1:x,y1:AXIS_H-14,x2:x,y2:H,stroke:k[2],'stroke-width':1,'stroke-dasharray':'3 4',opacity:.5},svg);
-      txt(svg,x,AXIS_H-38,k[1],{'font-size':6.5,'font-weight':700,fill:k[2]});
-    }
-  });
-
-  /* ── edges ──────────────────────────────────────────────────────────
-     Long runs travel in the gap strip beneath the source lane, so a line
-     never crosses an unrelated node box.                                */
-  nodes.forEach(function(n){
-    n.pre.forEach(function(pid){
-      const p=byId[pid];if(!p)return;
-      const px=colX(p.col)+NW, py=laneY(p.lane)+NH/2;
-      const nx=colX(n.col),   ny=laneY(n.lane)+NH/2;
-
-      const bothCp = (p.kind!=='nc'&&p.kind!=='sc') && (n.kind!=='nc'&&n.kind!=='sc');
-      let stroke='#C0BFBA', head='grey', sw=1, dash='4 3';
-      if(bothCp){
-        stroke = n.kind==='launch'?'#A32D2D':n.kind==='cp2'?'#D85A30':'#d4a017';
-        head   = n.kind==='launch'?'red':n.kind==='cp2'?'coral':'gold';
-        sw=2.2; dash='none';
-      } else if(p.kind==='sc'){
-        stroke='#1D9E75'; head='teal'; sw=1.6; dash='none';
+  // edges routed through the strip under each lane
+  shown.forEach(function(t){
+    t.pre.forEach(function(p){
+      var q=vis[p];if(!q)return;
+      var x1=X(q)+NW,y1=Y(q)+NH/2,x2=X(t),y2=Y(t)+NH/2;
+      var both=q.critical&&t.critical;
+      var col=both?C_CRIT:(t.critical||q.critical)?C_NEAR:C_FLOAT;
+      if(toneOf(t)===C_EDIT&&both)col=C_EDIT;
+      var head=col===C_CRIT?'crit':col===C_NEAR?'near':col===C_EDIT?'edit':'float';
+      var sw=both?2.4:1.1, dash=both?'none':'4 3';
+      var d;
+      if(q.lane===t.lane&&remap[t.col]-remap[q.col]===1){d='M'+x1+' '+y1+'L'+x2+' '+y2;}
+      else{
+        var ch=Y(q)+NH+GY/2-3, a=x1+9, b=x2-11;
+        d='M'+x1+' '+y1+'L'+a+' '+y1+'L'+a+' '+ch+'L'+b+' '+ch+'L'+b+' '+y2+'L'+x2+' '+y2;
       }
-      if(isMoved(n)&&bothCp){stroke=MOVED;head='moved';}
-
-      const sameLane=p.lane===n.lane;
-      const adjacent=(n.col-p.col)===1;
-      let d;
-      if(sameLane&&adjacent){
-        d='M'+px+' '+py+'L'+nx+' '+ny;
-      }else{
-        // drop into the channel under the source lane, run across, then rise
-        const ch=laneY(p.lane)+NH+GY/2-4;
-        const x1=px+9, x2=nx-11;
-        d='M'+px+' '+py+'L'+x1+' '+py+'L'+x1+' '+ch+'L'+x2+' '+ch+'L'+x2+' '+ny+'L'+nx+' '+ny;
-      }
-      el('path',{d:d,fill:'none',stroke:stroke,'stroke-width':sw,'stroke-dasharray':dash,'marker-end':'url(#ah-'+head+')','stroke-linejoin':'round'},svg);
+      svgEl('path',{d:d,fill:'none',stroke:col,'stroke-width':sw,'stroke-dasharray':dash,'marker-end':'url(#m-'+head+')','stroke-linejoin':'round'},svg);
     });
   });
 
-  /* ── node boxes ─────────────────────────────────────────────────── */
-  nodes.forEach(function(n){
-    const x=colX(n.col), y=laneY(n.lane);
-    const s=STYLE[n.kind]||STYLE.nc;
-    const moved=isMoved(n), pinned=!!n.startOverride, durChanged=!!n.durChanged;
-    const accent=(moved||pinned||durChanged)?MOVED:s.stroke;
-    const g=el('g',{transform:'translate('+x+','+y+')',cursor:'pointer'},svg);
-    g.addEventListener('click',function(){openPanel(n.id);});
+  // task cards
+  shown.forEach(function(t){
+    var x=X(t),y=Y(t),c=toneOf(t),edited=(t.startOverride||t.dur!==t.baseDur);
+    var g=svgEl('g',{transform:'translate('+x+','+y+')',cursor:'pointer'},svg);
+    g.addEventListener('click',function(){openPanel(t.row);});
+    if(t.critical)svgEl('rect',{x:2,y:3,width:NW,height:NH,rx:6,fill:c,opacity:.13},g);
+    svgEl('rect',{x:0,y:0,width:NW,height:NH,rx:6,fill:tintOf(t),stroke:c,'stroke-width':t.critical||edited?2.4:1},g);
+    svgEl('rect',{x:0,y:0,width:NW,height:18,rx:6,fill:c},g);
+    svgEl('rect',{x:0,y:11,width:NW,height:7,fill:c},g);
 
-    if(n.kind!=='nc')el('rect',{x:2,y:3,width:NW,height:NH,rx:6,fill:s.stroke,opacity:.10},g);
-    el('rect',{x:0,y:0,width:NW,height:NH,rx:6,fill:n.done?'#ececea':s.fill,stroke:accent,'stroke-width':(moved||pinned||durChanged)?2.4:s.sw},g);
-    el('rect',{x:0,y:0,width:NW,height:18,rx:6,fill:accent,opacity:n.done?.45:1},g);
-    el('rect',{x:0,y:11,width:NW,height:7,fill:accent,opacity:n.done?.45:1},g);
+    svgTxt(g,8,9,'r'+t.row+(t.milestone?' ◆':'')+(t.critical?' ⚡':''),
+      {'font-size':7.5,'font-weight':700,fill:'#fff','text-anchor':'start'});
+    svgTxt(g,NW-8,9,t.critical?'critical':(t.float+'d float'),
+      {'font-size':6.5,fill:'rgba(255,255,255,.85)','text-anchor':'end'});
 
-    txt(g,8,9,n.id+(n.flag?' ⚠':'')+(n.done?' ✓':''),{'font-size':8,'font-weight':700,fill:'#fff','text-anchor':'start'});
-    txt(g,NW-8,9,'r'+n.row,{'font-size':6.5,fill:'rgba(255,255,255,.75)','text-anchor':'end'});
+    svgTxt(g,NW/2,36,t.milestone?'milestone':(t.dur+'d'),
+      {'font-size':t.milestone?9:15,'font-weight':800,fill:c});
+    if(t.dur!==t.baseDur)svgTxt(g,NW/2,47,'was '+t.baseDur+'d',{'font-size':6.5,'font-weight':700,fill:C_EDIT});
 
-    const durLabel=n.ms?'milestone':(n.dur+'d');
-    txt(g,NW/2,36,durLabel,{'font-size':n.ms?9:15,'font-weight':800,fill:n.flag?'#c0392b':accent});
-    if(durChanged){
-      txt(g,NW/2,47,'was '+n.baseDur+'d',{'font-size':6.5,'font-weight':700,fill:MOVED});
-    }
-    const label=n.label.length>22?n.label.slice(0,21)+'…':n.label;
-    txt(g,NW/2,durChanged?57:53,label,{'font-size':7.6,'font-weight':n.kind==='nc'?400:600,fill:s.txt});
-    txt(g,NW/2,68,fmt(n.es)+' → '+fmt(n.ef),{'font-size':6.8,fill:moved||pinned?MOVED:(n.kind==='nc'?'#adaca7':'#6a6963')});
+    var nm=t.name.length>25?t.name.slice(0,24)+'…':t.name;
+    svgTxt(g,NW/2,(t.dur!==t.baseDur)?57:53,nm,{'font-size':7.5,'font-weight':t.critical?700:400,fill:'#4c4b47'});
+    svgTxt(g,NW/2,69,fmt(t.es)+' → '+fmt(t.ef),{'font-size':6.8,fill:edited||t.drift!==0?C_EDIT:'#87867f'});
 
-    const tip=el('title',{},g);
-    let t=n.id+' — '+n.label+'  (Smartsheet row '+n.row+')'
-        +'\nDuration: '+n.dur+'d'+(typeof n.baseDur==='number'?' (baseline '+n.baseDur+'d)':'')
-        +'\n'+fmt(n.es)+' → '+fmt(n.ef);
-    if(n.baseStart)t+='\nBaseline: '+fmt(parseDate(n.baseStart))+' → '+fmt(parseDate(n.baseEnd));
-    if(pinned)t+='\n⚑ Start pinned manually';
-    else if(moved)t+='\n→ '+(n.drift>0?'Pushed +':'Pulled in ')+n.drift+' working day(s) vs baseline';
-    t+='\nPredecessors: '+(n.pre.length?n.pre.join(', '):'none');
-    tip.textContent=t;
+    var tip=svgEl('title',{},g);
+    var s='r'+t.row+' — '+t.name+'\n'+(t.assignee?'Owner: '+t.assignee+'\n':'')
+      +(t.section?'Section: '+t.section+'\n':'')
+      +'Duration: '+t.dur+'d'+(t.dur!==t.baseDur?' (sheet says '+t.baseDur+'d)':'')+'\n'
+      +fmt(t.es)+' → '+fmt(t.ef)+'\n'
+      +'Sheet baseline: '+fmt(parseDate(t.baseStart))+' → '+fmt(parseDate(t.baseEnd))+'\n'
+      +(t.critical?'⚡ On the critical path — any slip moves the launch':'Float: '+t.float+' working days')+'\n'
+      +'Predecessors: '+(t.pre.length?t.pre.map(function(p){return 'r'+p;}).join(', '):'none');
+    if(t.drift!==0)s+='\n'+(t.drift>0?'Pushed +'+t.drift:'Pulled in '+t.drift)+'d vs the sheet';
+    tip.textContent=s;
   });
 
-  const L3=byId['L3'];
-  const badge=document.getElementById('ldate');
-  if(!L3){badge.textContent='🍁 Launch: —';return;}
-
-  const pristine=isPristine();
-  // Untouched: show the sheet's own launch date. Edited: show the recalculation.
-  const shown = (pristine && CSV_LAUNCH) ? parseDate(CSV_LAUNCH) : L3.ef;
-  badge.textContent='🍁 Launch: '+fmtL(shown);
-
-  if(pristine && CSV_LAUNCH && !BASELINE_OK){
-    badge.style.background='#c0392b';badge.style.color='#fff';
-    badge.title='The diagram does not reproduce the sheet exactly — see the status bar.';
-  }else if(!pristine){
-    const d=diffWD(parseDate(CSV_LAUNCH||toISO(L3.ef)),L3.ef);
+  // finish badge
+  var fin=null;MODEL.tasks.forEach(function(t){if(!fin||t.ef>fin)fin=t.ef;});
+  var badge=document.getElementById('fin');
+  var pristine=isPristine();
+  if(pristine&&SHEET_FINISH){
+    badge.textContent='🍁 Launch: '+fmtL(parseDate(SHEET_FINISH));
+    badge.style.background=BASE_OK?'#d4a017':'#c0392b';
+    badge.style.color=BASE_OK?'#1a1a18':'#fff';
+    badge.title=BASE_OK?'Straight from the sheet.':'The diagram does not reproduce the sheet — see the status bar.';
+  }else{
+    var d=SHEET_FINISH?diffWD(parseDate(SHEET_FINISH),fin):0;
+    badge.textContent='🍁 Launch: '+fmtL(fin)+(d===0?'':'  ('+(d>0?'+':'')+d+'d)');
     badge.style.background=d>0?'#c0392b':d<0?'#1D9E75':'#d4a017';
     badge.style.color=d===0?'#1a1a18':'#fff';
-    badge.textContent='🍁 Launch: '+fmtL(L3.ef)+(d===0?'':'  ('+(d>0?'+':'')+d+'d vs sheet)');
-    badge.title='Recalculated from your edits. Sheet baseline: '+(CSV_LAUNCH?fmtL(parseDate(CSV_LAUNCH)):'—');
-  }else{
-    badge.style.background='#d4a017';badge.style.color='#1a1a18';
-    badge.title='Straight from the sheet. Change any duration to see the impact.';
+    badge.title='Recalculated from your edits. Sheet says '+(SHEET_FINISH?fmtL(parseDate(SHEET_FINISH)):'—');
   }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   EDIT PANEL
+   INTERACTION
    ══════════════════════════════════════════════════════════════════════════ */
-let editId=null;
-const KIND_LABEL={cp1:'Critical — design & regulatory',cp2:'Critical — production',launch:'Launch',sc:'Supply chain',nc:'Non-critical'};
-const KIND_COLOR={cp1:'#d4a017',cp2:'#D85A30',launch:'#A32D2D',sc:'#1D9E75',nc:'#8a8984'};
-
-function openPanel(id){
-  const n=nodes.find(x=>x.id===id);if(!n)return;
-  editId=id;
-  document.getElementById('p-title').textContent=n.id+' — '+n.label;
-  const tag=document.getElementById('p-tag');
-  tag.textContent=KIND_LABEL[n.kind]||'Task';
-  tag.style.background=KIND_COLOR[n.kind]||'#8a8984';
-
-  let b='<b>Smartsheet row '+n.row+'</b><br>';
-  if(n.baseStart){
-    b+='Baseline: '+fmt(parseDate(n.baseStart))+' → '+fmt(parseDate(n.baseEnd))+' ('+n.baseDur+'d)<br>';
-  }else{
-    b+='<i>No matching row found in the CSV</i><br>';
-  }
-  b+='Now: '+fmt(n.es)+' → '+fmt(n.ef)+' ('+n.dur+'d)';
-  if(n.drift!==0&&!n.startOverride)b+='<br>'+(n.drift>0?'Pushed +'+n.drift:'Pulled in '+n.drift)+' working day(s) vs baseline';
-  b+='<br>Predecessors: '+(n.pre.length?n.pre.join(', '):'none');
-  document.getElementById('p-base').innerHTML=b;
-
-  document.getElementById('p-dur').value=n.dur;
-  document.getElementById('p-start').value=toISO(n.es);
-  document.getElementById('panel').style.display='block';
-  document.getElementById('overlay').style.display='block';
-  setTimeout(function(){
-    const f=document.getElementById('p-dur');f.focus();f.select();
-  },40);
+var editRow=null;
+function openPanel(row){
+  var t=MODEL.tasks.find(function(x){return x.row===row;});if(!t)return;
+  editRow=row;
+  document.getElementById('pT').textContent='r'+t.row+' — '+t.name;
+  var g=document.getElementById('pG');
+  g.textContent=t.critical?'⚡ Critical path':(t.float+' working days of float');
+  g.style.background=toneOf(t);
+  var b='<b>'+(t.lane)+'</b>'+(t.assignee?' · '+t.assignee:'')+'<br>'
+    +'Sheet: '+fmt(parseDate(t.baseStart))+' → '+fmt(parseDate(t.baseEnd))+' ('+t.baseDur+'d)<br>'
+    +'Now: '+fmt(t.es)+' → '+fmt(t.ef)+' ('+t.dur+'d)<br>'
+    +'Predecessors: '+(t.pre.length?t.pre.map(function(p){return 'r'+p;}).join(', '):'none');
+  if(t.critical)b+='<br><b>On the critical path</b> — changing this moves the launch.';
+  else b+='<br>Can slip up to <b>'+t.float+' working days</b> before it moves the launch.';
+  document.getElementById('pB').innerHTML=b;
+  document.getElementById('pD').value=t.dur;
+  document.getElementById('pS').value=toISO(t.es);
+  document.getElementById('pn').style.display='block';
+  document.getElementById('ov').style.display='block';
+  setTimeout(function(){var f=document.getElementById('pD');f.focus();f.select();},40);
 }
-function closePanel(){
-  document.getElementById('panel').style.display='none';
-  document.getElementById('overlay').style.display='none';
-  editId=null;
-}
+function closePanel(){document.getElementById('pn').style.display='none';document.getElementById('ov').style.display='none';editRow=null;}
 function applyEdit(){
-  const n=nodes.find(x=>x.id===editId);if(!n)return;
-  const d=parseInt(document.getElementById('p-dur').value,10);
-  if(!Number.isNaN(d)&&d>=0)n.dur=d;
-
-  const chosen=document.getElementById('p-start').value;
-  if(chosen){
-    const cd=parseDate(chosen);
-    // Only treat it as a pin if it actually differs from where it sits now
-    if(cd && toISO(snapForward(cd))!==toISO(n.es)) n.startOverride=toISO(cd);
-  }
+  var t=MODEL.tasks.find(function(x){return x.row===editRow;});if(!t)return;
+  var d=parseInt(document.getElementById('pD').value,10);
+  if(!isNaN(d)&&d>=0)t.dur=d;
+  var s=document.getElementById('pS').value;
+  if(s){var sd=parseDate(s);if(sd&&toISO(sd)!==toISO(t.es))t.startOverride=toISO(sd);}
   closePanel();render();
 }
 function resetNode(){
-  const n=nodes.find(x=>x.id===editId);if(!n)return;
-  delete n.startOverride;
-  if(typeof n.baseDur==='number')n.dur=n.baseDur;
-  closePanel();render();
+  var t=MODEL.tasks.find(function(x){return x.row===editRow;});if(!t)return;
+  t.startOverride=null;t.dur=t.baseDur;closePanel();render();
 }
 function resetAll(){
-  nodes.forEach(function(n){
-    delete n.startOverride;
-    if(typeof n.baseDur==='number')n.dur=n.baseDur;
-  });
+  if(!MODEL)return;
+  MODEL.tasks.forEach(function(t){t.startOverride=null;t.dur=t.baseDur;});
   render();
-  setStatus('↺ All tasks reset to the Smartsheet baseline.');
 }
-document.getElementById('p-dur').addEventListener('keydown',function(e){
-  if(e.key==='Enter')applyEdit();
-  if(e.key==='Escape')closePanel();
-});
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape')closePanel();
-});
+function toggleCP(){
+  CP_ONLY=!CP_ONLY;
+  document.getElementById('cpBtn').classList.toggle('on',CP_ONLY);
+  render();
+}
+document.getElementById('pD').addEventListener('keydown',function(e){if(e.key==='Enter')applyEdit();if(e.key==='Escape')closePanel();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePanel();});
 
-/* ══════════════════════════════════════════════════════════════════════════
-   BOOT — always read data.csv from the repo so the diagram matches the sheet
-   ══════════════════════════════════════════════════════════════════════════ */
 function onFile(e){
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=function(ev){parseCSV(ev.target.result,'Loaded '+f.name);};
-  r.readAsText(f);
-  e.target.value='';
+  var f=e.target.files[0];if(!f)return;
+  readFile(f);e.target.value='';
 }
-
-function boot(){
-  const candidates=['data.csv','Data.csv'];
-  let i=0;
-  function tryNext(){
-    if(i>=candidates.length){
-      setStatus('No data.csv found in the repo — showing built-in fallback dates. Use “Load CSV”.');
-      render();
-      return;
-    }
-    const name=candidates[i++];
-    fetch(name+'?t='+Date.now())
-      .then(function(r){if(!r.ok)throw new Error('404');return r.text();})
-      .then(function(t){parseCSV(t,'Loaded '+name+' from repo');})
-      .catch(tryNext);
+function readFile(f){
+  var r=new FileReader();
+  if(/\.(xlsx|xls)$/i.test(f.name)){
+    r.onload=function(ev){try{loadWorkbook(ev.target.result,'Loaded '+f.name);}catch(err){setStatus('Could not read '+f.name+': '+err.message);}};
+    r.readAsArrayBuffer(f);
+  }else{
+    r.onload=function(ev){try{loadCSVText(ev.target.result,'Loaded '+f.name);}catch(err){setStatus('Could not read '+f.name+': '+err.message);}};
+    r.readAsText(f);
   }
-  tryNext();
 }
-boot();
+['dragenter','dragover'].forEach(function(k){
+  window.addEventListener(k,function(e){e.preventDefault();document.getElementById('drop').classList.add('on');});
+});
+['dragleave','drop'].forEach(function(k){
+  window.addEventListener(k,function(e){
+    e.preventDefault();
+    if(k==='drop'){
+      document.getElementById('drop').classList.remove('on');
+      if(e.dataTransfer.files&&e.dataTransfer.files[0])readFile(e.dataTransfer.files[0]);
+    }else if(e.clientX<=0||e.clientY<=0||e.clientX>=innerWidth||e.clientY>=innerHeight){
+      document.getElementById('drop').classList.remove('on');
+    }
+  });
+});
+
+/* boot: pull whatever Gantt lives in the repo */
+(function boot(){
+  var names=['gantt.xlsx','Amazon_Canada_Gantt_V2.xlsx','data.csv','Data.csv'];
+  var i=0;
+  (function next(){
+    if(i>=names.length){setStatus('No Gantt found in the repo — drop your export onto the page, or use “Upload Gantt”.');return;}
+    var n=names[i++];
+    fetch(n+'?t='+Date.now()).then(function(r){
+      if(!r.ok)throw 0;
+      return /\.xlsx?$/i.test(n)?r.arrayBuffer().then(function(ab){loadWorkbook(ab,'Loaded '+n+' from repo');})
+                                :r.text().then(function(tx){loadCSVText(tx,'Loaded '+n+' from repo');});
+    }).catch(next);
+  })();
+})();
 </script>
 </body>
 </html>
