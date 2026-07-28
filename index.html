@@ -655,18 +655,60 @@ function readFile(f){
   });
 });
 
-/* boot: pull whatever Gantt lives in the repo */
+/* ══════════════════════════════════════════════════════════════════════════
+   BOOT
+   Try the usual filenames first. If none hit, ask the GitHub API what is
+   actually in the repo and load the first spreadsheet it finds — so the file
+   can be called anything, in any casing.
+   ══════════════════════════════════════════════════════════════════════════ */
+function loadFromResponse(r,name){
+  return /\.xlsx?$/i.test(name)
+    ? r.arrayBuffer().then(function(ab){loadWorkbook(ab,'Loaded '+name+' from repo');})
+    : r.text().then(function(tx){loadCSVText(tx,'Loaded '+name+' from repo');});
+}
+
+function discoverViaGitHub(){
+  var host=location.hostname||'';
+  var m=host.match(/^([^.]+)\.github\.io$/i);
+  if(!m){setStatus('No Gantt found. Drop your export onto the page, or use “Upload Gantt”.');return;}
+  var owner=m[1];
+  var seg=location.pathname.split('/').filter(Boolean);
+  var repo=seg.length?seg[0]:owner+'.github.io';
+  setStatus('Looking for a Gantt file in the repository…');
+  fetch('https://api.github.com/repos/'+owner+'/'+repo+'/contents/')
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(list){
+      if(!Array.isArray(list))throw 0;
+      var files=list.filter(function(f){return f.type==='file'&&/\.(xlsx|xls|csv)$/i.test(f.name);});
+      // prefer something that looks like a gantt, then xlsx over csv
+      files.sort(function(a,b){
+        var ga=/gantt|schedule|plan/i.test(a.name)?0:1, gb=/gantt|schedule|plan/i.test(b.name)?0:1;
+        if(ga!==gb)return ga-gb;
+        var xa=/\.xlsx?$/i.test(a.name)?0:1, xb=/\.xlsx?$/i.test(b.name)?0:1;
+        return xa-xb;
+      });
+      if(!files.length){setStatus('No .xlsx or .csv found in the repository. Drop your export onto the page instead.');return;}
+      var f=files[0];
+      return fetch(f.name+'?t='+Date.now()).then(function(r){
+        if(!r.ok)throw 0;
+        return loadFromResponse(r,f.name);
+      });
+    })
+    .catch(function(){
+      setStatus('No Gantt found. Drop your export onto the page, or use “Upload Gantt”.');
+    });
+}
+
 (function boot(){
-  var names=['gantt.xlsx','Amazon_Canada_Gantt_V2.xlsx','data.csv','Data.csv'];
+  var names=['gantt.xlsx','Gantt.xlsx','GANTT.xlsx','gantt.csv','Gantt.csv',
+             'data.csv','Data.csv','Amazon_Canada_Gantt_V2.xlsx'];
   var i=0;
   (function next(){
-    if(i>=names.length){setStatus('No Gantt found in the repo — drop your export onto the page, or use “Upload Gantt”.');return;}
+    if(i>=names.length){discoverViaGitHub();return;}
     var n=names[i++];
-    fetch(n+'?t='+Date.now()).then(function(r){
-      if(!r.ok)throw 0;
-      return /\.xlsx?$/i.test(n)?r.arrayBuffer().then(function(ab){loadWorkbook(ab,'Loaded '+n+' from repo');})
-                                :r.text().then(function(tx){loadCSVText(tx,'Loaded '+n+' from repo');});
-    }).catch(next);
+    fetch(n+'?t='+Date.now())
+      .then(function(r){if(!r.ok)throw 0;return loadFromResponse(r,n);})
+      .catch(next);
   })();
 })();
 </script>
